@@ -12,13 +12,11 @@
 
 #include "minishell.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
-	int	*current;
-	
 	(void)argv;
 	if (argc != 1)
 		printf("Hello, Minishell!\n"); //return Error
-	current = init_signals();
-	init_minishell(current);
+	init_signals();
+	init_minishell(envp);
 }

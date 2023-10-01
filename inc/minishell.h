@@ -15,7 +15,7 @@
 
 # include <stdio.h>
 
-int     *init_signals(void);
-void    init_minishell(int *g_signal);
+void    init_signals(void);
+void    init_minishell(char **envp);
 
 #endif
