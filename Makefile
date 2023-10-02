@@ -3,6 +3,10 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD
 
+# readline brew local
+LDFLAGS = -L/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
+CPPFLAGS = -I/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+
 lib = libft/libft.a
 
 # Folders
@@ -21,14 +25,14 @@ DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
 all: lib $(NAME)
 
 $(NAME): $(lib) $(OBJ)
-	$(CC) $(OBJ) -L./libft -lft -lreadline -o $(NAME)
+	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 
 clean:
