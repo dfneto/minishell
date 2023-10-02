@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 16:27:51 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:28:06 by lsulzbac         ###   ########.fr       */
+/*   Created: 2023/10/02 16:24:07 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/10/02 16:25:38 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <libft.h>
+#include <unistd.h>
+#include <limits.h>
 
-int	ft_echo(char **argv)
+int	ft_pwd(void)
 {
-	int	i;
-	int	new_line;
+	char	*current_dir;
 
-	i = 1;
-	new_line = 1;
-	if (argv[i] && !ft_strncmp(argv[i], "-n", 3))
-	{
-		new_line = 0;
-		i++;
-	}
-	while (argv[i])
-	{
-		printf("%s", argv[i]);
-		i++;
-		if (argv[i])
-			printf(" ");
-	}
-	if (new_line)
-		printf("\n");
+	current_dir = (char *) malloc (sizeof(char) * PATH_MAX);
+	if (current_dir == NULL)
+		return (-1);
+	current_dir = getcwd(current_dir, PATH_MAX);
+	printf("%s\n", current_dir);
+	free(current_dir);
 	return (0);
+
 }

@@ -11,12 +11,14 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	if (argc != 1)
-		printf("Hello, Minishell!\n"); //return Error
+		exit(EXIT_FAILURE);
 	init_signals();
 	init_minishell(envp);
+	exit(EXIT_SUCCESS);
 }

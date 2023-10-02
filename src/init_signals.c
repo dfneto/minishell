@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <stdio.h>
 #include <signal.h>
 #include "libft.h"
 #include <readline/readline.h>

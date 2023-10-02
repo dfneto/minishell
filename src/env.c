@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 16:27:51 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:28:06 by lsulzbac         ###   ########.fr       */
+/*   Created: 2023/10/02 16:24:07 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/10/02 16:25:38 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <libft.h>
+#include <unistd.h>
+#include <limits.h>
 
-int	ft_echo(char **argv)
+int	ft_env(char** envp)
 {
-	int	i;
-	int	new_line;
+	int		i;
 
-	i = 1;
-	new_line = 1;
-	if (argv[i] && !ft_strncmp(argv[i], "-n", 3))
+	i = 0;
+	while (envp[i])
 	{
-		new_line = 0;
+		printf("%s\n", envp[i]);
 		i++;
 	}
-	while (argv[i])
-	{
-		printf("%s", argv[i]);
-		i++;
-		if (argv[i])
-			printf(" ");
-	}
-	if (new_line)
-		printf("\n");
 	return (0);
 }

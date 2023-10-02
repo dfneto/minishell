@@ -12,27 +12,34 @@
 
 #include <stdio.h>
 #include <libft.h>
+#include <unistd.h>
 
-int	ft_echo(char **argv)
+int	ft_cd(char **argv)
 {
 	int	i;
 	int	new_line;
 
 	i = 1;
 	new_line = 1;
-	if (argv[i] && !ft_strncmp(argv[i], "-n", 3))
+	if (argv[i])
 	{
-		new_line = 0;
-		i++;
+		if (!ft_strncmp(argv[i], "-", 2))
+		{
+			chdir(getenv("OLDPWD"));
+		}
+		else if (chdir(argv[i]))
+		{
+			printf("cd: no such file or directory: %s\n", argv[1]);
+			return (1);
+		}
 	}
-	while (argv[i])
+	else
 	{
-		printf("%s", argv[i]);
-		i++;
-		if (argv[i])
-			printf(" ");
+		if (chdir(getenv("HOME")))
+		{
+			printf("ERROR\n");
+			return (1);
+		}
 	}
-	if (new_line)
-		printf("\n");
 	return (0);
 }

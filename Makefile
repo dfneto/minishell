@@ -4,8 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD
 
 # readline brew local
-LDFLAGS = -L/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
-CPPFLAGS = -I/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
+CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
 
 lib = libft/libft.a
 
@@ -16,7 +16,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Source files
-SRC = main.c init_signals.c init_minishell.c
+SRC = main.c init_signals.c init_minishell.c execute_cmd.c echo.c pwd.c exit.c env.c process_utils.c cd.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
@@ -49,6 +49,7 @@ lib:
 
 
 re:	fclean all
+
 
 -include $(DEP)
 
