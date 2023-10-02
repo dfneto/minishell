@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 #include <libft.h>
+#include <stdlib.h>
 
 void	clean_process(t_process *process)
 {
@@ -36,7 +36,7 @@ t_process	*create_process(char *input)
 {
 	t_process	*tmp;
 
-	tmp = (t_process *) malloc (sizeof(t_process));
+	tmp = (t_process *)malloc(sizeof(t_process));
 	if (tmp == NULL)
 		return (NULL);
 	tmp->cmd = ft_split(input, ' ');

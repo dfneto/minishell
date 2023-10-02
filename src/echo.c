@@ -10,8 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <libft.h>
+#include <stdio.h>
+
+static int	is_n_flag(char const *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	if (str[i] != '-')
+		return (0);
+	i++;
+	while (str[i] == 'n')
+		i++;
+	if (str[i] != '\0')
+		return (0);
+	return (1);
+}
 
 int	ft_echo(char **argv)
 {
@@ -20,10 +37,10 @@ int	ft_echo(char **argv)
 
 	i = 1;
 	new_line = 1;
-	if (argv[i] && !ft_strncmp(argv[i], "-n", 3))
+	while (is_n_flag(argv[i]))
 	{
-		new_line = 0;
 		i++;
+		new_line = 0;
 	}
 	while (argv[i])
 	{

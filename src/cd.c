@@ -10,36 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <libft.h>
+#include <stdio.h>
 #include <unistd.h>
+
+static int	count_args(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
+int	ft_chdir(char *str)
+{
+	if (chdir(str))
+	{
+		printf("cd: no such file or directory: %s\n", str);
+		return (1);
+	}
+	return (0);
+}
 
 int	ft_cd(char **argv)
 {
-	int	i;
-	int	new_line;
+	int	argc;
 
-	i = 1;
-	new_line = 1;
-	if (argv[i])
+	argc = count_args(argv);
+	if (argc > 2)
 	{
-		if (!ft_strncmp(argv[i], "-", 2))
-		{
-			chdir(getenv("OLDPWD"));
-		}
-		else if (chdir(argv[i]))
-		{
-			printf("cd: no such file or directory: %s\n", argv[1]);
-			return (1);
-		}
+		printf("Brazilian Shell: cd: too many arguments\n");
+		return (1);
+	}
+	if (argv[1])
+	{
+		if (!ft_strncmp(argv[1], "-", 2))
+			return (ft_chdir(getenv("OLDPWD")));
+		else
+			return (ft_chdir(argv[1]));
 	}
 	else
-	{
-		if (chdir(getenv("HOME")))
-		{
-			printf("ERROR\n");
-			return (1);
-		}
-	}
-	return (0);
+		return (ft_chdir(getenv("HOME")));
 }

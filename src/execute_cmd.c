@@ -10,19 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <libft.h>
-#include <errno.h>
-#include <limits.h>
-#include <unistd.h>
 #include "minishell.h"
+#include <errno.h>
+#include <libft.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 int	is_builtin(char *exec)
 {
-	char	*builtins[] = {"echo", "pwd", "exit", "env", "cd", NULL};
-	int		i = 0;
+	int	i;
 
+	char *builtins[] = {"echo", "pwd", "exit", "env", "cd", NULL};
+	i = 0;
 	while (builtins[i])
 	{
 		if (!ft_strncmp(exec, builtins[i], ft_strlen(exec) + 1))
@@ -56,7 +58,7 @@ char	*get_path(char **cmd)
 	int		i;
 
 	i = 0;
-	abs_path  = (char *) malloc (sizeof(char) * PATH_MAX);
+	abs_path = (char *)malloc(sizeof(char) * PATH_MAX);
 	if (!abs_path)
 		return (NULL);
 	ft_strlcat(abs_path, cmd[0], PATH_MAX);
@@ -85,11 +87,11 @@ char	*get_path(char **cmd)
 	return (NULL);
 }
 
-int		is_executable(char **cmd, char **envp)
+int	is_executable(char **cmd, char **envp)
 {
-	int	ret;
+	int		ret;
 	char	*path;
-	
+
 	path = get_path(cmd);
 	printf("Get_path = %s\n", path);
 	if (path == NULL)
@@ -132,6 +134,7 @@ void	execute_cmd(t_process *current_process, char **envp)
 	}
 	if (ret)
 	{
-		printf("Brazilian Shell: %s: command not found\n", current_process->cmd[0]);
+		printf("Brazilian Shell: %s: command not found\n",
+			current_process->cmd[0]);
 	}
 }
