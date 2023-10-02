@@ -1,11 +1,11 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -MMD
+CFLAGS = -Wall -Wextra -Werror -MMD -g
 
 # readline brew local
-LDFLAGS = -L/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
-CPPFLAGS = -I/System/Volumes/Data/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
+CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
 
 lib = libft/libft.a
 
@@ -16,7 +16,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Source files
-SRC = main.c init_signals.c init_minishell.c
+SRC = main.c init_minishell.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
@@ -31,7 +31,7 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 
 all: lib $(NAME)
 
-$(NAME): $(lib) $(OBJ)
+$(NAME): $(lib) $(OBJ) Makefile
 	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 

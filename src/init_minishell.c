@@ -10,24 +10,32 @@
 #include <limits.h>
 
 
-void    init_minishell(char **envp)
+#define QUOTE_OPENED "You have to close your quotes"
+
+int exit_error(char *error_msg)
 {
+    printf("Exiting...\n");
+    printf("Error: %s\n", error_msg);
+    return (1);
+}
+
+int    init_minishell(char **envp)
+{
+    (void)envp;
     char *input;
-    char *folder;
-    char **argv;
-    int     ret;
+    int double_quote_open;
+    int single_quote_open;
+    int i;
     
+    double_quote_open = -1;
+    single_quote_open = -1;
     input = NULL;
-    folder = (char *) malloc (sizeof(char) * PATH_MAX); //MALLOC NOT PROTECTED
+    i = 0;
     while (1)
     {
-        folder = getcwd(folder, PATH_MAX);
-        folder = ft_strrchr(folder, '/');
-        folder++;
-        ft_strlcat(folder, " % ", ft_strlen(folder) + 4);
-        input = readline(folder);
+        input = readline("> ");
         if (!input)
-            return ;
+            return (0);
         if (!ft_strncmp(input, "exit", 5))
         {
             printf("Exiting...\n");
@@ -35,29 +43,22 @@ void    init_minishell(char **envp)
             input = NULL;           
             break ;
         }
-        if (input[0] != '\0')
+        
+        while(input[i])
         {
-            add_history(input);
-            argv = ft_split(input, ' ');
-            ret = fork();
-            if (ret == 0)
-            {
-                if (execve(argv[0], argv, envp) == -1)
-                {
-                    printf("EXECVE FAILED - %d!\n", errno);
-                    errno = 0;
-                    printf("ERRNO RESET - %d!\n", errno);
-                }
-                break ;
-            }
-            else
-            {
-                wait(NULL);
-            }
-            printf("Message received: %s\n", input);
+            if (input[i] == 34) //" 34
+                double_quote_open *= -1;
+            if (input[i] == 39)//' 39
+                single_quote_open *= -1;
+            i++;
         }
+        if (double_quote_open == 1 || single_quote_open == 1)
+            return (exit_error(QUOTE_OPENED));
+        double_quote_open = -1;
+        single_quote_open = -1;
         free(input);
         input = NULL;
     }
     rl_clear_history();
+    return (1);
 }
