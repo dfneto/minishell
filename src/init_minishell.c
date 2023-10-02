@@ -43,19 +43,32 @@ int    init_minishell(char **envp)
             input = NULL;           
             break ;
         }
-        
+        int open = 0;
+        int j = 0;
+        //TODO:
+        //  “ “ ‘ -> error
+        //  “ ‘ “ -> ok
+        // echo “david” “Fernandez
         while(input[i])
         {
-            if (input[i] == 34) //" 34
-                double_quote_open *= -1;
-            if (input[i] == 39)//' 39
-                single_quote_open *= -1;
-            i++;
+            if (input[i] == 34)
+            {
+                j = i + 1;
+                open = 1;
+                while (input[j])
+                {
+                    if (input[j] == 34)
+                    {
+                        open = 0;
+                        break ;
+                    }
+                    j++;
+                }
+            }
+            if (open)
+                return (exit_error(QUOTE_OPENED));
+            i = j + 1;
         }
-        if (double_quote_open == 1 || single_quote_open == 1)
-            return (exit_error(QUOTE_OPENED));
-        double_quote_open = -1;
-        single_quote_open = -1;
         free(input);
         input = NULL;
     }
