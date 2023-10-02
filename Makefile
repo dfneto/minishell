@@ -47,7 +47,6 @@ fclean:
 lib:
 	make -C libft
 
-
 re:	fclean all
 
 -include $(DEP)

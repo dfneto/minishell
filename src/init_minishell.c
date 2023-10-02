@@ -1,13 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <limits.h>
 
 
 #define QUOTE_OPENED "You have to close your quotes"
@@ -29,11 +20,13 @@ int    init_minishell(char **envp)
     
     double_quote_open = -1;
     single_quote_open = -1;
-    input = NULL;
+    input = "wewaea";
     i = 0;
     while (1)
     {
         input = readline("> ");
+        // ft_strlcpy(input, "\"\"", 2);
+        // input = "wawa";
         if (!input)
             return (0);
         if (!ft_strncmp(input, "exit", 5))
