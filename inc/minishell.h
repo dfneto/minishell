@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 21:06:17 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/03 19:05:50 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <limits.h>
 
-int    init_minishell(char **envp);
+int	init_minishell(char **envp);
+int	check_open_quotes(char *input);
 
 #endif

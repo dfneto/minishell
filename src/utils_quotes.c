@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+#define QUOTE_OPENED "You have to close your quotes"
+
 
 int exit_error(char *error_msg)
 {
@@ -47,37 +49,16 @@ int is_exit(char *input)
     return (0);
 }
 
-// int check_open_quotes(char *input)
-// {
-//     int i;
-
-//     i = 0;
-//     while(input[i])
-//     {
-//         if (is_char_open(input, &i, 34) || is_char_open(input, &i, 39))
-//             exit_error(QUOTE_OPENED);
-//         i++;
-//     }
-//     return (1);
-// }
-
-int    init_minishell(char **envp)
+int check_open_quotes(char *input)
 {
-    (void)envp;
-    char *input;
     int i;
-    
-    while (1)
+
+    i = 0;
+    while(input[i])
     {
-        input = readline("> ");
-        if (!input)
-            return (0);
-        if (is_exit(input))
-            break;
-        i = 0;
-        check_open_quotes(input);
-        clean_input(&input);
+        if (is_char_open(input, &i, 34) || is_char_open(input, &i, 39))
+            exit_error(QUOTE_OPENED);
+        i++;
     }
-    rl_clear_history();
     return (1);
 }
