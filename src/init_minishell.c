@@ -37,7 +37,7 @@ int    init_minishell(char **envp)
             break ;
         }
         int open = 0;
-        int j = 0;
+        i = 0;
         //TODO:
         //  “ “ ‘ -> error
         //  “ ‘ “ -> ok
@@ -46,22 +46,21 @@ int    init_minishell(char **envp)
         {
             if (input[i] == 34)
             {
-                j = i + 1;
                 open = 1;
-                while (input[j])
+                while (input[i] && open)
                 {
-                    if (input[j] == 34)
+                    i++;
+                    if (input[i] == 34)
                     {
                         open = 0;
                         break ;
                     }
-                    j++;
                 }
             }
-            if (open)
-                return (exit_error(QUOTE_OPENED));
-            i = j + 1;
+            i++;
         }
+        if (open)
+            exit_error(QUOTE_OPENED);
         free(input);
         input = NULL;
     }
