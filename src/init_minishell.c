@@ -10,23 +10,36 @@ int exit_error(char *error_msg)
     return (1);
 }
 
+int is_char_open(char *input, int *i, char c)
+{
+    int open;
+
+    open = 0;
+    if (input[*i] == c)
+    {
+        open = 1;
+        while (input[*i] && open)
+        {
+            (*i)++;
+            if (input[*i] == c)
+            {
+                open = 0;
+                break ;
+            }
+        }
+    }
+    return (open);
+}
+
 int    init_minishell(char **envp)
 {
     (void)envp;
     char *input;
-    int double_quote_open;
-    int single_quote_open;
     int i;
     
-    double_quote_open = -1;
-    single_quote_open = -1;
-    input = "wewaea";
-    i = 0;
     while (1)
     {
         input = readline("> ");
-        // ft_strlcpy(input, "\"\"", 2);
-        // input = "wawa";
         if (!input)
             return (0);
         if (!ft_strncmp(input, "exit", 5))
@@ -36,31 +49,13 @@ int    init_minishell(char **envp)
             input = NULL;           
             break ;
         }
-        int open = 0;
         i = 0;
-        //TODO:
-        //  “ “ ‘ -> error
-        //  “ ‘ “ -> ok
-        // echo “david” “Fernandez
         while(input[i])
         {
-            if (input[i] == 34)
-            {
-                open = 1;
-                while (input[i] && open)
-                {
-                    i++;
-                    if (input[i] == 34)
-                    {
-                        open = 0;
-                        break ;
-                    }
-                }
-            }
+            if (is_char_open(input, &i, 34) || is_char_open(input, &i, 39))
+                exit_error(QUOTE_OPENED);
             i++;
         }
-        if (open)
-            exit_error(QUOTE_OPENED);
         free(input);
         input = NULL;
     }
