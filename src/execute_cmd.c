@@ -23,7 +23,7 @@ int	is_builtin(char *exec)
 {
 	int	i;
 
-	char *builtins[] = {"echo", "pwd", "exit", "env", "cd", NULL};
+	char *builtins[] = {"echo", "pwd", "exit", "env", "cd", "export", NULL};
 	i = 0;
 	while (builtins[i])
 	{
@@ -127,10 +127,12 @@ void	execute_cmd(t_process *current_process, char **envp)
 			ft_pwd();
 		else if (is_built == 2)
 			ft_exit();
-		else if (is_built == 3)
-			ft_env(envp);
+/* 		else if (is_built == 3)
+			ft_env(envp); */
 		else if (is_built == 4)
 			ft_cd(current_process->cmd);
+		else if (is_built == 5)
+			ft_export(current_process->cmd[1]);
 	}
 	if (ret)
 	{

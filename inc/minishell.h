@@ -15,6 +15,13 @@
 
 # define PROGRAM_NAME "Brazilian Shell ~~> "
 
+typedef struct s_env
+{
+    char *name;
+    char *value;
+    struct s_env *next;
+}   t_env;
+
 typedef struct s_process
 {
     char **cmd;
@@ -30,12 +37,16 @@ void    execute_cmd(t_process *process, char **envp);
 t_process   *create_process(char *input);
 void    clean_process(t_process *process);
 
+// Env functions
+t_env   *create_env(char **envp);
+
 
 // Built-in functions
 int ft_echo(char **argv);
 int ft_pwd(void);
 int ft_exit(void);
-int	ft_env(char** envp);
+int	ft_env(t_env *envp);
 int	ft_cd(char **argv);
+int	ft_export(char *str);
 
 #endif

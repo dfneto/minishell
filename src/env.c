@@ -14,16 +14,14 @@
 #include <limits.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <minishell.h>
 
-int	ft_env(char **envp)
+int	ft_env(t_env *head)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
+	while (head)
 	{
-		printf("%s\n", envp[i]);
-		i++;
+		printf("%s=%s\n", head->name, head->value);
+		head = head->next;
 	}
 	return (0);
 }
