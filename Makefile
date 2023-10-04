@@ -38,6 +38,7 @@ $(NAME): $(lib) $(OBJ) Makefile
 clean:
 	make clean -C libft
 	rm -rf $(OBJ_DIR) $(DEP_DIR)
+	rm -rf *.dSYM
 
 
 fclean:

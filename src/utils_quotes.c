@@ -2,7 +2,6 @@
 
 #define QUOTE_OPENED "You have to close your quotes"
 
-
 int exit_error(char *error_msg)
 {
     printf("Exiting...\n");
@@ -49,7 +48,10 @@ int is_exit(char *input)
     return (0);
 }
 
-int check_open_quotes(char *input)
+/*
+* check_open_quotes phase
+*/
+int process_quotes(char *input)
 {
     int i;
 
