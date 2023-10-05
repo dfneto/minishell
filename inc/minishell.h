@@ -39,6 +39,8 @@ void    clean_process(t_process *process);
 
 // Env functions
 t_env   *create_env(char **envp);
+t_env   *create_node(char *str);
+t_env    *add_node(t_env *node, t_env *env);
 
 
 // Built-in functions
@@ -47,6 +49,5 @@ int ft_pwd(void);
 int ft_exit(void);
 int	ft_env(t_env *envp);
 int	ft_cd(char **argv);
-int	ft_export(char *str);
-
+int	ft_export(char **str, t_env **env);
 #endif

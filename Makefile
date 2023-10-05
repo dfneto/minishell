@@ -19,7 +19,7 @@ INC_DIR = inc
 SRC = main.c init_signals.c \
 	init_minishell.c execute_cmd.c \
 	echo.c pwd.c exit.c env.c \
-	process_utils.c cd.c export.c \
+	process_utils.c cd.c export.c\
 	env_utils.c
 
 # Object files

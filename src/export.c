@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,13 +16,53 @@
 #include <unistd.h>
 #include <minishell.h>
 
-int	ft_env(t_env *head)
+/* static t_env *add_in_order(t_env *ordered, t_env node)
 {
-	while (head)
+	
+	node.next = NULL;
+	if (ordered == NULL)
 	{
-		if (head->value != NULL)
-			printf("%s=%s\n", head->name, head->value);
-		head = head->next;
+		ordered
+	}
+}
+
+static void	print_ordered(t_env *env)
+{
+	t_env *ordered;
+
+	ordered = NULL;
+	while (env)
+	{
+		ordered = add_in_order(ordered, *env);
+		env = env->next;
+	}
+
+
+}
+ */
+static int	is_valid_env(char c)
+{
+	if ((c >= 'a' && c <= 'z') ||
+		(c >= 'A' && c <= 'Z') ||
+		(c == '_'))
+		return (1);
+	return (0);
+}
+
+int	ft_export(char **str, t_env **env)
+{
+/* 	if (*str == NULL)
+	{
+		print_ordered(*env);
+		return (0);
+	} */
+	while (*str)
+	{
+		if (is_valid_env((*str)[0]))
+		{
+			*env = add_node(create_node(*str), *env);
+		}
+		str++;
 	}
 	return (0);
 }

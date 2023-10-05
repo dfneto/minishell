@@ -3,7 +3,16 @@
 #include <libft.h>
 #include <stdio.h>
 
-static t_env   *create_node(char *str)
+t_env    *add_node(t_env *node, t_env *env)
+{
+    if (node == NULL)
+        return (env);
+    node->next = env;
+    env = node;
+    return (env);
+}
+
+t_env   *create_node(char *str)
 {
     t_env   *tmp;
 
@@ -11,8 +20,16 @@ static t_env   *create_node(char *str)
     if (!tmp)
         return (NULL);
     tmp->next = NULL;
-    tmp->name = ft_substr(str, 0, ft_strchr(str, '=') - str);
-    tmp->value = ft_substr(str, ft_strchr(str, '=') - str + 1, ft_strchr(str, '\0') - ft_strchr(str, '='));
+    if (strchr(str, '=') == NULL)
+    {
+        tmp->name = ft_substr(str, 0, ft_strchr(str, '\0') - str);
+        tmp->value = NULL;
+    }
+    else
+    {
+        tmp->name = ft_substr(str, 0, ft_strchr(str, '=') - str);
+        tmp->value = ft_substr(str, ft_strchr(str, '=') - str + 1, ft_strchr(str, '\0') - ft_strchr(str, '='));
+    }
     return (tmp);
 }
 

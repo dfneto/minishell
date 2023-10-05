@@ -131,8 +131,8 @@ void	execute_cmd(t_process *current_process, char **envp)
 			ft_env(envp); */
 		else if (is_built == 4)
 			ft_cd(current_process->cmd);
-		else if (is_built == 5)
-			ft_export(current_process->cmd[1]);
+		// else if (is_built == 5)
+		// 	ft_export(current_process->cmd[1]);
 	}
 	if (ret)
 	{
