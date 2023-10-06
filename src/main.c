@@ -17,22 +17,35 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
+	char	**env;
 	
 	(void)argc;
 	env = create_env(envp);
-	if (!env)
-		exit(EXIT_FAILURE);
-	else if (argc > 1)
+	ft_env(env);
+	printf("\n\n");
+	while (*argv != NULL)
 	{
-		ft_env(env);
-		char **my_split = ft_split(argv[1], ' ');
-		ft_export(my_split, &env);
-		printf("~~~~~~~~~~~~~~~~~~~\n");
-		ft_env(env);
-		exit(EXIT_SUCCESS);
+		char *str = expand_env(*argv, env);
+		if (str != NULL)
+		{
+			printf("env $%s expand to %s\n", *argv, str);
+			free(str);
+		}
+		argv++;
 	}
+/* 	char **or_env = create_ordered_env(env);
+	printf("\n~~~~~~~~~~~\n\nPRINTING ORDER LIST\n");
+	ft_env(or_env);
+	clean_env(&or_env); */
+	clean_env(&env);
+	printf("WHAT?\n");
+	if (env == NULL)
+		printf("Env cleaned!\n");
+/* 		char **my_split = ft_split(argv[1], ' ');
+	ft_export(my_split, &env); */
+//	printf("\n\n~~~~~~~~~~~~~~~~~~~\n\n");
+//	ft_env(env);
 /* 	init_signals();
 	init_minishell(envp); */
-	exit(EXIT_SUCCESS);
+	return (0);
 }

@@ -16,13 +16,13 @@
 #include <unistd.h>
 #include <minishell.h>
 
-int	ft_env(t_env *head)
+int	ft_env(char **env)
 {
-	while (head)
+	while (*env)
 	{
-		if (head->value != NULL)
-			printf("%s=%s\n", head->name, head->value);
-		head = head->next;
+		if (strrchr(*env, '='))
+			printf("%s\n", *env);
+		env++;
 	}
 	return (0);
 }
