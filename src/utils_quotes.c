@@ -39,7 +39,7 @@ int clean_input(char **input)
 
 int is_exit(char *input)
 {
-    if (!ft_strncmp(input, "exit", 5))
+    if (!strncmp(input, "exit", 5)) //TODO: use ft_strncmp
     {
         printf("Exiting...\n");
         clean_input(&input);
@@ -51,6 +51,7 @@ int is_exit(char *input)
 /*
 * check_open_quotes phase
 */
+//TODO: if the last char is a / it should exit with error
 int process_quotes(char *input)
 {
     int i;

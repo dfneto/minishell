@@ -4,6 +4,7 @@ int    init_minishell(char **envp)
 {
     (void)envp;
     char *input;
+    token *tokens;
     int i;
     
     while (1)
@@ -16,7 +17,7 @@ int    init_minishell(char **envp)
             break;
         i = 0;
         process_quotes(input);
-        //TODO: por que preciso separar em tokens e não posso ir direto para words (Step 6: Split the command into a command name and arguments.)
+        tokens = tokenization(input);
         clean_input(&input);
     }
     rl_clear_history();
