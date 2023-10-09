@@ -43,8 +43,10 @@ t_env   *create_node(char *str);
 t_env    *add_node(t_env *node, t_env *env);
 char    *expand_env(char *name, char **env);
 void    clean_env(char ***env);
-/* char   **create_ordered_env(char **env);
- */
+char   **create_ordered_env(char **env);
+
+void	ft_perror(int err, char *msg);
+
 
 // Built-in functions
 int ft_echo(char **argv);

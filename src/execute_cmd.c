@@ -127,8 +127,8 @@ void	execute_cmd(t_process *current_process, char **envp)
 			ft_pwd();
 		else if (is_built == 2)
 			ft_exit();
-/* 		else if (is_built == 3)
-			ft_env(envp); */
+		/* 		else if (is_built == 3)
+					ft_env(envp); */
 		else if (is_built == 4)
 			ft_cd(current_process->cmd);
 		// else if (is_built == 5)
