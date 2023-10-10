@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/09 18:19:04 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:55:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@
 #include <errno.h>
 #include <limits.h>
 
-#define DOUB_QUOTE 34
+#define DOUB_QUOTE_ASCII 34
+
+#define DOUB_QUOTE_TYPE 0
+#define SING_QUOTE_TYPE 1
+#define STRING_TYPE 2
 
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	4 >		5 >>	6 <		7 <<	8 | //TODO: implementar $ e $?	
