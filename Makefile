@@ -20,7 +20,7 @@ SRC = main.c init_signals.c \
 	init_minishell.c execute_cmd.c \
 	echo.c pwd.c exit.c env.c \
 	process_utils.c cd.c export.c\
-	env_utils.c ft_perror.c
+	env_utils.c ft_perror.c export_utils.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))

@@ -18,14 +18,14 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char	**env;
-	char	*str;
-	char	**or_env;
+//	char	*str;
+//	char	**or_env;
 
 	(void)argc;
 	env = create_env(envp);
 	ft_env(env);
 	printf("\n\n");
-	while (*argv != NULL)
+/* 	while (*argv != NULL)
 	{
 		str = expand_env(*argv, env);
 		if (str != NULL)
@@ -34,11 +34,11 @@ int	main(int argc, char **argv, char **envp)
 			free(str);
 		}
 		argv++;
-	}
-	or_env = create_ordered_env(env);
-	printf("\n~~~~~~~~~~~\n\nPRINTING ORDER LIST\n");
-	ft_env(or_env);
-	clean_env(&or_env);
+	} */
+	ft_export(argv, env);
+	char **null_char = {NULL};
+	ft_export(null_char, env);
+	//clean_env(&or_env);
 	clean_env(&env);
 	/* 		char **my_split = ft_split(argv[1], ' ');
 		ft_export(my_split, &env); */

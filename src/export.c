@@ -16,50 +16,90 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/* static t_env *add_in_order(t_env *ordered, t_env node)
+static void	print_ordered(char **env)
 {
-	node.next = NULL;
+	char	**ordered;
+	int		i;
+
+	 ordered = create_ordered_env(env);
 	if (ordered == NULL)
+		return ;
+	i = 0;
+	while (ordered[i] != NULL)
 	{
-		ordered
+		printf("declare -x %s\n", ordered[i]);
+		i++;
 	}
+	clean_env(&ordered);
 }
 
-static void	print_ordered(t_env *env)
+static int	is_valid_env(char *str)
 {
-	t_env	*ordered;
-
-	ordered = NULL;
-	while (env)
+	if (!(ft_isalnum(*str) || *str == '_'))
+		return (0);
+	str++;
+	while (*str || *str != '=' || *str != '+')
 	{
-		ordered = add_in_order(ordered, *env);
-		env = env->next;
+		if(!ft_isalnum(*str))
+			return (0);
+		str++;
 	}
+	if (*str == '+')
+	{
+		str++;
+		if (*str != '=')
+			return (0);
+	}
+	return (1);
 }
- */
-/* static int	is_valid_env(char c)
+
+int	add_env(char *str, char ***env)
 {
-	if ((c >= 'a' && c <= 'z') ||
-		(c >= 'A' && c <= 'Z') ||
-		(c == '_'))
+	char	**new_env;
+	int		i;
+
+	i = 0;
+	while ((*env)[i] != NULL)
+		i++;
+	new_env = (char **) malloc (sizeof(char *) * (i + 2));
+	if (new_env == NULL)
+	{
+		//error
 		return (1);
+	}
+	else
+	{
+		ft_memset(new_env, 0, sizeof(char *) * (i + 2));
+		i = 0;
+		while ((*env)[i] != NULL)
+		{
+			new_env[i] = *(env)[i];
+			i++;
+		}
+		new_env[i] = ft_strdup(str);
+		free(*env);
+		*env = new_env;
+	}
 	return (0);
 }
 
-int	ft_export(char **str, t_env **env)
+int	ft_export(char **str, char **env)
 {
+	int	ret;
+
+	ret = 0;
 	if (*str == NULL)
 	{
-		print_ordered(*env);
-		return (0);
+		print_ordered(env);
+		return (ret);
 	}
 	while (*str)
 	{
-		if (is_valid_env((*str)[0]))
-		{
-			*env = add_node(create_node(*str), *env);
-		}
+		if (is_valid_env(*str))
+			add_env(*str, &env);
+		else
+			ret = 1;
 		str++;
 	}
-	return (0);
-} */
+	return (ret);
+}
