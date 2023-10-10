@@ -33,10 +33,11 @@ token   *create_token(char *input, int start, int end, int type)
     tok = (token *)malloc(sizeof(token));
     if (!tok)
         return (NULL);
-    tok->next = NULL;
+    tok->str = NULL;
     if (type == DOUB_QUOTE_TYPE | type == SING_QUOTE_TYPE | type == STRING_TYPE)
         tok->str = ft_substr(input, start, end - start + 1);
     tok->type = type;
+    tok->next = NULL;
     return (tok);
 }
 
@@ -71,7 +72,7 @@ token   *tokenization(char *input)
             i++;
             type = SING_QUOTE_TYPE;
             while(input[i] && input[i] != SING_QUOTE_ASCII)
-                i++;   
+                i++;
         }
         else if(input[i] == SPACE_ASCII)
         {
