@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/10 15:55:44 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:02:49 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@
 #include <limits.h>
 
 #define DOUB_QUOTE_ASCII 34
+#define SING_QUOTE_ASCII 39
+#define SPACE_ASCII 32
 
 #define DOUB_QUOTE_TYPE 0
 #define SING_QUOTE_TYPE 1
 #define STRING_TYPE 2
+#define SPACE_TYPE 3
 
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	4 >		5 >>	6 <		7 <<	8 | //TODO: implementar $ e $?	

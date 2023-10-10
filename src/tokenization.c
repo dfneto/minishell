@@ -18,11 +18,13 @@ int get_token_type(char c)
     return (2);
 }  
 /*
-* Lesson learned: 
+* Lesson learned: when I have an intermittent error, it means, that happen sometimes
+* and others don't, it usually is a non variable declaration or bad memory allocation
+* In this case sometimes I got tok->str saved and others don't.
 * I was with an error with this 
 *   tok = (token *)malloc(sizeof(token *)); 
 * because I was allocating in memory a space for a address and not for a token
-* I like to think in the right side as allocating memory of sizeof ...
+* I like to think in the right side as allocating space in memory of sizeof the type
 */
 token   *create_token(char *input, int start, int end, int type)
 {
@@ -63,11 +65,36 @@ token   *tokenization(char *input)
             while(input[i] && input[i] != DOUB_QUOTE_ASCII)
                 i++;
         }
+        else if(input[i] == SING_QUOTE_ASCII)
+        {
+            start = i;
+            i++;
+            type = SING_QUOTE_TYPE;
+            while(input[i] && input[i] != SING_QUOTE_ASCII)
+                i++;   
+        }
+        else if(input[i] == SPACE_ASCII)
+        {
+            start = i;
+            i++;
+            type = SPACE_TYPE;
+            while(input[i] && input[i] == SPACE_TYPE)
+                i++;
+        }
         tok = create_token(input, start, i, type);
-        printf("------> %s\n", tok->str);
-        // free(tok->str);
-        // tok->str = NULL;
-        // free(tok);
+        if (!tok)
+            return (NULL);
+        printf("-----------\n");
+        if (tok->str)
+        {
+            printf("Token type %d\nToken str: %s\n", tok->type, tok->str);
+            free(tok->str);
+            tok->str = NULL;
+        }
+        else
+            printf("Token type %d\nToken str: [ ]\n", tok->type);    
+        free(tok);
+        
         // tok = NULL;
         i++;
     }

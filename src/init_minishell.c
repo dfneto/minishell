@@ -17,9 +17,10 @@ int    init_minishell(char **envp)
         i = 0;
         process_quotes(input);
         first_token = tokenization(input);
-        
+        if (!first_token)
+            return (1);
         clean_input(&input);
     }
     rl_clear_history();
-    return (1);
+    return (0);
 }
