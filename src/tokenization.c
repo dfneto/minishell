@@ -20,6 +20,7 @@ int get_token_type(char c)
 /*
 * Lesson learned: when I have an intermittent error, it means, that happen sometimes
 * and others don't, it usually is a non variable declaration or bad memory allocation
+* (cause also by typos)
 * In this case sometimes I got tok->str saved and others don't.
 * I was with an error with this 
 *   tok = (token *)malloc(sizeof(token *)); 
@@ -65,6 +66,8 @@ token   *tokenization(char *input)
             type = DOUB_QUOTE_TYPE;
             while(input[i] && input[i] != DOUB_QUOTE_ASCII)
                 i++;
+            tok = create_token(input, start, i, type);
+            i++;
         }
         else if(input[i] == SING_QUOTE_ASCII)
         {
@@ -73,16 +76,18 @@ token   *tokenization(char *input)
             type = SING_QUOTE_TYPE;
             while(input[i] && input[i] != SING_QUOTE_ASCII)
                 i++;
+            tok = create_token(input, start, i, type);
+            i++;
         }
         else if(input[i] == SPACE_ASCII)
         {
             start = i;
             i++;
             type = SPACE_TYPE;
-            while(input[i] && input[i] == SPACE_TYPE)
+            while(input[i] && input[i] == SPACE_ASCII)
                 i++;
+            tok = create_token(input, start, i, type);
         }
-        tok = create_token(input, start, i, type);
         if (!tok)
             return (NULL);
         printf("-----------\n");
@@ -95,9 +100,7 @@ token   *tokenization(char *input)
         else
             printf("Token type %d\nToken str: [ ]\n", tok->type);    
         free(tok);
-        
-        // tok = NULL;
-        i++;
+        tok = NULL;
     }
     return (tok);
 }
