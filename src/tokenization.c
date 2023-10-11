@@ -42,6 +42,17 @@ token   *create_token(char *input, int start, int end, int type)
     return (tok);
 }
 
+token   *define_token(char *input, int *i)
+{
+    int start;
+
+    start = *i;
+    (*i)++;
+    while(input[*i] && input[*i] == SPACE_ASCII)
+        (*i)++;
+    return (create_token(input, start, *i, SPACE_TYPE));
+}
+
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	4 >		5 >>	6 <		7 <<	8 | //TODO: implementar $ e $?	
 * str: not null when type is 0, 1 or 2
@@ -51,11 +62,9 @@ token   *tokenization(char *input)
     token   *tok;
     int     i;
     int     start;
-    int     type;
 
     i = 0;
     start = 0;
-    type = 0;
     tok = NULL;
     while(input[i])
     {
@@ -63,44 +72,73 @@ token   *tokenization(char *input)
         {
             start = i;
             i++;
-            type = DOUB_QUOTE_TYPE;
             while(input[i] && input[i] != DOUB_QUOTE_ASCII)
                 i++;
-            tok = create_token(input, start, i, type);
+            tok = create_token(input, start, i, DOUB_QUOTE_TYPE);
             i++;
         }
         else if(input[i] == SING_QUOTE_ASCII)
         {
             start = i;
             i++;
-            type = SING_QUOTE_TYPE;
             while(input[i] && input[i] != SING_QUOTE_ASCII)
                 i++;
-            tok = create_token(input, start, i, type);
+            tok = create_token(input, start, i, SING_QUOTE_TYPE);
             i++;
         }
         else if(input[i] == SPACE_ASCII)
+            // tok = define_token(input, &i);
         {
             start = i;
             i++;
-            type = SPACE_TYPE;
             while(input[i] && input[i] == SPACE_ASCII)
                 i++;
-            tok = create_token(input, start, i, type);
+            tok = create_token(input, start, i, SPACE_TYPE);
+        }
+        else if(input[i] == OUTPUT_REDIRECTION_ASCII)
+        {
+            i++;
+            if(input[i] == OUTPUT_REDIRECTION_ASCII)
+            {
+                tok = create_token(input, 0, 0, APPEND_TYPE);
+                i++;
+            }
+            else
+                tok = create_token(input, 0, 0, OUTPUT_REDIRECTION_TYPE);
+        }
+        else if(input[i] == INPUT_REDIRECTION_ASCII)
+        {
+            i++;
+            if(input[i] == INPUT_REDIRECTION_ASCII)
+            {
+                tok = create_token(input, 0, 0, HERE_DOC_TYPE);
+                i++;
+            }
+            else
+                tok = create_token(input, 0, 0, INPUT_REDIRECTION_TYPE);
+        }
+        else if(input[i] == PIPE_ASCII)
+        {
+            tok = create_token(input, 0, 0, PIPE_TYPE);
+            i++;
+        }
+        else
+        {
+            start = i;
+            i++;
+            while(input[i] && input[i] != DOUB_QUOTE_ASCII && input[i] != SING_QUOTE_ASCII && 
+                input[i] != SPACE_ASCII && input[i] != OUTPUT_REDIRECTION_ASCII && 
+                input[i] != INPUT_REDIRECTION_ASCII && input[i] != PIPE_ASCII)
+                i++;
+            tok = create_token(input, start, i, STRING_TYPE);
         }
         if (!tok)
             return (NULL);
         printf("-----------\n");
         if (tok->str)
-        {
             printf("Token type %d\nToken str: %s\n", tok->type, tok->str);
-            free(tok->str);
-            tok->str = NULL;
-        }
         else
             printf("Token type %d\nToken str: [ ]\n", tok->type);    
-        free(tok);
-        tok = NULL;
     }
     return (tok);
 }

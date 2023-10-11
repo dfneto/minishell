@@ -17,8 +17,8 @@ int    init_minishell(char **envp)
         i = 0;
         process_quotes(input);
         first_token = tokenization(input);
-        if (!first_token)
-            return (1);
+        // if (!first_token) com esta condicao nao eh permitido inserir nada, nao se pode dar enter por ex que se encerra o programa
+        //     return (1);
         clean_input(&input);
     }
     rl_clear_history();
