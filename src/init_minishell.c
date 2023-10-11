@@ -9,7 +9,7 @@ int    init_minishell(char **envp)
     
     while (1)
     {
-        input = readline("> ");
+        input = readline("\033[38;5;143mbr.sh$ \033[0;39m");
         if (!input)
             return (0);
         if (is_exit(input))
