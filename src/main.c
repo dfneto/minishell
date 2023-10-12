@@ -22,9 +22,8 @@ int	main(int argc, char **argv, char **envp)
 //	char	**or_env;
 
 	(void)argc;
+	(void)argv;
 	env = create_env(envp);
-	ft_env(env);
-	printf("\n\n");
 /* 	while (*argv != NULL)
 	{
 		str = expand_env(*argv, env);
@@ -35,16 +34,14 @@ int	main(int argc, char **argv, char **envp)
 		}
 		argv++;
 	} */
-	ft_export(argv, env);
-	char **null_char = {NULL};
-	ft_export(null_char, env);
+	//ft_export(null_char, &env);
 	//clean_env(&or_env);
-	clean_env(&env);
+	//clean_env(&env);
 	/* 		char **my_split = ft_split(argv[1], ' ');
 		ft_export(my_split, &env); */
 	//	printf("\n\n~~~~~~~~~~~~~~~~~~~\n\n");
 	//	ft_env(env);
-	/* 	init_signals();
-		init_minishell(envp); */
+	//init_signals();*/
+	init_minishell(&env);
 	return (0);
 }

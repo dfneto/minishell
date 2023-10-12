@@ -21,7 +21,8 @@ static void	print_ordered(char **env)
 	char	**ordered;
 	int		i;
 
-	 ordered = create_ordered_env(env);
+	printf("print_ordered\n");
+	ordered = create_ordered_env(env);
 	if (ordered == NULL)
 		return ;
 	i = 0;
@@ -35,10 +36,10 @@ static void	print_ordered(char **env)
 
 static int	is_valid_env(char *str)
 {
-	if (!(ft_isalnum(*str) || *str == '_'))
+	if (!(ft_isalpha(*str) || *str == '_'))
 		return (0);
 	str++;
-	while (*str || *str != '=' || *str != '+')
+	while (*str && *str != '=' && *str != '+')
 	{
 		if(!ft_isalnum(*str))
 			return (0);
@@ -73,7 +74,7 @@ int	add_env(char *str, char ***env)
 		i = 0;
 		while ((*env)[i] != NULL)
 		{
-			new_env[i] = *(env)[i];
+			new_env[i] = (*env)[i];
 			i++;
 		}
 		new_env[i] = ft_strdup(str);
@@ -83,20 +84,22 @@ int	add_env(char *str, char ***env)
 	return (0);
 }
 
-int	ft_export(char **str, char **env)
+int	ft_export(char **str, char ***env)
 {
 	int	ret;
 
 	ret = 0;
+	str++;
+	printf("str = %s\n", *str);
 	if (*str == NULL)
 	{
-		print_ordered(env);
+		print_ordered(*env);
 		return (ret);
 	}
 	while (*str)
 	{
 		if (is_valid_env(*str))
-			add_env(*str, &env);
+			add_env(*str, env);
 		else
 			ret = 1;
 		str++;

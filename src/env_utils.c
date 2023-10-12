@@ -28,6 +28,7 @@ char	*expand_env(char *name, char **env)
 	int	i;
 
 	i = 0;
+	name++;
 	while (env[i] != NULL)
 	{
 		if (!ft_strncmp(name, env[i], ft_strlen(name))

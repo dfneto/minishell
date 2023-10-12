@@ -12,6 +12,7 @@
 
 #include <libft.h>
 #include <stdio.h>
+#include  <minishell.h>
 
 static int	is_n_flag(char const *str)
 {
@@ -30,7 +31,7 @@ static int	is_n_flag(char const *str)
 	return (1);
 }
 
-int	ft_echo(char **argv)
+int	ft_echo(char **argv, char **env)
 {
 	int	i;
 	int	new_line;
@@ -44,7 +45,14 @@ int	ft_echo(char **argv)
 	}
 	while (argv[i])
 	{
-		printf("%s", argv[i]);
+		if (argv[i][0]=='$')
+		{
+			char *exp = expand_env(argv[i], env);
+			printf("%s", exp);
+			free(exp);
+		}
+		else
+			printf("%s", argv[i]);
 		i++;
 		if (argv[i])
 			printf(" ");

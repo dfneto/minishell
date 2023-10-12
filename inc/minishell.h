@@ -30,8 +30,8 @@ typedef struct s_process
 }   t_process;
 
 void    init_signals(void);
-void    init_minishell(char **envp);
-void    execute_cmd(t_process *process, char **envp);
+void    init_minishell(char ***envp);
+void    execute_cmd(t_process *process, char ***envp);
 
 // Process utils
 t_process   *create_process(char *input);
@@ -49,10 +49,10 @@ void	ft_perror(int err, char *msg);
 
 
 // Built-in functions
-int ft_echo(char **argv);
+int ft_echo(char **argv, char **env);
 int ft_pwd(void);
 int ft_exit(void);
 int	ft_env(char **env);
 int	ft_cd(char **argv);
-int	ft_export(char **str, char **env);
+int	ft_export(char **str, char ***env);
 #endif
