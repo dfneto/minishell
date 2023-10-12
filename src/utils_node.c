@@ -13,9 +13,41 @@ void	add_node_back(token **first, token *new)
 
     if (!new)
 		return ; //TODO: simular new = NULL
-    if (!(*first))
+    if (*first == NULL)
         *first = new;
-	last = get_last_node(*first);
-	last->next = new;
-	last = NULL;
+	else 
+	{
+		last = get_last_node(*first);
+		last->next = new;
+		last = NULL;
+	}
+}
+
+void	print_type(int type)
+{
+	if (type == SPACE_TYPE)
+		printf("spc\n");
+	else if (type == OUTPUT_REDIRECTION_TYPE)
+		printf(">\n");
+	else if (type == APPEND_TYPE)
+		printf(">>\n");
+	else if (type == INPUT_REDIRECTION_TYPE)
+		printf("<\n");
+	else if (type == HERE_DOC_TYPE)
+		printf("<<\n");
+	else 
+		printf("|\n");
+}
+
+void	print_list(token *root)
+{
+	printf("token value:\n");
+	while (root)
+	{
+		if (root->str)
+			printf("%s\n", root->str);
+		else
+			print_type(root->type);
+		root = root->next;
+	}
 }

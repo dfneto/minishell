@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/11 17:37:56 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:41:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 #define SING_QUOTE_ASCII 39
 #define SPACE_ASCII 32
 #define OUTPUT_REDIRECTION_ASCII 62
-#define INPUT_REDIRECTION_ASCII 60
+#define INPUT_REDIRECTION_ASCII 60 //<
 #define PIPE_ASCII 124
 
 #define DOUB_QUOTE_TYPE 0
@@ -57,6 +57,11 @@ int	    init_minishell(char **envp);
 int	    process_quotes(char *input);
 int     clean_input(char **input);
 int     is_exit(char *input);
+
+void	add_node_back(token **first, token *new);
+void	print_list(token *root);
+
+token	*get_last_node(token *first);
 token   *tokenization(char *input);
 token   *create_token(char *input, int beginning, int end, int type);
 

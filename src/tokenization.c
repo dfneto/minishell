@@ -100,7 +100,7 @@ token   *create_string_token(char *input, int *i)
 */
 token   *tokenization(char *input)
 {
-    token   **first_token;
+    token   *first_token;
     int     i;
 
     i = 0;
@@ -108,29 +108,29 @@ token   *tokenization(char *input)
     while(input[i])
     {
         if (input[i] == DOUB_QUOTE_ASCII)
-            add_node_back(first_token, create_quote_token(input, &i, DOUB_QUOTE_TYPE, DOUB_QUOTE_ASCII));
+            add_node_back(&first_token, create_quote_token(input, &i, DOUB_QUOTE_TYPE, DOUB_QUOTE_ASCII));
         else if(input[i] == SING_QUOTE_ASCII)
-            add_node_back(first_token, create_quote_token(input, &i, SING_QUOTE_TYPE, SING_QUOTE_ASCII));
+            add_node_back(&first_token, create_quote_token(input, &i, SING_QUOTE_TYPE, SING_QUOTE_ASCII));
         else if(input[i] == SPACE_ASCII)
-            add_node_back(first_token, create_space_token(input, &i));
+            add_node_back(&first_token, create_space_token(input, &i));
         else if(input[i] == PIPE_ASCII)
-            add_node_back(first_token, create_pipe_token(input, &i));
+            add_node_back(&first_token, create_pipe_token(input, &i));
         else if(input[i] == OUTPUT_REDIRECTION_ASCII && input[i+1] == OUTPUT_REDIRECTION_ASCII)
-            add_node_back(first_token, create_generic_token(input, &i, APPEND_TYPE, OUTPUT_REDIRECTION_ASCII));
+            add_node_back(&first_token, create_generic_token(input, &i, APPEND_TYPE, OUTPUT_REDIRECTION_ASCII));
         else if(input[i] == OUTPUT_REDIRECTION_ASCII)
-            add_node_back(first_token, create_generic_token(input, &i, OUTPUT_REDIRECTION_TYPE, OUTPUT_REDIRECTION_ASCII));
+            add_node_back(&first_token, create_generic_token(input, &i, OUTPUT_REDIRECTION_TYPE, OUTPUT_REDIRECTION_ASCII));
         else if(input[i] == INPUT_REDIRECTION_ASCII && input[i+1] == INPUT_REDIRECTION_ASCII)
-            add_node_back(first_token, create_generic_token(input, &i, HERE_DOC_TYPE, INPUT_REDIRECTION_ASCII));
+            add_node_back(&first_token, create_generic_token(input, &i, HERE_DOC_TYPE, INPUT_REDIRECTION_ASCII));
         else if(input[i] == INPUT_REDIRECTION_ASCII)
-            add_node_back(first_token, create_generic_token(input, &i, INPUT_REDIRECTION_TYPE, INPUT_REDIRECTION_ASCII));
+            add_node_back(&first_token, create_generic_token(input, &i, INPUT_REDIRECTION_TYPE, INPUT_REDIRECTION_ASCII));
         else
-            add_node_back(first_token, create_string_token(input, &i));
-        printf("-----------\n");
-        token *tok = get_last_node(*first_token);
-        if (tok->str)
-            printf("Token type %d\nToken str: %s\n", tok->type, tok->str);
-        else
-            printf("Token type %d\nToken str: [ ]\n", tok->type);    
+            add_node_back(&first_token, create_string_token(input, &i));
+        // printf("-----------\n");
+        // token *tok = get_last_node(first_token);
+        // if (tok->str)
+        //     printf("Token type %d\nToken str: %s\n", tok->type, tok->str);
+        // else
+        //     printf("Token type %d\nToken str: [ ]\n", tok->type);    
     }
     return (first_token);
 }
