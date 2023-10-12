@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:39:42 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/12 17:39:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:45:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ t_token	*create_string_token(char *input, int *i)
 	(*i)++;
 	while (input[*i] && input[*i] != DOUB_QUOTE_ASCII
 		&& input[*i] != SING_QUOTE_ASCII
-		&& input[*i] != SPACE_ASCII && input[*i] != OUTPUT_REDIRECTION_ASCII
-		&& input[*i] != INPUT_REDIRECTION_ASCII && input[*i] != PIPE_ASCII)
+		&& input[*i] != SPACE_ASCII && input[*i] != GREATER_ASCII
+		&& input[*i] != LESS_ASCII && input[*i] != PIPE_ASCII)
 		(*i)++;
 	return (create_token(input, start, *i, STRING_TYPE));
 }

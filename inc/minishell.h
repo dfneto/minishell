@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/12 17:54:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:46:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 # define DOUB_QUOTE_ASCII 34
 # define SING_QUOTE_ASCII 39
 # define SPACE_ASCII 32
-# define OUTPUT_REDIRECTION_ASCII 62
-# define INPUT_REDIRECTION_ASCII 60 //<
+# define GREATER_ASCII 62
+# define LESS_ASCII 60 //<
 # define PIPE_ASCII 124
 
 # define DOUB_QUOTE_TYPE 0
