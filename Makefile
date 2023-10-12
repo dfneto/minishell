@@ -16,7 +16,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Source files
-SRC = main.c init_minishell.c utils_quotes.c tokenization.c utils_node.c
+SRC = main.c init_minishell.c utils_quotes.c lexical_analysis.c utils_node.c printers.c create_tokens.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
