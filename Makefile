@@ -4,8 +4,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD -g
 
 # readline brew local
-LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
-CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+# LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
+# CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+
+LDFLAGS = -L/usr/local/opt/readline/lib/ 
+CPPFLAGS = -I /usr/local/opt/readline/include/ 
 
 lib = libft/libft.a
 
@@ -16,22 +19,22 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Source files
-SRC = main.c init_minishell.c utils_quotes.c lexical_analysis.c utils_node.c printers.c create_tokens.c
+SRC = main.c init_minishell.c utils_quotes.c lexical_analysis.c utils_token.c printers.c create_tokens.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 
 # Compile SRC files and move to folders
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h Makefile
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
-all: lib $(NAME)
+all: lib $(NAME) 
 
-$(NAME): $(lib) $(OBJ) Makefile
+$(NAME): $(lib) $(OBJ)
 	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 

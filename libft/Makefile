@@ -12,11 +12,11 @@ OBJ = $(SRC_C:.c=.o)
 
 all: 	$(NAME)
 
-%.o: %.c $(HEADER)
+%.o: %.c $(HEADER) Makefile
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) $(HEADER)
-	@ar -rcs $(NAME) $(OBJ) $(HEADER)
+	@ar -rcs $(NAME) $(OBJ)
 	@echo "Libft compiled"
 
 re: fclean all
