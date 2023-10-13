@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/12 19:36:45 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:43:25 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ t_token	*get_last_token(t_token *first)
 	return (first);
 }
 
+/*
+* Add the token at the end of the list of the tokens represented by first
+*/
 //TODO: simular new = NULL
-void	add_token_back(t_token **first, t_token *new)
+void	add_token(t_token **first, t_token *new)
 {
 	t_token	*last;
 
