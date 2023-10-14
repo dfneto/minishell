@@ -4,11 +4,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD -g
 
 # readline brew local
-# LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
-# CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
+LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
+CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
 
-LDFLAGS = -L/usr/local/opt/readline/lib/ 
-CPPFLAGS = -I /usr/local/opt/readline/include/ 
+# LDFLAGS = -L/usr/local/opt/readline/lib/ 
+# CPPFLAGS = -I /usr/local/opt/readline/include/ 
 
 lib = libft/libft.a
 
@@ -19,7 +19,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Source files
-SRC = main.c init_minishell.c utils_quotes.c lexical_analysis.c utils_token.c printers.c create_tokens.c
+SRC = main.c init_minishell.c utils_quotes.c lexical_analysis.c utils_token.c printers.c create_tokens.c expansion.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/13 13:42:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/14 18:33:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		init_minishell(char **envp);
 int		process_quotes(char *input);
 int		clean_input(char **input);
 int		is_exit(char *input);
+int		expansion(t_token **first_token);
 void	add_token(t_token **first, t_token *new);
 void	print_list(t_token *root);
 t_token	*lexical_analysis(char *input);
