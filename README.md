@@ -1,7 +1,8 @@
 # minishell
 
+[ ] ler o bash e seguir com a fase process_creation
 [ ] em que momento vou tirar os espaços e juntar os tokens, ex: l"s" vira ls?
-[ ] no caso: "  $USER  abc  $PWD  d", tenho que expandir somente ou criar tokens e adicionar a lista de tokens?
+[X] no caso: "  $USER  abc  $PWD  d", tenho que expandir somente ou criar tokens e adicionar a lista de tokens? apenas expandir segundo Marc
 [ ] fazer a expansão e depois criar uma lista de processos
 [X] bash-3.2$ echo $$$$$USER
 [ ] compilar o readline no makefile para evitar de ter que instalar em outro computador e poder remover do sgoinfree
