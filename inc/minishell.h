@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/15 13:37:02 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:46:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int		is_exit(char *input);
 int		expansion(t_token *first_token);
 void	add_token(t_token **first, t_token *new);
 void	print_list(t_token *root);
+int		is_expansible(char *str);
+char	*get_token_without_dolar(t_token *token);
 t_token	*lexical_analysis(char *input);
 t_token	*create_token(char *input, int start, int end, int type);
 t_token	*get_last_token(t_token *first);
@@ -74,7 +76,5 @@ t_token	*create_pipe_token(char *input, int *i);
 t_token	*create_quote_token(char *input, int *i, int type, int quote_char);
 t_token	*create_redirec_tok(char *input, int *i, int type, int quote_char);
 t_token	*create_string_token(char *input, int *i);
-
-
 
 #endif
