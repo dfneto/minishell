@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/15 15:46:40 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:04:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define SING_QUOTE_CHAR 39
 # define SPACE_CHAR 32
 # define GREATER_CHAR 62
-# define LESS_CHAR 60 //<
+# define LESS_CHAR 60
 # define PIPE_CHAR 124
 
 # define DOUB_QUOTE_TYPE 0
@@ -57,24 +57,34 @@ typedef struct s_token
 	struct s_token	*next;
 }t_token;
 
-int		init_minishell(char **envp);
-int		process_quotes(char *input);
-int		clean_input(char **input);
-int		is_exit(char *input);
-int		expansion(t_token *first_token);
-void	add_token(t_token **first, t_token *new);
-void	print_list(t_token *root);
-int		is_expansible(char *str);
-char	*get_token_without_dolar(t_token *token);
-t_token	*lexical_analysis(char *input);
-t_token	*create_token(char *input, int start, int end, int type);
-t_token	*get_last_token(t_token *first);
-t_token	*create_tokens(char *input);
-t_token	*create_token(char *input, int beginning, int end, int type);
-t_token	*create_space_token(char *input, int *i);
-t_token	*create_pipe_token(char *input, int *i);
-t_token	*create_quote_token(char *input, int *i, int type, int quote_char);
-t_token	*create_redirec_tok(char *input, int *i, int type, int quote_char);
-t_token	*create_string_token(char *input, int *i);
+typedef struct s_process
+{
+	char				*cmd;
+	char				**args;
+	struct s_process	*next;
+	struct s_process	*prev;
+}t_process;
+
+int			init_minishell(char **envp);
+int			process_quotes(char *input);
+int			clean_input(char **input);
+int			is_exit(char *input);
+int			expansion(t_token *first_token);
+void		add_token(t_token **first, t_token *new);
+void		print_list(t_token *root);
+int			is_expansible(char *str);
+char		*get_token_without_dolar(t_token *token);
+t_token		*lexical_analysis(char *input);
+t_token		*create_token(char *input, int start, int end, int type);
+t_token		*get_last_token(t_token *first);
+t_token		*create_tokens(char *input);
+t_token		*create_token(char *input, int beginning, int end, int type);
+t_token		*create_space_token(char *input, int *i);
+t_token		*create_pipe_token(char *input, int *i);
+t_token		*create_quote_token(char *input, int *i, int type, int quote_char);
+t_token		*create_redirec_tok(char *input, int *i, int type, int quote_char);
+t_token		*create_string_token(char *input, int *i);
+t_process	*process_creation(t_token *first_token);
+t_process	*create_process(t_token *token);
 
 #endif
