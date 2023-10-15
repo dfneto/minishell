@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/15 15:49:33 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:01:29 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	get_word_start(char *str)
 	i = 0;
 	if (str[i] == '\"')
 		i++;
-	while (str[i] != '$')
+	while (str[i] && str[i] != '$')
 		i++;
-	while (str[i] == '$')
+	while (str[i] && str[i] == '$')
 		i++;
 	return (i);
 }
