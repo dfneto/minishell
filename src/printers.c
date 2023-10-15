@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/13 13:43:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/15 12:38:53 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ void	print_type(int type)
 		printf("<\n");
 	else if (type == HERE_DOC_TYPE)
 		printf("<<\n");
-	else
+	else if (type == PIPE_TYPE)
 		printf("|\n");
+	else
+		printf("nothing to be printed\n");
 }
 
 void	print_list(t_token *root)

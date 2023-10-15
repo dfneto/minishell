@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/14 19:11:39 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:37:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_minishell(char **envp)
 			break ;
 		process_quotes(input);
 		first_token = lexical_analysis(input);
-		expansion(&first_token);
+		expansion(first_token);
 		//first_process = processos_creation(first_token);
 		//execute_comand(first_process);
 		print_list(first_token);
