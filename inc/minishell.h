@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/15 17:49:37 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 00:27:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,17 @@
 # define HERE_DOC_TYPE 7
 # define PIPE_TYPE 8
 
+/* TODO: acho que posso usar uma estrutura destas para tipo:
+* typedef enum s_tokens
+{
+	PIPE = 1,
+	GREAT,
+	GREAT_GREAT,
+	LESS,
+	LESS_LESS,
+}	t_tokens;
+*/
+
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	
 * 			4 >		5 >>	6 <		7 <<	
@@ -73,6 +84,7 @@ int			is_exit(char *input);
 int			expansion(t_token *first_token);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
+void		expand(t_token *token);
 int			is_expansible(char *str);
 char		*get_token_without_dolar(t_token *token);
 t_token		*lexical_analysis(char *input);
