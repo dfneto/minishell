@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexical_analysis_create_tokens_utils_token.        :+:      :+:    :+:   */
+/*   lexical_analysis_create_tokens_utils.c             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/15 16:46:21 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:48:17 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_token	*create_token(char *input, int start, int end, int type)
 	if (!tok)
 		return (NULL);
 	tok->str = NULL;
-	if (type == DOUB_QUOTE_TYPE | type == SING_QUOTE_TYPE | type == STRING_TYPE)
+	if (type == DOUBLE_QUOTE | type == SINGLE_QUOTE | type == STRING)
 		tok->str = ft_substr(input, start, end - start + 1);
 	tok->type = type;
 	tok->next = NULL;

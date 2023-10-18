@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 19:03:10 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:43:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	*get_pre_dolar_text(t_token *token, int *dolar_position, int i)
 	return (ft_substr(token->str, i, *dolar_position - i));
 }
 
-//TODO: tratar quand não existir a variável com $, ex: $wakawaka
 void	expand_token(t_token *token)
 {
 	int		i;
@@ -68,8 +67,8 @@ int	expansion(t_token *first_token)
 {
 	while (first_token)
 	{
-		if (first_token->type == DOUB_QUOTE_TYPE
-			|| first_token->type == STRING_TYPE)
+		if (first_token->type == DOUBLE_QUOTE
+			|| first_token->type == STRING)
 			check_and_expand(first_token);
 		first_token = first_token->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/13 13:43:05 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:51:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ t_token	*lexical_analysis(char *input)
 }
 
 /*
-* Create a token of type DOUB_QUOTE_TYPE or SING_QUOTE_TYPE
+* Create a token of type DOUBLE_QUOTE or SINGLE_QUOTE
 * and add it to the end of token list (first_token)
 */
 void	create_quote_tok_add_back(t_token **first_token, char *input, int *i)
 {
 	if (input[*i] == DOUB_QUOTE_CHAR)
 		add_token(first_token,
-			create_quote_token(input, i, DOUB_QUOTE_TYPE, DOUB_QUOTE_CHAR));
+			create_quote_token(input, i, DOUBLE_QUOTE, DOUB_QUOTE_CHAR));
 	else
 		add_token(first_token,
-			create_quote_token(input, i, SING_QUOTE_TYPE, SING_QUOTE_CHAR));
+			create_quote_token(input, i, SINGLE_QUOTE, SING_QUOTE_CHAR));
 }
 
 /*
 * Other can be space or pipe, in this way, it
-* creates a token of type SPACE_TYPE or PIPE_TYPE
+* creates a token of type SPACE or PIPE
 * and add it to the end of token list (first_token)
 */
 void	create_other_tok_add_back(t_token **first_token, char *input, int *i)
@@ -53,15 +53,15 @@ void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
 {
 	if (input[*i] == GREATER_CHAR && input[*i + 1] == GREATER_CHAR)
 		add_token(root,
-			create_redirec_tok(input, i, APPEND_TYPE, GREATER_CHAR));
+			create_redirec_tok(input, i, APPEND, GREATER_CHAR));
 	else if (input[*i] == GREATER_CHAR)
 		add_token(root,
-			create_redirec_tok(input, i, OUTPUT_REDIREC_TYPE, GREATER_CHAR));
+			create_redirec_tok(input, i, OUTPUT_REDIRECTION, GREATER_CHAR));
 	else if (input[*i] == LESS_CHAR && input[*i + 1] == LESS_CHAR)
-		add_token(root, create_redirec_tok(input, i, HERE_DOC_TYPE, LESS_CHAR));
+		add_token(root, create_redirec_tok(input, i, HERE_DOC, LESS_CHAR));
 	else
 		add_token(root,
-			create_redirec_tok(input, i, INPUT_REDIRECTION_TYPE, LESS_CHAR));
+			create_redirec_tok(input, i, INPUT_REDIRECTION, LESS_CHAR));
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/18 18:42:16 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:51:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,37 @@
 # define LESS_CHAR 60
 # define PIPE_CHAR 124
 
-# define DOUB_QUOTE_TYPE 0
-# define SING_QUOTE_TYPE 1
-# define STRING_TYPE 2
-# define SPACE_TYPE 3
-# define OUTPUT_REDIREC_TYPE 4 // >
-# define APPEND_TYPE 5 // >>
-# define INPUT_REDIRECTION_TYPE 6
-# define HERE_DOC_TYPE 7
-# define PIPE_TYPE 8
+// # define DOUB_QUOTE_TYPE 0
+// # define SING_QUOTE_TYPE 1
+// # define STRING_TYPE 2
+// # define SPACE_TYPE 3
+// # define OUTPUT_REDIREC_TYPE 4 // >
+// # define APPEND_TYPE 5 // >>
+// # define INPUT_REDIRECTION_TYPE 6
+// # define HERE_DOC_TYPE 7
 
-/* TODO: acho que posso usar uma estrutura destas para tipo:
-* typedef enum s_tokens
+/* TODO: acho que posso usar uma estrutura destas para tipo:*/
+typedef enum token_type
 {
-	PIPE = 1,
-	GREAT,
-	GREAT_GREAT,
-	LESS,
-	LESS_LESS,
-}	t_tokens;
-*/
+	DOUBLE_QUOTE = 0,
+	SINGLE_QUOTE = 1,
+	STRING = 2,
+	SPACE = 3,
+	OUTPUT_REDIRECTION = 4,
+	APPEND = 5,
+	INPUT_REDIRECTION = 6,
+	HERE_DOC = 7,
+	PIPE = 8
+}	t_type;
+
+// typedef enum char
+// {
+// 	,
+// 	GREAT,
+// 	GREAT_GREAT,
+// 	LESS,
+// 	LESS_LESS,
+// }	t_char;
 
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	
@@ -78,7 +89,7 @@ typedef struct s_process
 }t_process;
 
 int			init_minishell(char **envp);
-int			process_quotes(char *input);
+int			check_open_quotes(char *input);
 int			clean_input(char **input);
 int			is_exit(char *input);
 int			expansion(t_token *first_token);

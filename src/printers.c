@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/15 12:38:53 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:49:04 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	print_type(int type)
 {
-	if (type == SPACE_TYPE)
+	if (type == SPACE)
 		printf("spc\n");
-	else if (type == OUTPUT_REDIREC_TYPE)
+	else if (type == OUTPUT_REDIRECTION)
 		printf(">\n");
-	else if (type == APPEND_TYPE)
+	else if (type == APPEND)
 		printf(">>\n");
-	else if (type == INPUT_REDIRECTION_TYPE)
+	else if (type == INPUT_REDIRECTION)
 		printf("<\n");
-	else if (type == HERE_DOC_TYPE)
+	else if (type == HERE_DOC)
 		printf("<<\n");
-	else if (type == PIPE_TYPE)
+	else if (type == PIPE)
 		printf("|\n");
 	else
 		printf("nothing to be printed\n");

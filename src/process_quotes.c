@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_quotes.c                                     :+:      :+:    :+:   */
+/*   process_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:46 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/12 17:50:11 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 21:27:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exit_error(char *error_msg)
 	exit(1);
 }
 
-int	is_char_open(char *input, int *i, char c)
+int	is_quote_open(char *input, int *i, char c)
 {
 	int	open;
 
@@ -62,14 +62,14 @@ int	is_exit(char *input)
 * check_open_quotes phase
 */
 //TODO: if the last char is a / it should exit with error
-int	process_quotes(char *input)
+int	check_open_quotes(char *input)
 {
 	int	i;
 
 	i = 0;
 	while (input[i])
 	{
-		if (is_char_open(input, &i, 34) || is_char_open(input, &i, 39))
+		if (is_quote_open(input, &i, 34) || is_quote_open(input, &i, 39))
 			exit_error(QUOTE_OPENED);
 		i++;
 	}
