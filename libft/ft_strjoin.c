@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 14:31:14 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/18 18:32:18 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 20:48:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 			i++;
 		}
 		i = 0;
-		while (s2[i])
+		while (s2 && s2[i])
 		{
 			r[i + s1_len] = s2[i];
 			i++;
