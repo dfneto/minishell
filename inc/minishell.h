@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/18 00:27:14 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:42:16 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,12 @@ int			process_quotes(char *input);
 int			clean_input(char **input);
 int			is_exit(char *input);
 int			expansion(t_token *first_token);
+int			is_expansible(char *str);
+int			get_dolar_position(char *str, int i);
+int			is_expansible(char *str);
+int			is_alnum_or_slash(char c);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
-void		expand(t_token *token);
-int			is_expansible(char *str);
 char		*get_token_without_dolar(t_token *token);
 t_token		*lexical_analysis(char *input);
 t_token		*create_token(char *input, int start, int end, int type);
