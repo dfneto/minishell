@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/17 23:21:16 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:13:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int	init_minishell(char **envp)
 		print_list(first_token);
 		clean_input(&input);
 	}
-	rl_clear_history();
+	clear_history();
 	return (0);
 }
