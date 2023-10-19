@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:49:04 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:11:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_list(t_token *root)
 	while (root)
 	{
 		if (root->str)
-			printf("%s\n", root->str);
+			printf("<%s>\n", root->str);
 		else
 			print_type(root->type);
 		root = root->next;

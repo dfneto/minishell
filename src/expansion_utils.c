@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 18:55:45 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:48:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ int	is_expansible(char *str)
 
 	i = get_dolar_position(str, 0) + 1;
 	if (is_alnum_or_slash(str[i]))
+		return (1);
+	return (0);
+}
+
+int	is_dollar_question_mark(char *str)
+{
+	if (str[0] == '$' && str[1] == '?')
 		return (1);
 	return (0);
 }

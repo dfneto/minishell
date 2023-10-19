@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:51:33 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:38:55 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
 			create_redirec_tok(input, i, INPUT_REDIRECTION, LESS_CHAR));
 }
 
-/*
-* type: 	0 " "	1 ' '	2 str	3 spc	4 >		
-* 5 >>	6 <		7 <<	8 | //TODO: implementar $ e $?	
-* str: not null when type is 0, 1 or 2
-*/
 t_token	*create_tokens(char *input)
 {
 	int		i;

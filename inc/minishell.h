@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/18 21:51:36 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:49:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@
 # define GREATER_CHAR 62
 # define LESS_CHAR 60
 # define PIPE_CHAR 124
+// typedef enum char //usar isso ou os defines?
+// {
+// 	,
+// 	GREAT,
+// 	GREAT_GREAT,
+// 	LESS,
+// 	LESS_LESS,
+// }	t_char;
 
 // # define DOUB_QUOTE_TYPE 0
 // # define SING_QUOTE_TYPE 1
@@ -44,7 +52,6 @@
 // # define INPUT_REDIRECTION_TYPE 6
 // # define HERE_DOC_TYPE 7
 
-/* TODO: acho que posso usar uma estrutura destas para tipo:*/
 typedef enum token_type
 {
 	DOUBLE_QUOTE = 0,
@@ -58,19 +65,10 @@ typedef enum token_type
 	PIPE = 8
 }	t_type;
 
-// typedef enum char
-// {
-// 	,
-// 	GREAT,
-// 	GREAT_GREAT,
-// 	LESS,
-// 	LESS_LESS,
-// }	t_char;
-
 /*
 * type: 	0 " "	1 ' '	2 str	3 spc	
 * 			4 >		5 >>	6 <		7 <<	
-* 			8 | //TODO: implementar $ e $?	
+* 			8 |	
 * str: not null when type is 0, 1 or 2
 */
 typedef struct s_token
@@ -97,6 +95,7 @@ int			is_expansible(char *str);
 int			get_dolar_position(char *str, int i);
 int			is_expansible(char *str);
 int			is_alnum_or_slash(char c);
+int			is_dollar_question_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
 char		*get_token_without_dolar(t_token *token);

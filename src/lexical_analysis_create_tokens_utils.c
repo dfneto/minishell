@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:48:17 by davifern         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:38:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 * because I was allocating in memory a space for a address and 
 * not for a token I like to think in the right side as allocating 
 * space in memory of sizeof the type
+* str: not null when type is 0, 1 or 2
 */
 t_token	*create_token(char *input, int start, int end, int type)
 {
