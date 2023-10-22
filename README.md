@@ -1,39 +1,9 @@
 # minishell
 TODO:
-
-[ ]  Ler redirections e executing commands e  os demais links para auxiliar meu entendiment
-[ ] Eliminar os espaços depois de expandir, mas não sei a ordem do todo (expandir, redirecciones, remover os espacios,  pipes, construir lista de comandos e executar)
-	Analisar: 
-		echo hola > b adios
-		echo hola > c adios > c2 wakawaka
-[ ] Implementar o que a Júlia falou de: “ls -la” ser dois tokens quando $a não estiver em “”
-[ ] Tenho que abordar $$ ou echo $$?
-[ ] Creio que tenho que fazer de $? um token
-
-[ ]  Ver o código do Lucas, assistir os vídeos do CodeVault e ver o pipex
-[ ] Em que momento vou tirar os espaços e juntar os tokens, ex: l"s" vira ls?
-
-[ ] Remover quotes
+[ ] parei na página 24 do manual
+[ ] terminar a leitura do manual
+[ ] Ver o código do Lucas, assistir os vídeos do CodeVault e ver o pipex
 [ ] Compilar o readline no makefile para evitar de ter que instalar em outro computador e poder remover do sgoinfree
-
-
-
-[x]  no caso: " $USER abc $PWD d", tenho que expandir somente ou criar tokens e adicionar a lista de tokens? apenas expandir segundo Marc
-[x]  fazer a expansão
-[x]  bash-3.2$ echo $$$$$USER
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
