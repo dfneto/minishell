@@ -1,9 +1,13 @@
 # minishell
 TODO:
-[ ] parei na página 24 do manual
+
+
+[ ] passar as notas do chat para o notion e os highlights do bash para o notion
 [ ] terminar a leitura do manual
 [ ] Ver o código do Lucas, assistir os vídeos do CodeVault e ver o pipex
 [ ] Compilar o readline no makefile para evitar de ter que instalar em outro computador e poder remover do sgoinfree
+[X] parei na página 24 do manual
+[X]NAO TA CLARO PRA MIM REDIRECTION. Ver: videos sobre redirection, codevalue e pipex
 
 
 
