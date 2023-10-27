@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include <libft.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void	clean_process(t_process *process)
 {
@@ -35,15 +36,40 @@ void	clean_process(t_process *process)
 t_process	*create_process(char *input)
 {
 	t_process	*tmp;
+	t_process	*head;
+	t_process	*tail;
+	char		**process_str;
+	int			i;
 
-	tmp = (t_process *)malloc(sizeof(t_process));
-	if (tmp == NULL)
-		return (NULL);
-	tmp->cmd = ft_split(input, ' ');
-	if (tmp->cmd == NULL)
+	process_str = ft_split(input, '|');
+	if (process_str == NULL)
+		exit (1);
+	i = 0;
+	head = NULL;
+	while (process_str[i])
 	{
-		free(tmp);
-		return (NULL);
+		printf("CMD = %s\n", process_str[i]);
+		tmp = (t_process *)malloc(sizeof(t_process));
+		if (tmp == NULL)
+			exit (1);
+		tmp->cmd = ft_split(process_str[i], ' ');
+		if (tmp->cmd == NULL)
+		{
+			free(tmp);
+			exit (1);
+		}
+		tmp->next = NULL;
+		if (!head)
+		{
+			head = tmp;
+			tail = tmp;
+		}
+		else
+		{
+			tail->next = tmp;
+			tail = tmp;
+		}
+		i++;
 	}
-	return (tmp);
+	return (head);
 }

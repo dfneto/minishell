@@ -112,31 +112,37 @@ void	execute_cmd(t_process *current_process, char ***envp)
 	int	ret;
 	int	is_built;
 
-	is_built = is_builtin(current_process->cmd[0]);
-	ret = 0;
-	if (is_built < 0)
+	while (current_process)
 	{
-		ret = is_executable(current_process->cmd, *envp);
+		is_built = is_builtin(current_process->cmd[0]);
+		ret = 0;
+		if (is_built < 0)
+		{
+			ret = is_executable(current_process->cmd, *envp);
+		}
+		else
+		{
+			printf("Is built in!!\n");
+			if (is_built == 0)
+				ft_echo(current_process->cmd, *envp);
+			else if (is_built == 1)
+				ft_pwd();
+			else if (is_built == 2)
+				ft_exit();
+			else if (is_built == 3)
+				ft_env(*envp);
+			else if (is_built == 4)
+				ft_cd(current_process->cmd);
+			else if (is_built == 5)
+				ft_export(current_process->cmd, envp);
+		}
+		if (ret)
+		{
+			printf("Brazilian Shell: %s: command not found\n",
+				current_process->cmd[0]);
+		}
+
+		current_process = current_process->next;
 	}
-	else
-	{
-		printf("Is built in!!\n");
-		if (is_built == 0)
-			ft_echo(current_process->cmd, *envp);
-		else if (is_built == 1)
-			ft_pwd();
-		else if (is_built == 2)
-			ft_exit();
-		else if (is_built == 3)
-			ft_env(*envp);
-		else if (is_built == 4)
-			ft_cd(current_process->cmd);
-		else if (is_built == 5)
-		 	ft_export(current_process->cmd, envp);
-	}
-	if (ret)
-	{
-		printf("Brazilian Shell: %s: command not found\n",
-			current_process->cmd[0]);
-	}
+
 }
