@@ -48,7 +48,7 @@ t_process	*create_process(char *input)
 	head = NULL;
 	while (process_str[i])
 	{
-		printf("CMD = %s\n", process_str[i]);
+	//	printf("CMD = %s\n", process_str[i]);
 		tmp = (t_process *)malloc(sizeof(t_process));
 		if (tmp == NULL)
 			exit (1);

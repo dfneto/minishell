@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # define PROGRAM_NAME "Brazilian Shell ~~> "
+# define CHILD 0
 
 typedef struct s_env
 {

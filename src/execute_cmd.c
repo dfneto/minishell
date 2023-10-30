@@ -73,7 +73,7 @@ char	*get_path(char **cmd)
 			ft_strlcpy(abs_path, paths[i], ft_strlen(paths[i]) + 1);
 			ft_strlcat(abs_path, "/", PATH_MAX);
 			ft_strlcat(abs_path, cmd[0], PATH_MAX);
-			printf("%s\n", abs_path);
+//			printf("%s\n", abs_path);
 			if (!access(abs_path, X_OK))
 			{
 				clean_array(paths);
@@ -89,60 +89,101 @@ char	*get_path(char **cmd)
 
 int	is_executable(char **cmd, char **envp)
 {
-	int		ret;
 	char	*path;
 
 	path = get_path(cmd);
-	printf("Get_path = %s\n", path);
+//	printf("Get_path = %s\n", path);
 	if (path == NULL)
 		return (127);
-	ret = fork();
-	if (ret == 0)
-		execve(path, cmd, envp);
-	else
-	{
-		free(path);
-		wait(&ret);
-	}
-	return (ret);
+	execve(path, cmd, envp);
+	exit(EXIT_FAILURE);
 }
 
 void	execute_cmd(t_process *current_process, char ***envp)
 {
 	int	ret;
-	int	is_built;
+	int current_pipe[2];
+	int previous_pipe[2];
+	int fork_id;
+	int	has_prev;
+	int is_built;
+	int pipe_value;
 
+	ret = 0;
+	has_prev = 0;
 	while (current_process)
 	{
-		is_built = is_builtin(current_process->cmd[0]);
-		ret = 0;
-		if (is_built < 0)
+		if (current_process->next)
 		{
-			ret = is_executable(current_process->cmd, *envp);
+			pipe_value = pipe(current_pipe);
+			if (pipe_value == -1)
+				exit(EXIT_FAILURE);
+		}
+		fork_id = fork();
+		if (fork_id < 0)
+			exit(EXIT_FAILURE);
+		if (fork_id == CHILD)
+		{
+			if (has_prev)
+			{
+				dup2(previous_pipe[0], 0);
+				close(previous_pipe[0]);
+				close(previous_pipe[1]);
+			}
+			if (current_process->next)
+			{
+				close(current_pipe[0]);
+				dup2(current_pipe[1], 1);
+				close(current_pipe[1]);
+			}
+			ret = 0;
+			is_built = is_builtin(current_process->cmd[0]);
+			if (is_built < 0)
+			{
+				ret = is_executable(current_process->cmd, *envp);
+			}
+			else
+			{
+				printf("Is built in!!\n");
+				if (is_built == 0)
+					ft_echo(current_process->cmd, *envp);
+				else if (is_built == 1)
+					ft_pwd();
+				else if (is_built == 2)
+					ft_exit();
+				else if (is_built == 3)
+					ft_env(*envp);
+				else if (is_built == 4)
+					ft_cd(current_process->cmd);
+				else if (is_built == 5)
+					ft_export(current_process->cmd, envp);
+			}
+			if (ret)
+			{
+				printf("Brazilian Shell: %s: command not found\n",
+					current_process->cmd[0]);
+			}
 		}
 		else
 		{
-			printf("Is built in!!\n");
-			if (is_built == 0)
-				ft_echo(current_process->cmd, *envp);
-			else if (is_built == 1)
-				ft_pwd();
-			else if (is_built == 2)
-				ft_exit();
-			else if (is_built == 3)
-				ft_env(*envp);
-			else if (is_built == 4)
-				ft_cd(current_process->cmd);
-			else if (is_built == 5)
-				ft_export(current_process->cmd, envp);
+			if (has_prev)
+			{
+				close(previous_pipe[0]);
+				close(previous_pipe[1]);
+			}
+			wait(&ret);
+			if (current_process->next)
+			{
+				previous_pipe[0] = current_pipe[0];
+				previous_pipe[1] = current_pipe[1];
+				has_prev = 1;
+			}
 		}
-		if (ret)
-		{
-			printf("Brazilian Shell: %s: command not found\n",
-				current_process->cmd[0]);
-		}
-
 		current_process = current_process->next;
 	}
-
+	if (has_prev)
+	{
+		close(previous_pipe[0]);
+		close(previous_pipe[1]);
+	}
 }
