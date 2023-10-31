@@ -81,9 +81,9 @@ char	*get_path(char **cmd)
 			}
 			i++;
 		}
+		clean_array(paths);
+		free(abs_path);
 	}
-	clean_array(paths);
-	free(abs_path);
 	return (NULL);
 }
 
@@ -144,7 +144,6 @@ void	execute_cmd(t_process *current_process, char ***envp)
 			}
 			else
 			{
-				printf("Is built in!!\n");
 				if (is_built == 0)
 					ft_echo(current_process->cmd, *envp);
 				else if (is_built == 1)
@@ -163,6 +162,7 @@ void	execute_cmd(t_process *current_process, char ***envp)
 				printf("Brazilian Shell: %s: command not found\n",
 					current_process->cmd[0]);
 			}
+			exit (ret);
 		}
 		else
 		{
@@ -174,9 +174,9 @@ void	execute_cmd(t_process *current_process, char ***envp)
 			wait(&ret);
 			if (current_process->next)
 			{
+				has_prev = 1;
 				previous_pipe[0] = current_pipe[0];
 				previous_pipe[1] = current_pipe[1];
-				has_prev = 1;
 			}
 		}
 		current_process = current_process->next;
