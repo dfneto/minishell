@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/19 22:49:26 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/04 18:36:15 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_token
 typedef struct s_process
 {
 	char				*cmd;
-	char				**args;
+	char				**args; //relembrar como funciona **, acho que estou confundindo com o first de lista
 	struct s_process	*next;
 	struct s_process	*prev;
 }t_process;
