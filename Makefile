@@ -13,7 +13,7 @@ INC_DIR = inc
 
 # Source files
 SRC = main.c init_signals.c \
-	init_minishell.c execute_cmd.c \
+	init_minishell.c execute_cmd_modified.c \
 	echo.c pwd.c exit.c env.c \
 	process_utils.c cd.c export.c\
 	env_utils.c ft_perror.c export_utils.c
@@ -25,14 +25,14 @@ DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ireadline -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INC_DIR) -Ireadline -Ilibft -g -O3 -c $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
 all: lib $(NAME)
 
 $(NAME): $(lib) $(OBJ)
-	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
+	$(CC) $(OBJ) -L./libft -lft -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 
 clean:
