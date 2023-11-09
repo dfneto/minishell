@@ -23,12 +23,14 @@ void	clean_env(char ***env)
 	*env = NULL;
 }
 
-char	*expand_env(char *name, char **env)
+char	*expand_env(char *name, char **env, unsigned char last_exit)
 {
 	int	i;
 
 	i = 0;
 	name++;
+	if (name[0] == '?')
+		return (ft_itoa(last_exit));
 	while (env[i] != NULL)
 	{
 		if (!ft_strncmp(name, env[i], ft_strlen(name))

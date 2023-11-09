@@ -90,7 +90,6 @@ int	ft_export(char **str, char ***env)
 
 	ret = 0;
 	str++;
-	printf("str = %s\n", *str);
 	if (*str == NULL)
 	{
 		print_ordered(*env);

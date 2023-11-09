@@ -32,17 +32,17 @@ typedef struct s_process
 
 void    init_signals(void);
 void    init_minishell(char ***envp);
-void    execute_cmd(t_process *process, char ***envp);
+int    execute_cmd(t_process *process, char ***envp, unsigned char last_exit);
 
 // Process utils
 t_process   *create_process(char *input);
-void    clean_process(t_process *process);
+void    clean_process(t_process **process);
 
 // Env functions
 char   **create_env(char **envp);
 t_env   *create_node(char *str);
 int	add_env(char *str, char ***env);
-char    *expand_env(char *name, char **env);
+char    *expand_env(char *name, char **env, unsigned char last_exit);
 void    clean_env(char ***env);
 char   **create_ordered_env(char **env);
 
@@ -50,7 +50,7 @@ void	ft_perror(int err, char *msg);
 
 
 // Built-in functions
-int ft_echo(char **argv, char **env);
+int ft_echo(char **argv, char **env, unsigned char last_exit);
 int ft_pwd(void);
 int ft_exit(void);
 int	ft_env(char **env);

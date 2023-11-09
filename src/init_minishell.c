@@ -22,8 +22,22 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/* void	print_process(t_process *process)
+{
+	if (!process)
+	{
+		printf("Empty process!\n");
+	}
+	while (process)
+	{
+		printf("print -> %s\n", process->cmd[0]);
+		process = process->next;
+	}
+} */
+
 void	init_minishell(char ***envp)
 {
+	static unsigned char	last_exit;
 	char		*input;
 	t_process	*process;
 
@@ -37,8 +51,10 @@ void	init_minishell(char ***envp)
 		{
 			add_history(input);
 			process = create_process(input);
-			execute_cmd(process, envp);
-			clean_process(process);
+			last_exit = execute_cmd(process, envp, last_exit);
+			clean_process(&process);
+			//print_process(process);
+
 		}
 		free(input);
 		input = NULL;

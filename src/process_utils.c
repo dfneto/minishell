@@ -15,22 +15,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	clean_process(t_process *process)
+void	clean_process(t_process **process)
 {
 	int	i;
 
 	i = 0;
-	if (process->cmd)
+	if ((*process)->cmd)
 	{
-		while (process->cmd[i])
+		while ((*process)->cmd[i])
 		{
-			free(process->cmd[i]);
+			free((*process)->cmd[i]);
 			i++;
 		}
-		free(process->cmd);
+		free((*process)->cmd);
 	}
-	free(process);
-	process = NULL;
+	free(*process);
+	*process = NULL;
 }
 
 t_process	*create_process(char *input)
@@ -48,7 +48,6 @@ t_process	*create_process(char *input)
 	head = NULL;
 	while (process_str[i])
 	{
-	//	printf("CMD = %s\n", process_str[i]);
 		tmp = (t_process *)malloc(sizeof(t_process));
 		if (tmp == NULL)
 			exit (1);
@@ -71,5 +70,9 @@ t_process	*create_process(char *input)
 		}
 		i++;
 	}
+	tmp = NULL;
+	tail = NULL;
+	free(process_str);
+	process_str = NULL;
 	return (head);
 }
