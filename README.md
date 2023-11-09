@@ -1,5 +1,9 @@
 # minishell
 
 ## To do
-Check leaks processes/commands   
-Do the f###ing pipes  
+Refactor exec functions
+Create builtin prototype
+Create builtin struct
+Create builtin call functon
+
+Create minishell struct (?)
