@@ -14,16 +14,20 @@
 #include "minishell.h"
 #include <errno.h>
 #include <limits.h>
-#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
 /* void	print_process(t_process *process)
 {
+	static unsigned char	last_exit;
+	char					*input;
+	t_process				*process;
+
 	if (!process)
 	{
 		printf("Empty process!\n");
@@ -34,11 +38,10 @@
 		process = process->next;
 	}
 } */
-
 void	init_minishell(char ***envp)
 {
-	static unsigned char	last_exit;
 	char		*input;
+	static int	last_exit;
 	t_process	*process;
 
 	input = NULL;
@@ -53,8 +56,6 @@ void	init_minishell(char ***envp)
 			process = create_process(input);
 			last_exit = execute_cmd(process, envp, last_exit);
 			clean_process(&process);
-			//print_process(process);
-
 		}
 		free(input);
 		input = NULL;

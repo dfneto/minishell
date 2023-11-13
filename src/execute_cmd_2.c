@@ -97,15 +97,16 @@ int	is_executable(char **cmd, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-int	execute_cmd(t_process *current_process, char ***envp, unsigned char last_exit)
+int	execute_cmd(t_process *current_process, char ***envp,
+		unsigned char last_exit)
 {
 	int	ret;
-	int current_pipe[2];
-	int previous_pipe[2];
-	int fork_id;
+	int	current_pipe[2];
+	int	previous_pipe[2];
+	int	fork_id;
 	int	has_prev;
-	int is_built;
-	int pipe_value;
+	int	is_built;
+	int	pipe_value;
 
 	ret = 0;
 	has_prev = 0;
@@ -129,7 +130,7 @@ int	execute_cmd(t_process *current_process, char ***envp, unsigned char last_exi
 			else if (is_built == 3)
 				ft_env(*envp);
 			else if (is_built == 4)
-				ft_cd(current_process->cmd);
+				ret = ft_cd(current_process->cmd);
 			else if (is_built == 5)
 				ft_export(current_process->cmd, envp);
 		}
@@ -177,7 +178,7 @@ int	execute_cmd(t_process *current_process, char ***envp, unsigned char last_exi
 					printf("Brazilian Shell: %s: command not found\n",
 						current_process->cmd[0]);
 				}
-				exit (ret);
+				exit(ret);
 			}
 			else
 			{
@@ -187,6 +188,7 @@ int	execute_cmd(t_process *current_process, char ***envp, unsigned char last_exi
 					close(previous_pipe[1]);
 				}
 				wait(&ret);
+				ret = WEXITSTATUS(ret);
 				if (current_process->next)
 				{
 					has_prev = 1;
@@ -197,10 +199,5 @@ int	execute_cmd(t_process *current_process, char ***envp, unsigned char last_exi
 		}
 		current_process = current_process->next;
 	}
-	if (has_prev)
-	{
-		close(previous_pipe[0]);
-		close(previous_pipe[1]);
-	}
-	return (WEXITSTATUS(ret));
+	return (ret);
 }

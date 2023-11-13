@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <libft.h>
-#include <minishell.h>  
+#include <minishell.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	open_space_to_insert(char ***env, int j)
 {

@@ -41,7 +41,7 @@ static int	is_valid_env(char *str)
 	str++;
 	while (*str && *str != '=' && *str != '+')
 	{
-		if(!ft_isalnum(*str))
+		if (!ft_isalnum(*str))
 			return (0);
 		str++;
 	}
@@ -62,12 +62,9 @@ int	add_env(char *str, char ***env)
 	i = 0;
 	while ((*env)[i] != NULL)
 		i++;
-	new_env = (char **) malloc (sizeof(char *) * (i + 2));
+	new_env = (char **)malloc(sizeof(char *) * (i + 2));
 	if (new_env == NULL)
-	{
-		//error
 		return (1);
-	}
 	else
 	{
 		ft_memset(new_env, 0, sizeof(char *) * (i + 2));

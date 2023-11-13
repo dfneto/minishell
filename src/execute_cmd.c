@@ -73,7 +73,7 @@ char	*get_path(char **cmd)
 			ft_strlcpy(abs_path, paths[i], ft_strlen(paths[i]) + 1);
 			ft_strlcat(abs_path, "/", PATH_MAX);
 			ft_strlcat(abs_path, cmd[0], PATH_MAX);
-//			printf("%s\n", abs_path);
+			//			printf("%s\n", abs_path);
 			if (!access(abs_path, X_OK))
 			{
 				clean_array(paths);
@@ -92,7 +92,7 @@ int	is_executable(char **cmd, char **envp)
 	char	*path;
 
 	path = get_path(cmd);
-//	printf("Get_path = %s\n", path);
+	//	printf("Get_path = %s\n", path);
 	if (path == NULL)
 		return (127);
 	execve(path, cmd, envp);
@@ -102,12 +102,12 @@ int	is_executable(char **cmd, char **envp)
 void	execute_cmd(t_process *current_process, char ***envp)
 {
 	int	ret;
-	int current_pipe[2];
-	int previous_pipe[2];
-	int fork_id;
+	int	current_pipe[2];
+	int	previous_pipe[2];
+	int	fork_id;
 	int	has_prev;
-	int is_built;
-	int pipe_value;
+	int	is_built;
+	int	pipe_value;
 
 	ret = 0;
 	has_prev = 0;
@@ -162,7 +162,7 @@ void	execute_cmd(t_process *current_process, char ***envp)
 				printf("Brazilian Shell: %s: command not found\n",
 					current_process->cmd[0]);
 			}
-			exit (ret);
+			exit(ret);
 		}
 		else
 		{

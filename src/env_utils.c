@@ -44,8 +44,8 @@ char	*expand_env(char *name, char **env, unsigned char last_exit)
 
 char	**create_env(char **envp)
 {
-	char **env;
-	int i;
+	char	**env;
+	int		i;
 
 	i = 0;
 	while (envp[i] != NULL)

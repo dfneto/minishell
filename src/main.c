@@ -18,30 +18,30 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char	**env;
-//	char	*str;
-//	char	**or_env;
 
+	//	char	*str;
+	//	char	**or_env;
 	(void)argc;
 	(void)argv;
 	env = create_env(envp);
-/* 	while (*argv != NULL)
-	{
-		str = expand_env(*argv, env);
-		if (str != NULL)
+	/* 	while (*argv != NULL)
 		{
-			printf("env $%s expand to %s\n", *argv, str);
-			free(str);
-		}
-		argv++;
-	} */
-	//ft_export(null_char, &env);
-	//clean_env(&or_env);
-	//clean_env(&env);
+			str = expand_env(*argv, env);
+			if (str != NULL)
+			{
+				printf("env $%s expand to %s\n", *argv, str);
+				free(str);
+			}
+			argv++;
+		} */
+	// ft_export(null_char, &env);
+	// clean_env(&or_env);
+	// clean_env(&env);
 	/* 		char **my_split = ft_split(argv[1], ' ');
 		ft_export(my_split, &env); */
 	//	printf("\n\n~~~~~~~~~~~~~~~~~~~\n\n");
 	//	ft_env(env);
-	//init_signals();*/
+	// init_signals();*/
 	init_minishell(&env);
 	return (0);
 }
