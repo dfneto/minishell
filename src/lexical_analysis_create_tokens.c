@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:39:42 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:44:04 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:31:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*create_space_token(char *input, int *i)
 	(*i)++;
 	while (input[*i] && input[*i] == SPACE_CHAR)
 		(*i)++;
-	return (create_token(input, start, *i, SPACE));
+	return (create_token(input, start, *i, SPC));
 }
 
 t_token	*create_pipe_token(char *input, int *i)

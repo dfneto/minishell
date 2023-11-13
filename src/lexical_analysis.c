@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/19 22:38:55 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:07:31 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 * Ideally the lexical analysis does more stuffs than
-* allocate tokens, but in this brazilian shell version
+* allocate tokens, but in this shell
 * it just produces a list of tokens
 */
 t_token	*lexical_analysis(char *input)

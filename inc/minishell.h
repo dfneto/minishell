@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/04 18:36:15 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:31:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef enum token_type
 	DOUBLE_QUOTE = 0,
 	SINGLE_QUOTE = 1,
 	STRING = 2,
-	SPACE = 3,
+	SPC = 3,
 	OUTPUT_REDIRECTION = 4,
 	APPEND = 5,
 	INPUT_REDIRECTION = 6,
@@ -95,7 +95,7 @@ int			is_expansible(char *str);
 int			get_dolar_position(char *str, int i);
 int			is_expansible(char *str);
 int			is_alnum_or_slash(char c);
-int			is_dollar_question_mark(char *str);
+int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
 char		*get_token_without_dolar(t_token *token);

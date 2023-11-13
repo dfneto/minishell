@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:51:35 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:33:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_process	*process_creation(t_token *first_token)
 
 	first_process = NULL;
 	process = NULL;
+	(void)process;
 	while (first_token)
 	{
 		//se token for um comando

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/19 22:11:14 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:31:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_type(int type)
 {
-	if (type == SPACE)
+	if (type == SPC)
 		printf("spc\n");
 	else if (type == OUTPUT_REDIRECTION)
 		printf(">\n");
