@@ -23,8 +23,6 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 	word_to_expand = ft_substr(token->str,
 			dolar_position + 1, *i - dolar_position - 1);
 	word_expanded = ft_strdup(getenv(word_to_expand));
-	if (token->type == STRING)
-		remove_spaces(&word_expanded); 
 	return (word_expanded);
 }
 
@@ -34,7 +32,7 @@ char	*get_pre_dolar_text(t_token *token, int *dolar_position, int i)
 	return (ft_substr(token->str, i, *dolar_position - i));
 }
 
-void	expand_token(t_token *token)
+char	*get_expanded_token(t_token *token)
 {
 	int		i;
 	int		dolar_position;
@@ -54,8 +52,36 @@ void	expand_token(t_token *token)
 			joined = ft_strjoin(joined,
 					get_word_expanded(token, &i, dolar_position));
 	}
-	token->str = joined;
+	return (joined);
 }
+
+/*
+* Can expand one token into 1 or more tokens.
+*/
+void	expand_token_int_n_tokens(t_token *token)
+{
+	int		i;
+	t_token *next_token;
+
+	i = 0;
+	while (token->str[i])
+	{
+		//TODO: fazer o token->str ser a primeira string do token e apontar para a proxima string. Essa proxima vai ser transformada em um token
+	}
+
+	
+//	next_token = token->next;
+}
+
+void	expand(t_token *token)
+{
+	if (token->type == DOUBLE_QUOTE)
+		token->str = get_expanded_token(token);
+	else
+		expand_token_int_n_tokens(token);
+}
+
+
 
 //TODO: implementar
 char	*get_exit_status()
@@ -68,7 +94,7 @@ int	check_and_expand(t_token *token)
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status();
 	else if (is_expansible(token->str))
-		expand_token(token);
+		expand(token);
 	return (1);
 }
 

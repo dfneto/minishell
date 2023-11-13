@@ -52,7 +52,7 @@ int	is_dollarquestion_mark(char *str)
 	return (0);
 }
 
-void	remove_spaces(char *str)
+void	remove_spaces(char **str)
 {
 	//fazer um ft_strtrim para quitar los espacios de principio y del final. ex: _____hola_julia____ -> hola_julia
 	int	i;

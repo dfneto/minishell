@@ -1,15 +1,35 @@
 # minishell
-TODO:
+DOING
+➜  minishell git:(david_branch) ✗ export a="ls       -la"
+➜  minishell git:(david_branch) ✗ ./minishell 
 
-[ ] https://www.youtube.com/watch?v=5fnVr-zH-SE&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&index=14
+
+br.sh$ ls | $a
+token value:
+<ls>
+spc
+|
+spc
+<ls       -la> ➜ tenho que quebrar em 2 tokens
+
+
+
+br.sh$ ls | "$a"➜ quero o valor literal
+token value:
+<ls>
+spc
+|
+spc
+<"ls       -la">
+
+hola$a
+token value:
+<holals       -la> -> tem que ser: holals -la
+
+DONE:
+
+[X] https://www.youtube.com/watch?v=5fnVr-zH-SE&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&index=14
 [x] https://www.youtube.com/watch?v=8Q9CPWuRC6o&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&index=10
-[ ] terminar a leitura do manual (parei no Command Search and Execution e tenho umas perguntas)
-[ ] Ver o código do Lucas, assistir os vídeos do CodeVault e ver o pipex
-
-[ ] faça o join de duas strings sem repetir nehum caracter. Ex: aabbcc ddee -> abcde, aabbcc abc -> abc
-[ ] ficar treinando https://github.com/pasqualerossi/42-School-Exam-Rank-02/tree/main/Level%201 
-
-[ ] Compilar o readline no makefile para evitar de ter que instalar em outro computador e poder remover do sgoinfree
 [x] implementar o video https://www.youtube.com/watch?v=Mqb2dVRe0uo&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&index=6
 [x] passar as notas do chat para o notion e 
 [X] parei na página 24 do manual

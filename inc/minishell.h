@@ -99,6 +99,7 @@ int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
 char		*get_token_without_dolar(t_token *token);
+void		remove_spaces(char **str);
 t_token		*lexical_analysis(char *input);
 t_token		*create_token(char *input, int start, int end, int type);
 t_token		*get_last_token(t_token *first);
