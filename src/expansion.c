@@ -6,22 +6,26 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/19 22:51:42 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:43:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_word_expansion(t_token *token, int *i, int dolar_position)
+char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 {
 	char	*word_to_expand;
+	char	*word_expanded;
 
 	word_to_expand = NULL;
 	while (is_alnum_or_slash(token->str[*i]))
 		(*i)++;
 	word_to_expand = ft_substr(token->str,
 			dolar_position + 1, *i - dolar_position - 1);
-	return (getenv(word_to_expand));
+	word_expanded = ft_strdup(getenv(word_to_expand));
+	if (token->type == STRING)
+		remove_spaces(&word_expanded); 
+	return (word_expanded);
 }
 
 char	*get_pre_dolar_text(t_token *token, int *dolar_position, int i)
@@ -48,7 +52,7 @@ void	expand_token(t_token *token)
 		i = dolar_position + 1;
 		if (token->str[i])
 			joined = ft_strjoin(joined,
-					get_word_expansion(token, &i, dolar_position));
+					get_word_expanded(token, &i, dolar_position));
 	}
 	token->str = joined;
 }
@@ -61,10 +65,7 @@ char	*get_exit_status()
 
 int	check_and_expand(t_token *token)
 {
-	char	*str;
-
-	str = NULL;
-	if (is_dollar_question_mark(token->str))
+	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status();
 	else if (is_expansible(token->str))
 		expand_token(token);

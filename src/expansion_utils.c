@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/19 22:48:46 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:58:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,21 @@ int	is_expansible(char *str)
 	return (0);
 }
 
-int	is_dollar_question_mark(char *str)
+int	is_dollarquestion_mark(char *str)
 {
 	if (str[0] == '$' && str[1] == '?')
 		return (1);
 	return (0);
+}
+
+void	remove_spaces(char *str)
+{
+	//fazer um ft_strtrim para quitar los espacios de principio y del final. ex: _____hola_julia____ -> hola_julia
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+
+	}
 }
