@@ -15,15 +15,14 @@
 char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 {
 	char	*word_to_expand;
-	char	*word_expanded;
 
 	word_to_expand = NULL;
 	while (is_alnum_or_slash(token->str[*i]))
 		(*i)++;
 	word_to_expand = ft_substr(token->str,
 			dolar_position + 1, *i - dolar_position - 1);
-	word_expanded = ft_strdup(getenv(word_to_expand));
-	return (word_expanded);
+	printf("word to expand: %s\n", word_to_expand);
+	return (getenv(word_to_expand));
 }
 
 char	*get_pre_dolar_text(t_token *token, int *dolar_position, int i)
@@ -46,7 +45,9 @@ char	*get_expanded_token(t_token *token)
 	while (token->str[i])
 	{
 		pre_dolar = get_pre_dolar_text(token, &dolar_position, i);
-		joined = ft_strjoin(joined, pre_dolar);
+		joined = 
+		
+		ft_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;
 		if (token->str[i])
 			joined = ft_strjoin(joined,
@@ -58,19 +59,44 @@ char	*get_expanded_token(t_token *token)
 /*
 * Can expand one token into 1 or more tokens.
 */
+//TODO: primeiro expandir $a
+//TODO: depois expandir hola$a
+//TODO: testar hola$USER$USER, hola$a
 void	expand_token_int_n_tokens(t_token *token)
 {
 	int		i;
-	t_token *next_token;
+	int		start;
+	char 	*token_str;
 
 	i = 0;
-	while (token->str[i])
+	token->str++;
+	token_str = ft_strdup(getenv(token->str));
+	printf("token_str: %s\n", token_str);
+	/*while (token_str[i])
 	{
 		//TODO: fazer o token->str ser a primeira string do token e apontar para a proxima string. Essa proxima vai ser transformada em um token
+		if (token_str[i] == ' ')
+		{
+			token->str = ft_substr(token_str, start, i);
+			start = i;
+		}
+		i++;
+	}*/
+
+	while(token_str[i])
+	{
+		if (token_str[i] != ' ')
+		{
+			start = i;
+			while (token_str[i] && token_str[i] != ' ')
+				i++;
+			printf("start = %d, i = %d\n", start, i);
+			token->str = ft_substr(token_str, start, i - start);
+			printf("primeira palavra: %s\n", token->str);
+		}
+		i++;
 	}
 
-	
-//	next_token = token->next;
 }
 
 void	expand(t_token *token)

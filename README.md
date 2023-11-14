@@ -26,6 +26,10 @@ hola$a
 token value:
 <holals       -la> -> tem que ser: holals -la
 
+TESTAR:
+$a$a
+"$a$a"
+
 DONE:
 
 [X] https://www.youtube.com/watch?v=5fnVr-zH-SE&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&index=14
