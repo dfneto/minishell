@@ -15,10 +15,13 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_pwd(void)
+int	ft_pwd(char **argv, char ***env, unsigned char last_exit)
 {
 	char	*current_dir;
 
+	(void)argv;
+	(void)env;
+	(void)last_exit;
 	current_dir = (char *)malloc(sizeof(char) * PATH_MAX);
 	if (current_dir == NULL)
 		return (-1);

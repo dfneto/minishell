@@ -31,7 +31,7 @@ static int	is_n_flag(char const *str)
 	return (1);
 }
 
-int	ft_echo(char **argv, char **env, unsigned char last_exit)
+int	ft_echo(char **argv, char ***env, unsigned char last_exit)
 {
 	int		i;
 	int		new_line;
@@ -45,7 +45,7 @@ int	ft_echo(char **argv, char **env, unsigned char last_exit)
 	{
 		if (argv[i][0] == '$')
 		{
-			exp = expand_env(argv[i], env, last_exit);
+			exp = expand_env(argv[i], (*env), last_exit);
 			printf("%s", exp);
 			free(exp);
 		}

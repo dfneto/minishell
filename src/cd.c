@@ -13,6 +13,7 @@
 #include <libft.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <minishell.h>
 
 static int	count_args(char **argv)
 {
@@ -28,20 +29,24 @@ int	ft_chdir(char *str)
 {
 	if (chdir(str))
 	{
-		printf("cd: no such file or directory: %s\n", str);
+		print_error("Brazilian Shell: cd: ");
+		print_error(str);
+		print_error(": no such file or directory: \n");
 		return (1);
 	}
 	return (0);
 }
 
-int	ft_cd(char **argv)
+int	ft_cd(char **argv, char ***env, unsigned char last_exit)
 {
 	int	argc;
 
+	(void)env;
+	(void)last_exit;
 	argc = count_args(argv);
 	if (argc > 2)
 	{
-		printf("Brazilian Shell: cd: too many arguments\n");
+		print_error("Brazilian Shell: cd: too many arguments\n");
 		return (1);
 	}
 	if (argv[1])

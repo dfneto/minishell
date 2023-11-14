@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   execute_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 16:24:07 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:25:38 by lsulzbac         ###   ########.fr       */
+/*   Created: 2023/11/14 14:27:37 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/11/14 14:27:39 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
-#include <limits.h>
-#include <minishell.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "libft.h"
+#include "minishell.h"
 
-int	ft_env(char **argv, char ***env, unsigned char last_exit)
+int	execute_builtins(char **argv, char ***env, unsigned char last_exit, t_builtin functions[])
 {
-	(void)argv;
-	(void)last_exit;
-	while (**env)
+	int	i;
+
+	i = 0;
+	while (i < BUILTINS_NUM)
 	{
-		if (strrchr(**env, '='))
-			printf("%s\n", **env);
-		(*env)++;
+		if (!ft_strcmp(functions[i].name, argv[0]))
+			return (functions[i].function(argv, env, last_exit));
+		i++;
 	}
-	return (0);
+	return (-1);
 }

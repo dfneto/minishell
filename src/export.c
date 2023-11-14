@@ -81,24 +81,25 @@ int	add_env(char *str, char ***env)
 	return (0);
 }
 
-int	ft_export(char **str, char ***env)
+int	ft_export(char **argv, char ***env, unsigned char last_exit)
 {
 	int	ret;
 
+	(void)last_exit;
 	ret = 0;
-	str++;
-	if (*str == NULL)
+	argv++;
+	if (*argv == NULL)
 	{
 		print_ordered(*env);
 		return (ret);
 	}
-	while (*str)
+	while (*argv)
 	{
-		if (is_valid_env(*str))
-			add_env(*str, env);
+		if (is_valid_env(*argv))
+			add_env(*argv, env);
 		else
 			ret = 1;
-		str++;
+		argv++;
 	}
 	return (ret);
 }

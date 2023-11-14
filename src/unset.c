@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,19 +12,14 @@
 
 #include <libft.h>
 #include <limits.h>
-#include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_env(char **argv, char ***env, unsigned char last_exit)
+int	ft_unset(char **argv, char ***env, unsigned char last_exit)
 {
 	(void)argv;
+	(void)env;
 	(void)last_exit;
-	while (**env)
-	{
-		if (strrchr(**env, '='))
-			printf("%s\n", **env);
-		(*env)++;
-	}
+	printf("NOT IMPLEMENTED\n");
 	return (0);
 }
