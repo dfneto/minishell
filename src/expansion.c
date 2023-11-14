@@ -59,7 +59,8 @@ char	*get_expanded_token(t_token *token)
 /*
 * Can expand one token into 1 or more tokens.
 */
-//TODO: primeiro expandir $a
+//TODO: primeiro expandir $a=ls   -la
+//TODO: expandir $b=     ls    -l    -a    -F    /
 //TODO: depois expandir hola$a
 //TODO: testar hola$USER$USER, hola$a
 void	expand_token_int_n_tokens(t_token *token)
@@ -67,22 +68,14 @@ void	expand_token_int_n_tokens(t_token *token)
 	int		i;
 	int		start;
 	char 	*token_str;
+	t_token *aux = NULL;
+	t_token *temp_last = token->next;
+	t_token *new_token = NULL;
 
 	i = 0;
 	token->str++;
 	token_str = ft_strdup(getenv(token->str));
 	printf("token_str: %s\n", token_str);
-	/*while (token_str[i])
-	{
-		//TODO: fazer o token->str ser a primeira string do token e apontar para a proxima string. Essa proxima vai ser transformada em um token
-		if (token_str[i] == ' ')
-		{
-			token->str = ft_substr(token_str, start, i);
-			start = i;
-		}
-		i++;
-	}*/
-
 	while(token_str[i])
 	{
 		if (token_str[i] != ' ')
@@ -90,13 +83,21 @@ void	expand_token_int_n_tokens(t_token *token)
 			start = i;
 			while (token_str[i] && token_str[i] != ' ')
 				i++;
-			printf("start = %d, i = %d\n", start, i);
-			token->str = ft_substr(token_str, start, i - start);
-			printf("primeira palavra: %s\n", token->str);
+			if (!aux)
+			{
+				token->str = ft_substr(token_str, start, i - start);
+				aux = token;
+			}
+			else
+			{
+				new_token = create_token(token_str, start, i - 1, STRING);
+				new_token->next = temp_last;
+				aux->next = new_token;
+				aux = new_token;
+			}
 		}
 		i++;
 	}
-
 }
 
 void	expand(t_token *token)

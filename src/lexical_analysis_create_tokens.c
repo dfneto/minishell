@@ -61,7 +61,7 @@ t_token	*create_string_token(char *input, int *i)
 	int	start;
 
 	start = *i;
-	(*i)++;
+	(*i)++; //Acho que posso tirar essa linha
 	while (input[*i] && input[*i] != DOUB_QUOTE_CHAR
 		&& input[*i] != SING_QUOTE_CHAR
 		&& input[*i] != SPACE_CHAR && input[*i] != GREATER_CHAR

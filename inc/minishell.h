@@ -78,12 +78,13 @@ typedef struct s_token
 	struct s_token	*next;
 }t_token;
 
+//falta colocar infile outfile
 typedef struct s_process
 {
-	char				*cmd;
+	char				*cmd; //remover porque execuv recibe solamente un parametro
 	char				**args; //relembrar como funciona **, acho que estou confundindo com o first de lista
 	struct s_process	*next;
-	struct s_process	*prev;
+	struct s_process	*prev; 
 }t_process;
 
 int			init_minishell(char **envp);
