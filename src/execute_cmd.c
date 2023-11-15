@@ -92,17 +92,38 @@ int	is_executable(char **cmd, char **envp)
 
 	path = get_path(cmd);
 	if (path == NULL)
-		return (127);
+	{
+		print_error("Brazilian Shell: ");
+		print_error(cmd[0]);
+		print_error(": command not found\n");
+		exit (127);
+	}
 	execve(path, cmd, envp);
 	exit(EXIT_FAILURE);
+}
+
+void	child_pipes(int has_prev, t_process *has_next, int pipes[4])
+{
+	if (has_prev)
+	{
+		dup2(pipes[0], 0);
+		close(pipes[0]);
+		close(pipes[1]);
+	}
+	if (has_next)
+	{
+		close(pipes[2]);
+		dup2(pipes[3], 1);
+		close(pipes[3]);
+	}	
 }
 
 int	execute_cmd(t_process *current_process, char ***envp,
 		unsigned char last_exit, t_builtin functions[])
 {
 	int	ret;
-	int	current_pipe[2];
-	int	previous_pipe[2];
+	int	pipes[4];
+	//int	previous_pipe[2];
 	int	fork_id;
 	int	has_prev;
 	int	has_pipe;
@@ -116,7 +137,7 @@ int	execute_cmd(t_process *current_process, char ***envp,
 		if (current_process->next)
 		{
 			has_pipe = 1;
-			pipe_value = pipe(current_pipe);
+			pipe_value = pipe(pipes + 2);
 			if (pipe_value == -1)
 				exit(EXIT_FAILURE);
 		}
@@ -129,16 +150,7 @@ int	execute_cmd(t_process *current_process, char ***envp,
 				if (fork_id < 0)
 					exit(EXIT_FAILURE);
 				if (fork_id == CHILD)
-				{
-					ret = is_executable(current_process->cmd, *envp);
-					if (ret)
-					{
-						print_error("Brazilian Shell: ");
-						print_error(current_process->cmd[0]);
-						print_error(": command not found\n");
-					}
-					exit(ret);
-				}
+					is_executable(current_process->cmd, *envp);
 				else
 				{
 					wait(&ret);
@@ -153,45 +165,26 @@ int	execute_cmd(t_process *current_process, char ***envp,
 				exit(EXIT_FAILURE);
 			if (fork_id == CHILD)
 			{
-				if (has_prev)
-				{
-					dup2(previous_pipe[0], 0);
-					close(previous_pipe[0]);
-					close(previous_pipe[1]);
-				}
-				if (current_process->next)
-				{
-					close(current_pipe[0]);
-					dup2(current_pipe[1], 1);
-					close(current_pipe[1]);
-				}
+				child_pipes(has_prev, current_process->next, pipes);
 				ret = execute_builtins(current_process->cmd, envp, last_exit, functions);
 				if (ret == -1)
-				{
-					ret = is_executable(current_process->cmd, *envp);
-					if (ret)
-					{
-						print_error("Brazilian Shell: ");
-						print_error(current_process->cmd[0]);
-						print_error(": command not found\n");
-					}
-				}
+					is_executable(current_process->cmd, *envp);
 				exit(ret);
 			}
 			else
 			{
 				if (has_prev)
 				{
-					close(previous_pipe[0]);
-					close(previous_pipe[1]);
+					close(pipes[0]);
+					close(pipes[1]);
 				}
 				wait(&ret);
 				ret = WEXITSTATUS(ret);
 				if (current_process->next)
 				{
 					has_prev = 1;
-					previous_pipe[0] = current_pipe[0];
-					previous_pipe[1] = current_pipe[1];
+					pipes[0] = pipes[2];
+					pipes[1] = pipes[3];
 				}
 			}
 		}

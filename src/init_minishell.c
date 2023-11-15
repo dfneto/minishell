@@ -22,7 +22,6 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-
 /* void	print_process(t_process *process)
 {
 	static unsigned char	last_exit;
@@ -47,15 +46,6 @@ void	init_minishell(char ***envp)
 	t_builtin	functions[BUILTINS_NUM];
 
 	init_builtins(functions);
-/* 	int i = 0;
-	while (i < BUILTINS_NUM)
-	{
-		printf("Built-in function: %s\n", functions[i].name);
-		if (i == 4)
-			functions[i].function(NULL, NULL, 0);
-		i++;
-	}
-	exit(0); */
 	input = NULL;
 	while (1)
 	{

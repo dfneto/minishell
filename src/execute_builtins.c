@@ -13,7 +13,8 @@
 #include "libft.h"
 #include "minishell.h"
 
-int	execute_builtins(char **argv, char ***env, unsigned char last_exit, t_builtin functions[])
+int	execute_builtins(char **argv, char ***env, unsigned char last_exit,
+	t_builtin functions[])
 {
 	int	i;
 
