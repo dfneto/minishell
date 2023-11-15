@@ -65,7 +65,7 @@ t_token	*create_string_token(char *input, int *i)
 	while (input[*i] && input[*i] != DOUB_QUOTE_CHAR
 		&& input[*i] != SING_QUOTE_CHAR
 		&& input[*i] != SPACE_CHAR && input[*i] != GREATER_CHAR
-		&& input[*i] != LESS_CHAR && input[*i] != PIPE_CHAR)
+		&& input[*i] != LESS_CHAR && input[*i] != PIPE_CHAR)  //TODO:se tiver $b/ devem ser dois tokens
 		(*i)++;
 	return (create_token(input, start, *i - 1, STRING));
 }

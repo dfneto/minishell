@@ -25,10 +25,10 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 	return (getenv(word_to_expand));
 }
 
-char	*get_pre_dolar_text(t_token *token, int *dolar_position, int i)
+char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
 {
-	*dolar_position = get_dolar_position(token->str, i);
-	return (ft_substr(token->str, i, *dolar_position - i));
+	*dolar_position = get_dolar_position(str, i);
+	return (ft_substr(str, i, *dolar_position - i));
 }
 
 char	*get_expanded_token(t_token *token)
@@ -44,10 +44,8 @@ char	*get_expanded_token(t_token *token)
 	joined = NULL;
 	while (token->str[i])
 	{
-		pre_dolar = get_pre_dolar_text(token, &dolar_position, i);
-		joined = 
-		
-		ft_strjoin(joined, pre_dolar);
+		pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
+		joined = ft_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;
 		if (token->str[i])
 			joined = ft_strjoin(joined,
@@ -59,23 +57,30 @@ char	*get_expanded_token(t_token *token)
 /*
 * Can expand one token into 1 or more tokens.
 */
-//TODO: primeiro expandir $a=ls   -la
-//TODO: expandir $b=     ls    -l    -a    -F    /
+//TODO: primeiro expandir $a=ls   -la - ok
+//TODO: expandir $b=     ls    -l    -a    -F    / - ok
 //TODO: depois expandir hola$a
-//TODO: testar hola$USER$USER, hola$a
+//TODO: testar hola$USER$USER
 void	expand_token_int_n_tokens(t_token *token)
 {
-	int		i;
-	int		start;
-	char 	*token_str;
-	t_token *aux = NULL;
-	t_token *temp_last = token->next;
-	t_token *new_token = NULL;
+	int			i;
+	int			dolar_position;
+	int			start;
+	char 		*token_str;
+	char		*pre_dolar;
+	t_token 	*aux;
+	t_token 	*temp_last; 
+	t_token 	*new_token;
 
 	i = 0;
-	token->str++;
-	token_str = ft_strdup(getenv(token->str));
-	printf("token_str: %s\n", token_str);
+	dolar_position = 0;
+	token_str = ft_strdup(getenv(++token->str));
+	token->str = NULL;
+	new_token = NULL;
+	pre_dolar = ft_split(token->str, '$')[0];
+	aux = token;
+	temp_last = token->next;
+	printf("token_str to split into n tokens: %s\n", token_str);
 	while(token_str[i])
 	{
 		if (token_str[i] != ' ')
@@ -83,10 +88,11 @@ void	expand_token_int_n_tokens(t_token *token)
 			start = i;
 			while (token_str[i] && token_str[i] != ' ')
 				i++;
-			if (!aux)
+			if (!token->str) //so entra a primeira vez
 			{
-				token->str = ft_substr(token_str, start, i - start);
-				aux = token;
+				char *first_word = ft_substr(token_str, start, i - start);
+				printf("pre dolar: %s, first word: %s", pre_dolar, first_word);
+				// token->str = ft_strjoin(pre_dolar, ft_substr(token_str, start, i - start));
 			}
 			else
 			{

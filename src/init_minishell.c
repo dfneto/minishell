@@ -41,7 +41,7 @@ int	init_minishell(char **envp)
 		input = get_input();
 		if (!input || is_exit(input))
 			return (0);
-		check_open_quotes(input);
+		check_open_quotes(input); //TODO: no bash se pode ter single ou double quotes abertas, e no minishell?
 		first_token = lexical_analysis(input);
 		expansion(first_token);
 		// remove_quotes(first_token);
