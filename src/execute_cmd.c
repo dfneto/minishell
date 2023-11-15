@@ -102,93 +102,174 @@ int	is_executable(char **cmd, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-void	child_pipes(int has_prev, t_process *has_next, int pipes[4])
+void	child_pipes(t_process *process)
 {
-	if (has_prev)
+	if (process->prev)
 	{
-		dup2(pipes[0], 0);
-		close(pipes[0]);
-		close(pipes[1]);
+		dup2(process->prev->fd[0], 0);
+		close(process->prev->fd[0]);
+		close(process->prev->fd[1]);
 	}
-	if (has_next)
+	if (process->next)
 	{
-		close(pipes[2]);
-		dup2(pipes[3], 1);
-		close(pipes[3]);
+		close(process->fd[0]);
+		dup2(process->fd[1], 1);
+		close(process->fd[1]);
 	}	
 }
 
-int	execute_cmd(t_process *current_process, char ***envp,
-		unsigned char last_exit, t_builtin functions[])
+int	execute_single_cmd(char **cmd, char ***env, int last_exit, t_builtin functions[])
 {
-	int	ret;
-	int	pipes[4];
-	//int	previous_pipe[2];
 	int	fork_id;
-	int	has_prev;
-	int	has_pipe;
-	int	pipe_value;
-
-	ret = 0;
-	has_pipe = 0;
-	has_prev = 0;
-	while (current_process)
+	
+	last_exit = execute_builtins(cmd, env, last_exit, functions);
+	if (last_exit == -1)
 	{
-		if (current_process->next)
+		fork_id = fork();
+		if (fork_id < 0)
+			exit(EXIT_FAILURE);
+		if (fork_id == CHILD)
+			is_executable(cmd, *env);
+		else
 		{
-			has_pipe = 1;
-			pipe_value = pipe(pipes + 2);
-			if (pipe_value == -1)
-				exit(EXIT_FAILURE);
+			wait(&last_exit);
+			last_exit = WEXITSTATUS(last_exit);
 		}
-		if (!has_pipe)
+	}
+	return (last_exit);
+}
+
+int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin functions[])
+{
+	int	check;
+	// int num_proc;
+	// int i;
+	// int j;
+	// t_process *head;
+
+/* 	head = process;
+	num_proc = 0;
+	while (head)
+	{
+		num_proc += 1;
+		head = head->next;
+	}
+	int pipes[num_proc][2];
+	i = 0;
+	while (i < num_proc)
+	{
+		if (pipe(pipes[i]) == -1)
+			exit (EXIT_FAILURE);
+		i++;
+	}
+	i = 0;
+	while (i < num_proc)
+	{
+		check = fork();
+		if (check < 0)
+			exit(EXIT_FAILURE);
+		if (check == CHILD)
 		{
-			ret = execute_builtins(current_process->cmd, envp, last_exit, functions);
-				if (ret == -1)
+			j = 0;
+			while (j < num_proc)
 			{
-				fork_id = fork();
-				if (fork_id < 0)
-					exit(EXIT_FAILURE);
-				if (fork_id == CHILD)
-					is_executable(current_process->cmd, *envp);
+				if (i != j)
+				{
+					close(pipes[j][0]);
+				}
 				else
 				{
-					wait(&ret);
-					ret = WEXITSTATUS(ret);
+					dup2(pipes[j][0], 0);
+					close(pipes[j][0]);
 				}
+				if (i + 1 != j)
+				{
+					close(pipes[j][1]);
+				}
+				else
+				{
+					dup2(pipes[j][1], 1);
+					close(pipes[j][1]);
+				}
+				j++;
 			}
+			j = 0;
+			while (j < num_proc)
+			{
+				if (j == i)
+					exit(execute_single_cmd(process->cmd, env, last_exit, functions));
+				process = process->next;
+				j++;
+			}
+		}
+		i++;
+	}
+	j = 0;
+	while (j < num_proc)
+	{
+		if (i - 1 != j)
+		{
+			close(pipes[j][0]);
 		}
 		else
 		{
-			fork_id = fork();
-			if (fork_id < 0)
-				exit(EXIT_FAILURE);
-			if (fork_id == CHILD)
-			{
-				child_pipes(has_prev, current_process->next, pipes);
-				ret = execute_builtins(current_process->cmd, envp, last_exit, functions);
-				if (ret == -1)
-					is_executable(current_process->cmd, *envp);
-				exit(ret);
-			}
-			else
-			{
-				if (has_prev)
-				{
-					close(pipes[0]);
-					close(pipes[1]);
-				}
-				wait(&ret);
-				ret = WEXITSTATUS(ret);
-				if (current_process->next)
-				{
-					has_prev = 1;
-					pipes[0] = pipes[2];
-					pipes[1] = pipes[3];
-				}
-			}
+			dup2(pipes[j][0], 0);
+			close(pipes[j][0]);
 		}
-		current_process = current_process->next;
+		if (j != 0)
+		{
+			close(pipes[j][1]);
+		}
+		else
+		{
+			dup2(pipes[j][1], 1);
+			close(pipes[j][1]);
+		}
+		j++;
 	}
-	return (ret);
+	i = 0;
+	while (i < num_proc)
+	{
+		wait(&last_exit);
+		i++;
+	}
+	last_exit = WEXITSTATUS(last_exit); */
+	while (process)
+	{
+		if (process->next)
+		{
+			check = pipe(process->fd);
+			if (check == -1)
+				exit(EXIT_FAILURE);
+		}
+		check = fork();
+		if (check < 0)
+			exit(EXIT_FAILURE);
+		if (check == CHILD)
+		{
+			child_pipes(process);
+			exit(execute_single_cmd(process->cmd, env, last_exit, functions));
+		}
+		else
+		{
+			if (process->prev)
+			{
+				close(process->prev->fd[0]);
+				close(process->prev->fd[1]);
+			}
+			wait(&last_exit);
+			last_exit = WEXITSTATUS(last_exit);
+		}
+		process = process->next;
+	}
+	return (last_exit);
+}
+
+int	execute_cmd(t_process *process, char ***envp,
+		int last_exit, t_builtin functions[])
+{
+	if (!process->next)
+		return (execute_single_cmd(process->cmd, envp, last_exit, functions));
+	else
+		return (execute_multi_cmd(process, envp, last_exit, functions));
 }

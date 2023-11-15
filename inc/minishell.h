@@ -26,7 +26,9 @@ typedef struct s_env
 
 typedef struct s_process
 {
+    int  index;
     char **cmd;
+    int fd[2];
     struct s_process *next;
     struct s_process *prev;
 }   t_process;
@@ -34,12 +36,12 @@ typedef struct s_process
 typedef struct s_builtin
 {
     char    *name;
-    int     (*function)(char **, char ***, unsigned char);
+    int     (*function)(char **, char ***, int);
 }   t_builtin;
 
 void    init_signals(void);
 void    init_minishell(char ***envp);
-int    execute_cmd(t_process *process, char ***envp, unsigned char last_exit, t_builtin funcitons[]);
+int    execute_cmd(t_process *process, char ***envp, int last_exit, t_builtin funcitons[]);
 
 // Process utils
 t_process   *create_process(char *input);
@@ -49,7 +51,7 @@ void    clean_process(t_process **process);
 char   **create_env(char **envp);
 t_env   *create_node(char *str);
 int	add_env(char *str, char ***env);
-char    *expand_env(char *name, char **env, unsigned char last_exit);
+char    *expand_env(char *name, char **env, int last_exit);
 void    clean_env(char ***env);
 char   **create_ordered_env(char **env);
 
@@ -58,19 +60,19 @@ void	ft_perror(int err, char *msg);
 //Init builtins
 void	init_builtins(t_builtin array[]);
 
-int	execute_builtins(char **argv, char ***env, unsigned char last_exit, t_builtin functions[]);
+int	execute_builtins(char **argv, char ***env, int last_exit, t_builtin functions[]);
 
 int	ft_strcmp(char *str1, char *str2);
 void print_error(char *str);
 
 
 // Built-in functions
-int ft_echo(char **argv, char ***env, unsigned char last_exit);
-int ft_pwd(char **argv, char ***env, unsigned char last_exit);
-int ft_exit(char **argv, char ***env, unsigned char last_exit);
-int	ft_env(char **argv, char ***env, unsigned char last_exit);
-int	ft_cd(char **argv, char ***env, unsigned char last_exit);
-int	ft_export(char **argv, char ***env, unsigned char last_exit);
-int	ft_unset(char **argv, char ***env, unsigned char last_exit);
+int ft_echo(char **argv, char ***env, int last_exit);
+int ft_pwd(char **argv, char ***env, int last_exit);
+int ft_exit(char **argv, char ***env, int last_exit);
+int	ft_env(char **argv, char ***env, int last_exit);
+int	ft_cd(char **argv, char ***env, int last_exit);
+int	ft_export(char **argv, char ***env, int last_exit);
+int	ft_unset(char **argv, char ***env, int last_exit);
 
 #endif

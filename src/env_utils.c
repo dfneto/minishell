@@ -35,7 +35,7 @@ void	clean_env(char ***env)
 	*env = NULL;
 }
 
-char	*expand_env(char *name, char **env, unsigned char last_exit)
+char	*expand_env(char *name, char **env, int last_exit)
 {
 	int	i;
 

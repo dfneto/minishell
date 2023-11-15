@@ -37,7 +37,7 @@ int	ft_chdir(char *str)
 	return (0);
 }
 
-int	ft_cd(char **argv, char ***env, unsigned char last_exit)
+int	ft_cd(char **argv, char ***env, int last_exit)
 {
 	int	argc;
 

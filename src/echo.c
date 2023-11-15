@@ -31,7 +31,7 @@ static int	is_n_flag(char const *str)
 	return (1);
 }
 
-int	ft_echo(char **argv, char ***env, unsigned char last_exit)
+int	ft_echo(char **argv, char ***env, int last_exit)
 {
 	int		i;
 	int		new_line;

@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_env(char **argv, char ***env, unsigned char last_exit)
+int	ft_env(char **argv, char ***env, int last_exit)
 {
 	(void)argv;
 	(void)last_exit;

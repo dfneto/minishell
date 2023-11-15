@@ -57,7 +57,9 @@ t_process	*create_process(char *input)
 			free(tmp);
 			exit(1);
 		}
+		tmp->index = i;
 		tmp->next = NULL;
+		tmp->prev = NULL;
 		if (!head)
 		{
 			head = tmp;
@@ -66,6 +68,7 @@ t_process	*create_process(char *input)
 		else
 		{
 			tail->next = tmp;
+			tmp->prev = tail;
 			tail = tmp;
 		}
 		i++;

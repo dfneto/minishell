@@ -30,7 +30,7 @@ static int	is_num(char *str)
 	return (1);
 }
 
-int	ft_exit(char **argv, char ***env, unsigned char last_exit)
+int	ft_exit(char **argv, char ***env, int last_exit)
 {
 	(void)env;
 	(void)last_exit;

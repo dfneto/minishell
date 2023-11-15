@@ -81,7 +81,7 @@ int	add_env(char *str, char ***env)
 	return (0);
 }
 
-int	ft_export(char **argv, char ***env, unsigned char last_exit)
+int	ft_export(char **argv, char ***env, int last_exit)
 {
 	int	ret;
 

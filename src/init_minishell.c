@@ -22,22 +22,6 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-/* void	print_process(t_process *process)
-{
-	static unsigned char	last_exit;
-	char					*input;
-	t_process				*process;
-
-	if (!process)
-	{
-		printf("Empty process!\n");
-	}
-	while (process)
-	{
-		printf("print -> %s\n", process->cmd[0]);
-		process = process->next;
-	}
-} */
 void	init_minishell(char ***envp)
 {
 	char		*input;
