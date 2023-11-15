@@ -19,21 +19,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/* int	is_builtin(char *exec)
-{
-	int	i;
-
-	char *builtins[] = {"echo", "pwd", "exit", "env", "cd", "export", NULL};
-	i = 0;
-	while (builtins[i])
-	{
-		if (!ft_strncmp(exec, builtins[i], ft_strlen(exec) + 1))
-			return (i);
-		i++;
-	}
-	return (-1);
-} */
-
 void	clean_array(char **arr)
 {
 	int	i;
