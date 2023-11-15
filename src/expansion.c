@@ -21,7 +21,6 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 		(*i)++;
 	word_to_expand = ft_substr(token->str,
 			dolar_position + 1, *i - dolar_position - 1);
-	printf("word to expand: %s\n", word_to_expand);
 	return (getenv(word_to_expand));
 }
 
@@ -59,28 +58,36 @@ char	*get_expanded_token(t_token *token)
 */
 //TODO: primeiro expandir $a=ls   -la - ok
 //TODO: expandir $b=     ls    -l    -a    -F    / - ok
-//TODO: depois expandir hola$a
-//TODO: testar hola$USER$USER
+//TODO: depois expandir hola$a - ok
+//TODO: testar hola$USER$USER -> deve ter o mesmo comportamento de quandao esta entre "": get_expanded_token(token)
 void	expand_token_int_n_tokens(t_token *token)
 {
 	int			i;
-	int			dolar_position;
 	int			start;
 	char 		*token_str;
-	char		*pre_dolar;
+	char		**split = NULL;
+	char		*pre_dolar = NULL;
 	t_token 	*aux;
 	t_token 	*temp_last; 
 	t_token 	*new_token;
 
+	//inicialização
 	i = 0;
-	dolar_position = 0;
-	token_str = ft_strdup(getenv(++token->str));
-	token->str = NULL;
 	new_token = NULL;
-	pre_dolar = ft_split(token->str, '$')[0];
+	
+	//pegando pre dolar
+	split = ft_split(token->str, '$');
+	if (split[1] == NULL) //$a
+		token_str = ft_strdup(getenv(split[0]));
+	else //hola$a
+	{
+		token_str = ft_strdup(getenv(split[1]));
+		pre_dolar = split[0];
+	}
+	
+	token->str = NULL;
 	aux = token;
 	temp_last = token->next;
-	printf("token_str to split into n tokens: %s\n", token_str);
 	while(token_str[i])
 	{
 		if (token_str[i] != ' ')
@@ -89,11 +96,7 @@ void	expand_token_int_n_tokens(t_token *token)
 			while (token_str[i] && token_str[i] != ' ')
 				i++;
 			if (!token->str) //so entra a primeira vez
-			{
-				char *first_word = ft_substr(token_str, start, i - start);
-				printf("pre dolar: %s, first word: %s", pre_dolar, first_word);
-				// token->str = ft_strjoin(pre_dolar, ft_substr(token_str, start, i - start));
-			}
+				token->str = ft_strjoin(pre_dolar, ft_substr(token_str, start, i - start));
 			else
 			{
 				new_token = create_token(token_str, start, i - 1, STRING);
