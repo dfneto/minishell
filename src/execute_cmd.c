@@ -124,6 +124,12 @@ int	execute_single_cmd(char **cmd, char ***env, int last_exit, t_builtin functio
 	return (last_exit);
 }
 
+void	close_pipes(int pipe[])
+{
+	close(pipe[0]);
+	close(pipe[1]);
+}
+
 int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin functions[])
 {
 	int	check;
@@ -151,29 +157,25 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 			if (i != 0)
 			{
 				dup2(process->prev->fd[0], STDIN_FILENO);
-				close(process->prev->fd[0]);
-				close(process->prev->fd[1]);
+				close_pipes(process->prev->fd);
 			}
 			if (i != num_proc - 1)
 			{
 				dup2(process->fd[1], STDOUT_FILENO);
 			}
-			close(process->fd[1]);
-			close(process->fd[0]);
+			else
+			{
+				dup2(process->outfile, STDOUT_FILENO);
+			}
+			close_pipes(process->fd);
 			exit(execute_single_cmd(process->cmd, env, last_exit, functions));
 		}
 		else
 		{
 			if (i != 0)
-			{
-				close(process->prev->fd[0]);
-				close(process->prev->fd[1]);
-			}
+				close_pipes(process->prev->fd);
 			if (i == num_proc - 1)
-			{
-				close(process->fd[1]);
-				close(process->fd[0]);
-			}
+				close_pipes(process->fd);
 		}
 		process = process->next;
 		i++;
@@ -219,8 +221,20 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 int	execute_cmd(t_process *process, char ***envp,
 		int last_exit, t_builtin functions[])
 {
+	int	og_stdout = -1;
 	if (!process->next)
-		return (execute_single_cmd(process->cmd, envp, last_exit, functions));
+	{
+		if (process->outfile != STDOUT_FILENO)
+		{
+			og_stdout = dup(STDOUT_FILENO);
+			dup2(process->outfile, STDOUT_FILENO);
+		}	
+		last_exit = execute_single_cmd(process->cmd, envp, last_exit, functions);
+		if (og_stdout >= 0)
+			dup2(og_stdout, STDOUT_FILENO);
+		return (last_exit);
+	}
+		
 	else
 		return (execute_multi_cmd(process, envp, last_exit, functions));
 }

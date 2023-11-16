@@ -33,7 +33,7 @@ void	clean_process(t_process **process)
 	*process = NULL;
 }
 
-t_process	*create_process(char *input)
+t_process	*create_process(char *input, int in, int out)
 {
 	t_process	*tmp;
 	t_process	*head;
@@ -60,6 +60,8 @@ t_process	*create_process(char *input)
 		tmp->index = i;
 		tmp->next = NULL;
 		tmp->prev = NULL;
+		tmp->infile = in;
+		tmp->outfile = out;
 		if (!head)
 		{
 			head = tmp;

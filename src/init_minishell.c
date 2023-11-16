@@ -21,13 +21,17 @@
 #include <unistd.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <fcntl.h>
 
 void	init_minishell(char ***envp)
 {
 	char		*input;
 	static int	last_exit;
+	// int			outfile;
 	t_process	*process;
 	t_builtin	functions[BUILTINS_NUM];
+
+	//outfile = open("test.log", O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 
 	init_builtins(functions);
 	input = NULL;
@@ -39,7 +43,7 @@ void	init_minishell(char ***envp)
 		if (input[0] != '\0')
 		{
 			add_history(input);
-			process = create_process(input);
+			process = create_process(input, STDIN_FILENO, STDOUT_FILENO);
 			last_exit = execute_cmd(process, envp, last_exit, functions);
 			clean_process(&process);
 		}

@@ -31,6 +31,8 @@ typedef struct s_process
     int fd[2];
     struct s_process *next;
     struct s_process *prev;
+    int infile;
+    int outfile;
 }   t_process;
 
 typedef struct s_builtin
@@ -44,7 +46,7 @@ void    init_minishell(char ***envp);
 int    execute_cmd(t_process *process, char ***envp, int last_exit, t_builtin funcitons[]);
 
 // Process utils
-t_process   *create_process(char *input);
+t_process   *create_process(char *input, int in, int out);
 void    clean_process(t_process **process);
 
 // Env functions
