@@ -53,14 +53,206 @@ char	*get_expanded_token(t_token *token)
 	return (joined);
 }
 
+t_token	*create_token_split(char *str)
+{
+	t_token	*tok;
+
+	tok = (t_token *)malloc(sizeof(t_token));
+	if (!tok)
+		return (NULL);
+	tok->str = str;
+	tok->type = STRING;
+	tok->next = NULL;
+	return (tok);
+}
+
+//$USER$USER - ok
+//$a$a a=ls   -l  -a  -F   <fim> -> segfault
+//$a$a b -> segfault
+//$a b -> falha
+void	expand3(t_token *token)
+{
+	printf("expandindo a palavra: %s\n", token->str);
+	size_t			i;
+	int			start;
+	char		*token_str;
+	t_token		*aux;
+	t_token		*new_token;
+	t_token		*last_token;
+
+	new_token = NULL;
+	last_token = NULL;
+	token_str = getenv(token->str);
+	printf("expansão: %s\n", token_str);
+	token->str = NULL;
+	aux = token;
+	i = 0;
+	while(i < ft_strlen(token_str))
+	{
+		if (token_str[i] != ' ') 
+		{
+			start = i;
+			while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
+				i++;
+			if (!token->str) //so entra a primeira vez
+				token->str = ft_substr(token_str, start, i - start);
+			else
+			{
+				new_token = create_token(token_str, start, i - 1, STRING);
+				new_token->next = last_token;
+				aux->next = new_token;
+				aux = new_token;
+			}
+		}
+		i++;
+	}
+}
+
+void	expand1(t_token *token) //$a$a$a
+{
+	int			i;
+	char		**split = NULL;
+	t_token 	*aux;
+	t_token 	*last_token; 
+	t_token 	*new_token;
+
+	//inicialização
+	i = 0;
+	new_token = NULL;
+	
+	split = ft_split(token->str, '$');
+	aux = token;
+	last_token = token->next;
+	token->str = split[0];
+	int j = 1;
+	while (split[j])
+	{
+		new_token = create_token_split(split[j]);
+		new_token->next = last_token;
+		aux->next = new_token;
+		aux = new_token;
+		j++;
+	}
+	while (token && i < j) //agora vou expandir cada token
+	{
+		expand3(token);
+		token = token->next; //ou token = next token do ultimo token expandido
+		i++;
+	}
+}
+
+void	expand2(t_token *token)
+{
+	(void) token;	
+}
+
 /*
 * Can expand one token into 1 or more tokens.
 */
+void	expand_token_int_n_tokens(t_token *token)
+{
+	if (token->str[0] == '$') //$a$a$a
+		expand1(token);
+	else
+		expand2(token);
+}
+
+/*
+* Can expand one token into 1 or more tokens.
+*/
+void	_expand_token_int_n_tokens(t_token *token)
+{
+	int			i;
+	int			start;
+	char 		*token_str;
+	char		**split = NULL;
+	t_token 	*aux;
+	t_token 	*last_token; 
+	t_token 	*new_token;
+
+	//inicialização
+	i = 0;
+	new_token = NULL;
+	
+	//pegando pre dolar
+	split = ft_split(token->str, '$');
+	int j = 0;
+	while (split[j])
+	{
+		
+		j++;
+	}
+	token->str = NULL;
+	last_token = token->next;
+	if (token->str[0] != '$') //hola$a
+		j++;
+	while(split[j]) //vou avançando as variveis
+	{
+		token_str = ft_strdup(getenv(split[j]));
+		j++;
+		while(token_str[i])
+		{
+			if (token_str[i] != ' ') 
+			{
+				start = i;
+				while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
+					i++;
+				if (!token->str) //so deve entrar uma vez e para isso devo mudar a condicao
+				{
+					// se o token original começava com char diferente de $:
+						// devo fazer um join da palavra anterior ao dolar (hola) com a primeira palavra depois de expandido (ls)
+					// se o token original começava com $:
+						token->str = ft_substr(token_str, start, i - start);
+				}
+				else
+				{
+					new_token = create_token(token_str, start, i - 1, STRING);
+					new_token->next = last_token;
+					aux->next = new_token;
+					aux = new_token;
+				}
+			}
+			i++;
+		}
+		
+
+	}
+	/*if (split[1] == NULL) //$a
+		token_str = ft_strdup(getenv(split[0]));
+	else //hola$a
+	{
+		token_str = ft_strdup(getenv(split[1]));
+		pre_dolar = split[0];
+	}*/
+	
+	
+	aux = token;
+	while(token_str[i])
+	{
+		if (token_str[i] != ' ') 
+		{
+			start = i;
+			while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
+				i++;
+			if (!token->str) //so entra a primeira vez
+				token->str = ft_substr(token_str, start, i - start);
+			else
+			{
+				new_token = create_token(token_str, start, i - 1, STRING);
+				new_token->next = last_token;
+				aux->next = new_token;
+				aux = new_token;
+			}
+		}
+		i++;
+	}
+}
+
 //TODO: primeiro expandir $a=ls   -la - ok
 //TODO: expandir $b=     ls    -l    -a    -F    / - ok
 //TODO: depois expandir hola$a - ok
 //TODO: testar hola$USER$USER -> deve ter o mesmo comportamento de quandao esta entre "": get_expanded_token(token)
-void	expand_token_int_n_tokens(t_token *token)
+void	original_expand_token_int_n_tokens(t_token *token) // removo os espacos, mas nao trato mais de uma variavel, ex: $USER$USER
 {
 	int			i;
 	int			start;
