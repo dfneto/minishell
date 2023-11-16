@@ -127,90 +127,56 @@ int	execute_single_cmd(char **cmd, char ***env, int last_exit, t_builtin functio
 int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin functions[])
 {
 	int	check;
-	// int num_proc;
-	// int i;
-	// int j;
-	// t_process *head;
+	int	num_proc;
+	int	i;
+	t_process *current;
 
-/* 	head = process;
+	current = process;
 	num_proc = 0;
-	while (head)
+	while (current != NULL)
 	{
 		num_proc += 1;
-		head = head->next;
+		current = current->next;
 	}
-	int pipes[num_proc][2];
 	i = 0;
 	while (i < num_proc)
 	{
-		if (pipe(pipes[i]) == -1)
+		if (pipe(process->fd) == -1)
 			exit (EXIT_FAILURE);
-		i++;
-	}
-	i = 0;
-	while (i < num_proc)
-	{
 		check = fork();
-		if (check < 0)
-			exit(EXIT_FAILURE);
+		if (check == -1)
+			exit (EXIT_FAILURE);
 		if (check == CHILD)
 		{
-			j = 0;
-			while (j < num_proc)
+			if (i != 0)
 			{
-				if (i != j)
-				{
-					close(pipes[j][0]);
-				}
-				else
-				{
-					dup2(pipes[j][0], 0);
-					close(pipes[j][0]);
-				}
-				if (i + 1 != j)
-				{
-					close(pipes[j][1]);
-				}
-				else
-				{
-					dup2(pipes[j][1], 1);
-					close(pipes[j][1]);
-				}
-				j++;
+				dup2(process->prev->fd[0], STDIN_FILENO);
+				close(process->prev->fd[0]);
+				close(process->prev->fd[1]);
 			}
-			j = 0;
-			while (j < num_proc)
+			if (i != num_proc - 1)
 			{
-				if (j == i)
-					exit(execute_single_cmd(process->cmd, env, last_exit, functions));
-				process = process->next;
-				j++;
+				dup2(process->fd[1], STDOUT_FILENO);
+			}
+			close(process->fd[1]);
+			close(process->fd[0]);
+			exit(execute_single_cmd(process->cmd, env, last_exit, functions));
+		}
+		else
+		{
+			if (i != 0)
+			{
+				close(process->prev->fd[0]);
+				close(process->prev->fd[1]);
+			}
+			if (i == num_proc - 1)
+			{
+				close(process->fd[1]);
+				close(process->fd[0]);
 			}
 		}
+		process = process->next;
 		i++;
-	}
-	j = 0;
-	while (j < num_proc)
-	{
-		if (i - 1 != j)
-		{
-			close(pipes[j][0]);
-		}
-		else
-		{
-			dup2(pipes[j][0], 0);
-			close(pipes[j][0]);
-		}
-		if (j != 0)
-		{
-			close(pipes[j][1]);
-		}
-		else
-		{
-			dup2(pipes[j][1], 1);
-			close(pipes[j][1]);
-		}
-		j++;
 	}
 	i = 0;
 	while (i < num_proc)
@@ -218,8 +184,8 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 		wait(&last_exit);
 		i++;
 	}
-	last_exit = WEXITSTATUS(last_exit); */
-	while (process)
+	last_exit = WEXITSTATUS(last_exit);
+/* 	while (process)
 	{
 		if (process->next)
 		{
@@ -246,7 +212,7 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 			last_exit = WEXITSTATUS(last_exit);
 		}
 		process = process->next;
-	}
+	} */
 	return (last_exit);
 }
 

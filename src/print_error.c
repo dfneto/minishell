@@ -13,7 +13,7 @@
 #include <libft.h>
 #include <unistd.h>
 
-void	print_error(char *str)
+int	print_error(char *str)
 {
-	write(2, str, ft_strlen(str));
+	return (write(2, str, ft_strlen(str)));
 }

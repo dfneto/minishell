@@ -63,7 +63,7 @@ void	init_builtins(t_builtin array[]);
 int	execute_builtins(char **argv, char ***env, int last_exit, t_builtin functions[]);
 
 int	ft_strcmp(char *str1, char *str2);
-void print_error(char *str);
+int print_error(char *str);
 
 
 // Built-in functions
