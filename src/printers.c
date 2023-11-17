@@ -32,7 +32,7 @@ void	print_type(int type)
 
 void	print_list(t_token *root)
 {
-	printf("token value:\n");
+	printf("token values:\n");
 	while (root)
 	{
 		if (root->str)

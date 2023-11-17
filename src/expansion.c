@@ -67,12 +67,13 @@ t_token	*create_token_split(char *str)
 }
 
 //$USER$USER - ok
-//$a$a a=ls   -l  -a  -F   <fim> -> segfault
-//$a$a b -> segfault
-//$a b -> falha
-void	expand3(t_token *token)
+//$a$a a=ls   -l  -a  -F   <fim> -> ok
+//$a$a b -> ok
+//$a b -> ok
+//return the last part of the token expanded or the token in case that the expansion is null
+t_token	*expand3(t_token *token)
 {
-	printf("expandindo a palavra: %s\n", token->str);
+	printf("expandindo split_token: %s\n", token->str);
 	size_t			i;
 	int			start;
 	char		*token_str;
@@ -81,8 +82,14 @@ void	expand3(t_token *token)
 	t_token		*last_token;
 
 	new_token = NULL;
-	last_token = NULL;
+	last_token = token->next;
 	token_str = getenv(token->str);
+	if (token_str == NULL)
+	{
+		
+		token->str = ft_strdup("");
+		return token;
+	}
 	printf("expansão: %s\n", token_str);
 	token->str = NULL;
 	aux = token;
@@ -94,7 +101,7 @@ void	expand3(t_token *token)
 			start = i;
 			while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
 				i++;
-			if (!token->str) //so entra a primeira vez
+			if (!token->str) //so entra a primeira vez para cada split_token
 				token->str = ft_substr(token_str, start, i - start);
 			else
 			{
@@ -106,8 +113,10 @@ void	expand3(t_token *token)
 		}
 		i++;
 	}
+	return aux; 
 }
-
+//a $USER$USER a - ok
+//a $a$a$a a - ok
 void	expand1(t_token *token) //$a$a$a
 {
 	int			i;
@@ -119,24 +128,28 @@ void	expand1(t_token *token) //$a$a$a
 	//inicialização
 	i = 0;
 	new_token = NULL;
-	
+	printf("Token a ser expandido: %s\n", token->str);
 	split = ft_split(token->str, '$');
 	aux = token;
 	last_token = token->next;
 	token->str = split[0];
+	printf("split #%d que deve ser expandido: %s\n", 0, split[0]);
 	int j = 1;
 	while (split[j])
 	{
+		printf("split #%d que deve ser expandido: %s\n", j, split[j]);
 		new_token = create_token_split(split[j]);
 		new_token->next = last_token;
 		aux->next = new_token;
 		aux = new_token;
 		j++;
 	}
-	while (token && i < j) //agora vou expandir cada token
+	printf("Lista de tokens recebidos:\n");
+	print_list(token);
+	while (token && i < j) //agora vou expandir cada split_token
 	{
-		expand3(token);
-		token = token->next; //ou token = next token do ultimo token expandido
+		last_token = expand3(token);
+		token = last_token->next; //ou token = next token do ultimo token expandido
 		i++;
 	}
 }
@@ -154,7 +167,7 @@ void	expand_token_int_n_tokens(t_token *token)
 	if (token->str[0] == '$') //$a$a$a
 		expand1(token);
 	else
-		expand2(token);
+		expand2(token); //TODO: hola$a
 }
 
 /*
