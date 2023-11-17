@@ -64,6 +64,10 @@ void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
 			create_redirec_tok(input, i, INPUT_REDIRECTION, LESS_CHAR));
 }
 
+/*
+* return: a pointer to a token that is chainned with others tokens
+* where each token pointes to the next
+*/
 t_token	*create_tokens(char *input)
 {
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/18 21:36:50 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:55:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	init_minishell(char **envp)
 		check_open_quotes(input); //TODO: no bash se pode ter single ou double quotes abertas, e no minishell?
 		first_token = lexical_analysis(input);
 		expansion(first_token);
-		// remove_quotes(first_token);
 		// first_process = process_creation(first_token);
 		execute_cmd(first_process, &envp);
 		print_list(first_token);
