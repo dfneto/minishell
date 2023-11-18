@@ -14,35 +14,46 @@ lib = libft/libft.a
 
 # Folders
 SRC_DIR = src
+SRC_DIR_EXPANSION = src/expansion
 OBJ_DIR = obj
 DEP_DIR = dep
 INC_DIR = inc
 
-# Source files
-SRC = main.c init_minishell.c process_quotes.c lexical_analysis.c lexical_analysis_create_tokens_utils.c printers.c lexical_analysis_create_tokens.c expansion.c expansion_utils.c process_creation.c expansion_string.c expansion_double_quotes.c
+# Main source files
+SRC = main.c init_minishell.c process_quotes.c lexical_analysis.c lexical_analysis_create_tokens_utils.c printers.c lexical_analysis_create_tokens.c process_creation.c 
 
-# Object files
-OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
-DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
+# Expansion source files (located in the SRC_DIR_EXPANSION directory)
+EXP_SRC = expansion.c utils.c string_expansion.c double_quotes_expansion.c
 
-# Compile SRC files and move to folders
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h Makefile
-	@mkdir -p $(OBJ_DIR)
+# Combine main source files and expansion source files and adjust the paths for object files
+FULL_SRC = $(addprefix $(SRC_DIR)/, $(SRC)) $(addprefix $(SRC_DIR_EXPANSION)/, $(EXP_SRC))
+OBJ = $(FULL_SRC:%.c=$(OBJ_DIR)/%.o)
+DEP = $(FULL_SRC:%.c=$(DEP_DIR)/%.d)
+
+# Compile source files and move to folders
+$(OBJ_DIR)/src/%.o: $(SRC_DIR)/%.c | setup
 	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mkdir -p $(DEP_DIR)
-	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
+	@mv $(@:.o=.d) $(DEP_DIR)/
 
-all: lib $(NAME) 
+$(OBJ_DIR)/src/expansion/%.o: $(SRC_DIR_EXPANSION)/%.c | setup
+	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
+	@mv $(@:.o=.d) $(DEP_DIR)/
+
+all: setup lib $(NAME) 
 
 $(NAME): $(lib) $(OBJ)
 	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 
+setup:
+	@mkdir -p $(OBJ_DIR)/src
+	@mkdir -p $(OBJ_DIR)/src/expansion
+	@mkdir -p $(DEP_DIR)
+
 clean:
 	make clean -C libft
 	rm -rf $(OBJ_DIR) $(DEP_DIR)
 	rm -rf *.dSYM
-
 
 fclean:
 	make fclean -C libft
