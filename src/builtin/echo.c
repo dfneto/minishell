@@ -45,6 +45,7 @@ int	ft_echo(char **argv, char ***env, int last_exit)
 	{
 		if (argv[i][0] == '$')
 		{
+			printf("here\n");
 			exp = expand_env(argv[i], (*env), last_exit);
 			printf("%s", exp);
 			free(exp);

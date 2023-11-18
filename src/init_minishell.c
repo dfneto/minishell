@@ -53,7 +53,8 @@ void	init_minishell(char ***envp)
 		expansion(first_token, last_exit);
 		first_process = process_creation(first_token);
 		last_exit = execute_cmd(first_process, envp, last_exit, functions);
-		//print_list(first_token);
+		printf("Lista de tokens finais:\n");
+		print_list(first_token);
 		clean_input(&input);
 	}
 	clear_history();
