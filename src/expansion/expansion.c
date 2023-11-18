@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/17 18:14:40 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:28:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
 * $a should produce four tokens, each token->str would have
 * ls, -l, -a, -F, respectively
 */
-void	expand(t_token *token)
+//retorna o token expandido e no caso em que a expansão gere vários tokens, retorna o último token da expansão
+t_token	*expand(t_token *token)
 {
 	if (token->type == DOUBLE_QUOTE)
-		token->str = get_expanded_double_quote_token(token);
-	else // esse método destoa de toda a arquitetura anterior, porque aqui começo a fazer todas as expansões de todos os tokens
-		expand_token_int_n_tokens(token);
+		return (expand_double_quote_token(token));
+	else
+		return (expand_token_int_n_tokens(token)); 
 }
-
 
 //TODO: implementar
 char	*get_exit_status()
@@ -65,7 +65,7 @@ int	check_and_expand(t_token *token)
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status();
 	else if (is_expansible(token->str))
-		expand(token);
+		token = expand(token);
 	return (1);
 }
 

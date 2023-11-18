@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion_double_quotes.c                          :+:      :+:    :+:   */
+/*   double_quotes_expansion.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/17 17:58:33 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/18 13:59:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_expanded_double_quote_token(t_token *token)
+t_token	*expand_double_quote_token(t_token *token)
 {
 	int		i;
 	int		dolar_position;
@@ -32,5 +32,6 @@ char	*get_expanded_double_quote_token(t_token *token)
 			joined = ft_strjoin(joined,
 					get_word_expanded(token, &i, dolar_position));
 	}
-	return (joined);
+	token->str = joined;
+	return (token);
 }
