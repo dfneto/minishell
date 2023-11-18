@@ -10,14 +10,5 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishel.h"
+#include "minishell.h"
 
-t_process	*create_process(t_token *token)
-{
-	t_process	*process;
-
-	process = NULL;
-	process->next = NULL;
-	process->prev = NULL;
-	return (process);
-}

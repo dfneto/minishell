@@ -14,8 +14,21 @@
 
 void	execute_cmd(t_process *current_process, char ***envp)
 {
-	(void)current_process;
+	int i;
+	
 	(void)envp;
+	while(current_process)
+	{
+		i = 0;
+		printf("execute cmd...\n");
+		while(current_process->cmd[i])
+		{
+			printf("%s ", current_process->cmd[i]);
+			i++;
+		}
+		printf("\n");
+		current_process = current_process->next;
+	}
 }
 
 char	*get_input(void)
@@ -44,9 +57,9 @@ int	init_minishell(char **envp)
 		check_open_quotes(input); //TODO: no bash se pode ter single ou double quotes abertas, e no minishell?
 		first_token = lexical_analysis(input);
 		expansion(first_token);
-		// first_process = process_creation(first_token);
+		first_process = process_creation(first_token);
 		execute_cmd(first_process, &envp);
-		print_list(first_token);
+		//print_list(first_token);
 		clean_input(&input);
 	}
 	clear_history();

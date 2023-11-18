@@ -44,7 +44,7 @@ void	create_quote_tok_add_back(t_token **first_token, char *input, int *i)
 void	create_other_tok_add_back(t_token **first_token, char *input, int *i)
 {
 	if (input[*i] == SPACE_CHAR)
-		add_token(first_token, create_space_token(input, i));
+		(*i)++;
 	else
 		add_token(first_token, create_pipe_token(input, i));
 }
