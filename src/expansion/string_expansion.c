@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/18 15:03:36 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:36:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ t_token	*expand1(t_token *token) //$a$a$a
 	}
 	return token;
 }
+
 
 //return the last part of the token expanded or the token in case that the expansion is null
 //ex: a="ls   -l    -a  -F   " 
