@@ -28,6 +28,9 @@
 # define PROMPT "\033[38;5;143mbr.sh$ \033[0;39m"
 # define QUOTE_OPENED "You have to close your quotes"
 
+# define CHILD 0
+# define BUILTINS_NUM 7
+
 # define DOUB_QUOTE_CHAR 34
 # define SING_QUOTE_CHAR 39
 # define SPACE_CHAR 32
@@ -90,7 +93,12 @@ typedef struct s_process
 	int					outfile; 
 }t_process;
 
-int			init_minishell(char **envp);
+typedef struct s_builtin
+{
+    char    *name;
+    int     (*function)(char **, char ***, int);
+}   t_builtin;
+
 int			check_open_quotes(char *input);
 int			clean_input(char **input);
 int			is_exit(char *input);
@@ -120,5 +128,44 @@ t_token		*create_redirec_tok(char *input, int *i, int type, int quote_char);
 t_token		*create_string_token(char *input, int *i);
 t_process	*process_creation(t_token *first_token);
 t_process	*create_process(t_token *token, int i);
+
+
+// VVVVVV LUKITAS VVVVV
+
+
+void    init_signals(void);
+void    init_minishell(char ***envp);
+int    execute_cmd(t_process *process, char ***envp, int last_exit, t_builtin funcitons[]);
+
+// Process utils
+//t_process   *create_process(char *input, int in, int out);
+void    clean_process(t_process **process);
+
+// Env functions
+char   **create_env(char **envp);
+int	add_env(char *str, char ***env);
+char    *expand_env(char *name, char **env, int last_exit);
+void    clean_env(char ***env);
+char   **create_ordered_env(char **env);
+
+void	ft_perror(int err, char *msg);
+
+//Init builtins
+void	init_builtins(t_builtin array[]);
+
+int	execute_builtins(char **argv, char ***env, int last_exit, t_builtin functions[]);
+
+int	ft_strcmp(char *str1, char *str2);
+int print_error(char *str);
+
+
+// Built-in functions
+int ft_echo(char **argv, char ***env, int last_exit);
+int ft_pwd(char **argv, char ***env, int last_exit);
+int ft_exit(char **argv, char ***env, int last_exit);
+int	ft_env(char **argv, char ***env, int last_exit);
+int	ft_cd(char **argv, char ***env, int last_exit);
+int	ft_export(char **argv, char ***env, int last_exit);
+int	ft_unset(char **argv, char ***env, int last_exit);
 
 #endif

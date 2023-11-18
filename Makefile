@@ -3,13 +3,6 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -MMD -g
 
-# readline brew local
-LDFLAGS = -L/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/lib
-CPPFLAGS = -I/sgoinfre/Perso/lsulzbac/homebrew/opt/readline/include
-
-# LDFLAGS = -L/usr/local/opt/readline/lib/ 
-# CPPFLAGS = -I /usr/local/opt/readline/include/ 
-
 lib = libft/libft.a
 
 # Folders
@@ -21,7 +14,14 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Main source files
-SRC = main.c init_minishell.c process_quotes.c printers.c process_creation.c 
+SRC = main.c init_minishell.c process_quotes.c printers.c process_creation.c \
+	init_builtins.c\
+	execute_cmd.c \
+	echo.c pwd.c exit.c env.c \
+	process_utils.c cd.c export.c\
+	env_utils.c ft_perror.c export_utils.c \
+	unset.c execute_builtins.c \
+	print_error.c
 
 # Expansion source files (located in the SRC_DIR_EXPANSION directory)
 EXP_SRC = expansion.c utils.c string_expansion.c double_quotes_expansion.c
@@ -48,7 +48,7 @@ $(OBJ_DIR)/src/lexical_analysis/%.o: $(SRC_DIR_LEXICAL_ANALYSIS)/%.c | setup
 all: setup lib $(NAME) 
 
 $(NAME): $(lib) $(OBJ)
-	$(CC) $(OBJ) -L./libft -lft $(LDFLAGS) -lreadline -o $(NAME)
+	$(CC) $(OBJ) -L./libft -lft -lreadline -o $(NAME)
 	@echo "Minishell compiled!"
 
 setup:

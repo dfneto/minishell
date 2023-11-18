@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/
+<<<<<<< HEAD
 a.out
 a.out.dSYM/
 obj/*
@@ -8,3 +9,6 @@ obj/*
 *.d
 minishell
 *.dSYM/
+=======
+
+>>>>>>> lukita

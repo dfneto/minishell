@@ -11,25 +11,16 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	execute_cmd(t_process *current_process, char ***envp)
-{
-	int i;
-	
-	(void)envp;
-	while(current_process)
-	{
-		i = 0;
-		printf("execute cmd...\n");
-		while(current_process->cmd[i])
-		{
-			printf("%s ", current_process->cmd[i]);
-			i++;
-		}
-		printf("\n");
-		current_process = current_process->next;
-	}
-}
+#include <errno.h>
+#include <limits.h>
+#include <signal.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <fcntl.h>
 
 char	*get_input(void)
 {
@@ -41,27 +32,30 @@ char	*get_input(void)
 	return (input);
 }
 
-int	init_minishell(char **envp)
+void	init_minishell(char ***envp)
 {
 	char		*input;
+	static int			last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
+	t_builtin	functions[BUILTINS_NUM];
 
+	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
 	while (42)
 	{
 		input = get_input();
 		if (!input || is_exit(input))
-			return (0);
+			return ;
 		check_open_quotes(input); //TODO: no bash se pode ter single ou double quotes abertas, e no minishell?
 		first_token = lexical_analysis(input);
 		expansion(first_token);
 		first_process = process_creation(first_token);
-		execute_cmd(first_process, &envp);
+		execute_cmd(first_process, envp, last_exit, functions);
 		//print_list(first_token);
 		clean_input(&input);
 	}
 	clear_history();
-	return (0);
+	//return (0);
 }
