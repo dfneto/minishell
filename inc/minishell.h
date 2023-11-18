@@ -102,7 +102,7 @@ typedef struct s_builtin
 int			check_open_quotes(char *input);
 int			clean_input(char **input);
 int			is_exit(char *input);
-int			expansion(t_token *first_token);
+int			expansion(t_token *first_token, int last_exit);
 int			is_expansible(char *str);
 int			get_dolar_position(char *str, int i);
 int			is_expansible(char *str);

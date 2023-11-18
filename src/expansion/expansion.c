@@ -50,20 +50,20 @@ t_token	*expand(t_token *token)
 		return (expand_token_int_n_tokens(token)); 
 }
 
-//TODO: implementar
-char	*get_exit_status()
+//TODO: tratar falha malloc itoa
+char	*get_exit_status(int last_exit)
 {
-	return ("0");
+	return (ft_itoa(last_exit));
 }
 
 /*
 * If the token to be expand is $? get the exit status.
 * Otherwise check if it's expansible and expand it.
 */
-int	check_and_expand(t_token *token)
+int	check_and_expand(t_token *token, int last_exit)
 {
 	if (is_dollarquestion_mark(token->str))
-		token->str = get_exit_status();
+		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))
 		token = expand(token);
 	return (1);
@@ -72,13 +72,13 @@ int	check_and_expand(t_token *token)
 /*
 * Expand al the tokens of type DOUBLE_QUOTE or STRING
 */
-int	expansion(t_token *first_token)
+int	expansion(t_token *first_token, int last_exit)
 {
 	while (first_token)
 	{
 		if (first_token->type == DOUBLE_QUOTE
 			|| first_token->type == STRING)
-			check_and_expand(first_token);
+			check_and_expand(first_token, last_exit);
 		first_token = first_token->next;
 	}
 	return (0);

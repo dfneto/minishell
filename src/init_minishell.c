@@ -35,7 +35,7 @@ char	*get_input(void)
 void	init_minishell(char ***envp)
 {
 	char		*input;
-	static int			last_exit;
+	static int	last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
 	t_builtin	functions[BUILTINS_NUM];
@@ -46,13 +46,13 @@ void	init_minishell(char ***envp)
 	while (42)
 	{
 		input = get_input();
-		if (!input || is_exit(input))
+		if (!input)
 			return ;
 		check_open_quotes(input); //TODO: no bash se pode ter single ou double quotes abertas, e no minishell?
 		first_token = lexical_analysis(input);
-		expansion(first_token);
+		expansion(first_token, last_exit);
 		first_process = process_creation(first_token);
-		execute_cmd(first_process, envp, last_exit, functions);
+		last_exit = execute_cmd(first_process, envp, last_exit, functions);
 		//print_list(first_token);
 		clean_input(&input);
 	}

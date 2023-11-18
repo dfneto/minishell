@@ -47,17 +47,6 @@ int	clean_input(char **input)
 	return (1);
 }
 
-int	is_exit(char *input)
-{
-	if (!ft_strncmp(input, "exit", 5))
-	{
-		printf("Exiting...\n");
-		clean_input(&input);
-		return (1);
-	}
-	return (0);
-}
-
 /*
 * check_open_quotes phase
 */
