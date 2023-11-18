@@ -81,10 +81,13 @@ typedef struct s_token
 //falta colocar infile outfile
 typedef struct s_process
 {
-	char				*cmd; //remover porque execuv recibe solamente un parametro
-	char				**args; //relembrar como funciona **, acho que estou confundindo com o first de lista
+	int					index;
+	char				**cmd;
+	int					fd[2];
 	struct s_process	*next;
-	struct s_process	*prev; 
+	struct s_process	*prev;
+	int					infile;
+	int					outfile; 
 }t_process;
 
 int			init_minishell(char **envp);
@@ -116,6 +119,6 @@ t_token		*create_quote_token(char *input, int *i, int type, int quote_char);
 t_token		*create_redirec_tok(char *input, int *i, int type, int quote_char);
 t_token		*create_string_token(char *input, int *i);
 t_process	*process_creation(t_token *first_token);
-t_process	*create_process(t_token *token);
+t_process	*create_process(t_token *token, int i);
 
 #endif
