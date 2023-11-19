@@ -73,8 +73,12 @@ t_process	*create_process(t_token *token, int num_cmd)
 		}
 		else if (token->type == PIPE)
 			break ;
-		else
+		else if (token->type != SPC)
+		{
 			token = token->next;
+			while (token && !token->str)
+				token = token->next;
+		}
 		token = token->next;
 	}
 	process->infile = STDIN_FILENO;
@@ -100,6 +104,8 @@ t_process	*process_creation(t_token *first_token)
 		i = 0;
 		while (first_token)
 		{
+			if (first_token->str)
+				i++;
 /* 			if (first_token->type == OUTPUT_REDIRECTION || first_token->type == APPEND)
 			{
 				outfile = get_outfile_fd(first_token->next, first_token->type);
@@ -117,7 +123,6 @@ t_process	*process_creation(t_token *first_token)
 			} */
 			if (first_token->type == PIPE)
 				break ;
-			i++;
 			first_token = first_token->next;
 		}
 		if (i > 0)

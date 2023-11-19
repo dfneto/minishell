@@ -59,7 +59,7 @@ int	check_open_quotes(char *input)
 	while (input[i])
 	{
 		if (is_quote_open(input, &i, 34) || is_quote_open(input, &i, 39))
-			exit_error(QUOTE_OPENED);
+			return (1);
 		i++;
 	}
 	return (0);

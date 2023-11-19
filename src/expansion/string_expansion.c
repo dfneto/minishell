@@ -168,7 +168,7 @@ t_token	*expand2(t_token *token)
 	int			i;
 	int			dolar_position;
 	char		*pre_dolar;
-	char		*joined;
+	//char		*joined;
 	t_token		*new_token;
 	char		**split = NULL;
 	t_token 	*aux;
@@ -177,7 +177,7 @@ t_token	*expand2(t_token *token)
 	i = 0;
 	dolar_position = 0;
 	pre_dolar = NULL;
-	joined = NULL;
+	//joined = NULL;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
 	printf("pre-dolar: %s\n", pre_dolar);
 	token->str = ft_substr(token->str, dolar_position, ft_strlen(token->str) - ft_strlen(pre_dolar));

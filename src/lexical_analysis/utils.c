@@ -36,7 +36,7 @@ t_token	*create_token(char *input, int start, int end, int type)
 	if (!tok)
 		return (NULL);
 	tok->str = NULL;
-	if (type == DOUBLE_QUOTE | type == SINGLE_QUOTE | type == STRING)
+	if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE) | (type == STRING))
 		tok->str = ft_substr(input, start, end - start + 1);
 	tok->type = type;
 	tok->next = NULL;
