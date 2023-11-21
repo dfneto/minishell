@@ -23,7 +23,7 @@ SRC = main.c init_minishell.c execute_cmd.c # init_signals.c
 BUL_SRC = cd.c export.c echo.c pwd.c \
 	exit.c env.c env_utils.c export_utils.c \
 	unset.c execute_builtins.c init_builtins.c
-EXP_SRC = expansion.c utils.c string_expansion.c double_quotes_expansion.c
+EXP_SRC = init_expansion.c utils.c string_expansion.c double_quotes_expansion.c
 LEX_SRC = lexical_analysis.c create_tokens.c utils.c
 PROC_SRC = process_quotes.c process_creation.c process_utils.c
 UTILS_SRC = print_error.c ft_perror.c printers.c
