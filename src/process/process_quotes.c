@@ -48,9 +48,9 @@ int	clean_input(char **input)
 }
 
 /*
-* check_open_quotes phase
-*/
-//TODO: if the last char is a / it should exit with error
+ * check_open_quotes phase
+ */
+// TODO: if the last char is a / it should exit with error
 int	check_open_quotes(char *input)
 {
 	int	i;

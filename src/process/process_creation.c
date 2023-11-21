@@ -36,19 +36,32 @@ static void	add_process(t_process **first, t_process *new)
 	}
 }
 
+void	print_process(t_process *process)
+{
+	int	i;
+
+	i = 0;
+	printf("Process created:\n");
+	while (process->cmd[i])
+	{
+		printf("%s\n", process->cmd[i]);
+		i++;
+	}
+}
+
 t_process	*create_process(t_token *token, int num_cmd)
 {
 	t_process	*process;
-	int			i;		
+	int			i;
 
 	i = 0;
-	process = (t_process *) ft_calloc(1, sizeof(t_process));
+	process = (t_process *)ft_calloc(1, sizeof(t_process));
 	if (process == NULL)
 	{
 		perror("malloc process");
 		exit(EXIT_FAILURE);
 	}
-	process->cmd = (char **) ft_calloc(num_cmd + 1, sizeof(char *));
+	process->cmd = (char **)ft_calloc(num_cmd + 1, sizeof(char *));
 	if (process->cmd == NULL)
 	{
 		perror("malloc cmd");
@@ -81,6 +94,7 @@ t_process	*create_process(t_token *token, int num_cmd)
 		}
 		token = token->next;
 	}
+	// print_process(process);
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	return (process);
@@ -92,10 +106,10 @@ t_process	*process_creation(t_token *first_token)
 	t_process	*process;
 	t_token		*tmp;
 	int			i;
+
 	// int			outfile = STDOUT_FILENO;
 	// int			infile = STDIN_FILENO;
-	//char		*heredoc;
-
+	// char		*heredoc;
 	head = NULL;
 	process = NULL;
 	while (first_token)
@@ -106,21 +120,23 @@ t_process	*process_creation(t_token *first_token)
 		{
 			if (first_token->str)
 				i++;
-/* 			if (first_token->type == OUTPUT_REDIRECTION || first_token->type == APPEND)
-			{
-				outfile = get_outfile_fd(first_token->next, first_token->type);
-				first_token = first_token->next;
-			}
-			if (first_token->type == INPUT_REDIRECTION)
-			{
-				infile = get_infile_fd(first_token->next);
-				first_token = first_token->next;
-			}
-			if (first_token->type == HERE_DOC)
-			{
-				heredoc = get_heredoc(first_token->next);
-				first_token = first_token->next;
-			} */
+			/* 			if (first_token->type == OUTPUT_REDIRECTION
+							|| first_token->type == APPEND)
+						{
+							outfile = get_outfile_fd(first_token->next,
+									first_token->type);
+							first_token = first_token->next;
+						}
+						if (first_token->type == INPUT_REDIRECTION)
+						{
+							infile = get_infile_fd(first_token->next);
+							first_token = first_token->next;
+						}
+						if (first_token->type == HERE_DOC)
+						{
+							heredoc = get_heredoc(first_token->next);
+							first_token = first_token->next;
+						} */
 			if (first_token->type == PIPE)
 				break ;
 			first_token = first_token->next;

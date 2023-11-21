@@ -1,0 +1,55 @@
+t_process	*create_process(t_token *token, int num_cmd)
+{
+	t_process *process;
+	int i;
+
+	i = 0;
+	process = (t_process *)ft_calloc(1, sizeof(t_process));
+	if (process == NULL)
+	{
+		perror("malloc process");
+		exit(EXIT_FAILURE);
+	}
+	process->cmd = (char **)ft_calloc(num_cmd + 1, sizeof(char *));
+	if (process->cmd == NULL)
+	{
+		perror("malloc cmd");
+		exit(EXIT_FAILURE);
+	}
+	while (token)
+	{
+		if (i == num_cmd + 1)
+		{
+			perror("i == num");
+			exit(EXIT_FAILURE);
+		}
+		if (token->str)
+		{
+			if (process->cmd[i] == NULL)
+				process->cmd[i] = ft_strdup(token->str);
+			else
+				ft_strlcat(process->cmd[i], ft_strdup(token->str),
+					ft_strlen(process->cmd[i]) + ft_strlen(token->str) + 1);
+			if (process->cmd[i] == NULL)
+			{
+				perror("strdup");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else if (token->type == PIPE)
+			break ;
+		else if (token->type != SPC)
+		{
+			token = token->next;
+			while (token && !token->str)
+				token = token->next;
+		}
+		else if (token->type == SPC)
+			i++;
+		token = token->next;
+	}
+	print_process(process);
+	process->infile = STDIN_FILENO;
+	process->outfile = STDOUT_FILENO;
+	return (process);
+}

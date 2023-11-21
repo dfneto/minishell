@@ -14,10 +14,10 @@
 
 t_token	*expand_double_quote_token(t_token *token)
 {
-	int		i;
-	int		dolar_position;
-	char	*pre_dolar;
-	char	*joined;
+	int i;
+	int dolar_position;
+	char *pre_dolar;
+	char *joined;
 
 	i = 0;
 	dolar_position = 0;
@@ -29,8 +29,8 @@ t_token	*expand_double_quote_token(t_token *token)
 		joined = ft_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;
 		if (token->str[i])
-			joined = ft_strjoin(joined,
-					get_word_expanded(token, &i, dolar_position));
+			joined = ft_strjoin(joined, get_word_expanded(token, &i,
+						dolar_position));
 	}
 	token->str = joined;
 	return (token);

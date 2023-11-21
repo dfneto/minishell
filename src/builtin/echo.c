@@ -35,23 +35,16 @@ int	ft_echo(char **argv, char ***env, int last_exit)
 {
 	int		i;
 	int		new_line;
-	char	*exp;
 
+	(void)(env);
+	(void)(last_exit);
 	i = 0;
 	new_line = 1;
 	while (is_n_flag(argv[++i]))
 		new_line = 0;
 	while (argv[i])
 	{
-		if (argv[i][0] == '$')
-		{
-			printf("here\n");
-			exp = expand_env(argv[i], (*env), last_exit);
-			printf("%s", exp);
-			free(exp);
-		}
-		else
-			printf("%s", argv[i]);
+		printf("%s", argv[i]);
 		i++;
 		if (argv[i])
 			printf(" ");

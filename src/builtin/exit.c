@@ -12,10 +12,9 @@
 
 #include <libft.h>
 #include <limits.h>
+#include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <libft.h>
-#include <minishell.h>
 
 static int	is_num(char *str)
 {
@@ -45,7 +44,7 @@ int	ft_exit(char **argv, char ***env, int last_exit)
 		print_error("Brazilian Shell: exit: ");
 		print_error(argv[0]);
 		print_error(": numeric argument required\n");
-		exit (255);
+		exit(255);
 	}
 	print_error("Brazilian Shell: exit: too many arguments\n");
 	return (1);

@@ -81,7 +81,7 @@ int	is_executable(char **cmd, char **envp)
 		print_error("Brazilian Shell: ");
 		print_error(cmd[0]);
 		print_error(": command not found\n");
-		exit (127);
+		exit(127);
 	}
 	execve(path, cmd, envp);
 	exit(EXIT_FAILURE);
@@ -100,13 +100,14 @@ void	child_pipes(t_process *process)
 		close(process->fd[0]);
 		dup2(process->fd[1], 1);
 		close(process->fd[1]);
-	}	
+	}
 }
 
-int	execute_single_cmd(char **cmd, char ***env, int last_exit, t_builtin functions[])
+int	execute_single_cmd(char **cmd, char ***env, int last_exit,
+		t_builtin functions[])
 {
 	int	fork_id;
-	
+
 	last_exit = execute_builtins(cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
@@ -130,12 +131,13 @@ void	close_pipes(int pipe[])
 	close(pipe[1]);
 }
 
-int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin functions[])
+int	execute_multi_cmd(t_process *process, char ***env, int last_exit,
+		t_builtin functions[])
 {
-	int	check;
-	int	num_proc;
-	int	i;
-	t_process *current;
+	int			check;
+	int			num_proc;
+	int			i;
+	t_process	*current;
 
 	current = process;
 	num_proc = 0;
@@ -148,10 +150,10 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 	while (i < num_proc)
 	{
 		if (pipe(process->fd) == -1)
-			exit (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		check = fork();
 		if (check == -1)
-			exit (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		if (check == CHILD)
 		{
 			if (i != 0)
@@ -187,54 +189,57 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit, t_builtin 
 		i++;
 	}
 	last_exit = WEXITSTATUS(last_exit);
-/* 	while (process)
-	{
-		if (process->next)
+	/* 	while (process)
 		{
-			check = pipe(process->fd);
-			if (check == -1)
-				exit(EXIT_FAILURE);
-		}
-		check = fork();
-		if (check < 0)
-			exit(EXIT_FAILURE);
-		if (check == CHILD)
-		{
-			child_pipes(process);
-			exit(execute_single_cmd(process->cmd, env, last_exit, functions));
-		}
-		else
-		{
-			if (process->prev)
+			if (process->next)
 			{
-				close(process->prev->fd[0]);
-				close(process->prev->fd[1]);
+				check = pipe(process->fd);
+				if (check == -1)
+					exit(EXIT_FAILURE);
 			}
-			wait(&last_exit);
-			last_exit = WEXITSTATUS(last_exit);
-		}
-		process = process->next;
-	} */
+			check = fork();
+			if (check < 0)
+				exit(EXIT_FAILURE);
+			if (check == CHILD)
+			{
+				child_pipes(process);
+				exit(execute_single_cmd(process->cmd, env, last_exit,
+						functions));
+			}
+			else
+			{
+				if (process->prev)
+				{
+					close(process->prev->fd[0]);
+					close(process->prev->fd[1]);
+				}
+				wait(&last_exit);
+				last_exit = WEXITSTATUS(last_exit);
+			}
+			process = process->next;
+		} */
 	return (last_exit);
 }
 
-int	execute_cmd(t_process *process, char ***envp,
-		int last_exit, t_builtin functions[])
+int	execute_cmd(t_process *process, char ***envp, int last_exit,
+		t_builtin functions[])
 {
-	int	og_stdout = -1;
+	int	og_stdout;
+
+	og_stdout = -1;
 	if (!process->next)
 	{
 		if (process->outfile != STDOUT_FILENO)
 		{
 			og_stdout = dup(STDOUT_FILENO);
 			dup2(process->outfile, STDOUT_FILENO);
-		}	
-		last_exit = execute_single_cmd(process->cmd, envp, last_exit, functions);
+		}
+		last_exit = execute_single_cmd(process->cmd, envp, last_exit,
+				functions);
 		if (og_stdout >= 0)
 			dup2(og_stdout, STDOUT_FILENO);
 		return (last_exit);
 	}
-		
 	else
 		return (execute_multi_cmd(process, envp, last_exit, functions));
 }

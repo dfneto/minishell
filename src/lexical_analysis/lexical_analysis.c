@@ -13,34 +13,34 @@
 #include "minishell.h"
 
 /*
-* Ideally the lexical analysis does more stuffs than
-* allocate tokens, but in this shell
-* it just produces a list of tokens
-*/
+ * Ideally the lexical analysis does more stuffs than
+ * allocate tokens, but in this shell
+ * it just produces a list of tokens
+ */
 t_token	*lexical_analysis(char *input)
 {
 	return (create_tokens(input));
 }
 
 /*
-* Create a token of type DOUBLE_QUOTE or SINGLE_QUOTE
-* and add it to the end of token list (first_token)
-*/
+ * Create a token of type DOUBLE_QUOTE or SINGLE_QUOTE
+ * and add it to the end of token list (first_token)
+ */
 void	create_quote_tok_add_back(t_token **first_token, char *input, int *i)
 {
 	if (input[*i] == DOUB_QUOTE_CHAR)
-		add_token(first_token,
-			create_quote_token(input, i, DOUBLE_QUOTE, DOUB_QUOTE_CHAR));
+		add_token(first_token, create_quote_token(input, i, DOUBLE_QUOTE,
+				DOUB_QUOTE_CHAR));
 	else
-		add_token(first_token,
-			create_quote_token(input, i, SINGLE_QUOTE, SING_QUOTE_CHAR));
+		add_token(first_token, create_quote_token(input, i, SINGLE_QUOTE,
+				SING_QUOTE_CHAR));
 }
 
 /*
-* Other can be space or pipe, in this way, it
-* creates a token of type SPACE or PIPE
-* and add it to the end of token list (first_token)
-*/
+ * Other can be space or pipe, in this way, it
+ * creates a token of type SPACE or PIPE
+ * and add it to the end of token list (first_token)
+ */
 void	create_other_tok_add_back(t_token **first_token, char *input, int *i)
 {
 	if (input[*i] == SPACE_CHAR)
@@ -52,22 +52,21 @@ void	create_other_tok_add_back(t_token **first_token, char *input, int *i)
 void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
 {
 	if (input[*i] == GREATER_CHAR && input[*i + 1] == GREATER_CHAR)
-		add_token(root,
-			create_redirec_tok(input, i, APPEND, GREATER_CHAR));
+		add_token(root, create_redirec_tok(input, i, APPEND, GREATER_CHAR));
 	else if (input[*i] == GREATER_CHAR)
-		add_token(root,
-			create_redirec_tok(input, i, OUTPUT_REDIRECTION, GREATER_CHAR));
+		add_token(root, create_redirec_tok(input, i, OUTPUT_REDIRECTION,
+				GREATER_CHAR));
 	else if (input[*i] == LESS_CHAR && input[*i + 1] == LESS_CHAR)
 		add_token(root, create_redirec_tok(input, i, HERE_DOC, LESS_CHAR));
 	else
-		add_token(root,
-			create_redirec_tok(input, i, INPUT_REDIRECTION, LESS_CHAR));
+		add_token(root, create_redirec_tok(input, i, INPUT_REDIRECTION,
+				LESS_CHAR));
 }
 
 /*
-* return: a pointer to a token that is chainned with others tokens
-* where each token pointes to the next
-*/
+ * return: a pointer to a token that is chainned with others tokens
+ * where each token pointes to the next
+ */
 t_token	*create_tokens(char *input)
 {
 	int		i;

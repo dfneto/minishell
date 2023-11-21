@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <minishell.h>
 
 static int	count_args(char **argv)
 {

@@ -13,21 +13,21 @@
 #include "minishell.h"
 
 /*
-* Also related to list
-*/
+ * Also related to list
+ */
 
 /*
-* Lesson learned: when I have an intermittent error, it means, 
-* that happen sometimes and others don't, it usually is a non 
-* variable declaration or bad memory allocation (cause also by typos)
-* In this case sometimes I got tok->str saved and others don't.
-* I was with an error with this 
-*   tok = (token *)malloc(sizeof(token *)); 
-* because I was allocating in memory a space for a address and 
-* not for a token I like to think in the right side as allocating 
-* space in memory of sizeof the type
-* str: not null when type is 0, 1 or 2
-*/
+ * Lesson learned: when I have an intermittent error, it means,
+ * that happen sometimes and others don't, it usually is a non
+ * variable declaration or bad memory allocation (cause also by typos)
+ * In this case sometimes I got tok->str saved and others don't.
+ * I was with an error with this
+ *   tok = (token *)malloc(sizeof(token *));
+ * because I was allocating in memory a space for a address and
+ * not for a token I like to think in the right side as allocating
+ * space in memory of sizeof the type
+ * str: not null when type is 0, 1 or 2
+ */
 t_token	*create_token(char *input, int start, int end, int type)
 {
 	t_token	*tok;
@@ -51,9 +51,9 @@ t_token	*get_last_token(t_token *first)
 }
 
 /*
-* Add the token at the end of the list of the tokens represented by first
-*/
-//TODO: simular new = NULL
+ * Add the token at the end of the list of the tokens represented by first
+ */
+// TODO: simular new = NULL
 void	add_token(t_token **first, t_token *new)
 {
 	t_token	*last;

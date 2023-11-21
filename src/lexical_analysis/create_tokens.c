@@ -44,10 +44,10 @@ t_token	*create_quote_token(char *input, int *i, int type, int quote_char)
 }
 
 /*
-* Create a redirection token that can be:
-* output redirection, append,
-* input redirection or here doc 
-*/
+ * Create a redirection token that can be:
+ * output redirection, append,
+ * input redirection or here doc
+ */
 t_token	*create_redirec_tok(char *input, int *i, int type, int quote_char)
 {
 	(*i)++;
@@ -61,11 +61,12 @@ t_token	*create_string_token(char *input, int *i)
 	int	start;
 
 	start = *i;
-	(*i)++; //Acho que posso tirar essa linha
+	(*i)++;                                                                                                                                                                                      
+		// Acho que posso tirar essa linha
 	while (input[*i] && input[*i] != DOUB_QUOTE_CHAR
-		&& input[*i] != SING_QUOTE_CHAR
-		&& input[*i] != SPACE_CHAR && input[*i] != GREATER_CHAR
-		&& input[*i] != LESS_CHAR && input[*i] != PIPE_CHAR)  //TODO:se tiver $b/ devem ser dois tokens
+		&& input[*i] != SING_QUOTE_CHAR && input[*i] != SPACE_CHAR
+		&& input[*i] != GREATER_CHAR && input[*i] != LESS_CHAR
+		&& input[*i] != PIPE_CHAR) // TODO:se tiver $b/ devem ser dois tokens
 		(*i)++;
 	return (create_token(input, start, *i - 1, STRING));
 }

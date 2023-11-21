@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-//Verificar erro.. char *** ta fudendo o bagulho
+// Verificar erro.. char *** ta fudendo o bagulho
 
 int	ft_env(char **argv, char ***env, int last_exit)
 {

@@ -12,19 +12,19 @@
 
 #include "minishell.h"
 #include <errno.h>
+#include <fcntl.h>
 #include <limits.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <signal.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <fcntl.h>
 
 char	*get_input(void)
 {
-	char		*input;
+	char	*input;
 
 	input = readline(PROMPT);
 	if (input == NULL)
@@ -36,8 +36,8 @@ char	*get_input(void)
 		{
 			print_error("Brazilian Shell: parsing error - unmatched quotes\n");
 			input[0] = '\0';
-		}	
-	}	
+		}
+	}
 	return (input);
 }
 
@@ -56,7 +56,7 @@ void	init_minishell(char ***envp)
 	{
 		input = get_input();
 		if (!input)
-			exit (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		if (input[0] != '\0')
 		{
 			first_token = lexical_analysis(input);
@@ -64,11 +64,10 @@ void	init_minishell(char ***envp)
 			first_process = process_creation(first_token);
 			last_exit = execute_cmd(first_process, envp, last_exit, functions);
 			//printf("Lista de tokens finais:\n");
-			//print_list(first_token);
+			// print_list(first_token);
 		}
 		clean_input(&input);
-
 	}
 	clear_history();
-	//return (0);
+	// return (0);
 }

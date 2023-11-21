@@ -19,8 +19,8 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 	word_to_expand = NULL;
 	while (is_alnum_or_slash(token->str[*i]))
 		(*i)++;
-	word_to_expand = ft_substr(token->str,
-			dolar_position + 1, *i - dolar_position - 1);
+	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
+			- dolar_position - 1);
 	return (getenv(word_to_expand));
 }
 
@@ -31,35 +31,40 @@ char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
 }
 
 /*
-* If the token type is DOUBLE_QUOTE it must be expanded equally
-* as is in the env. Ex: 
-* In case that we have in env $a="ls  -l  -a  -F"
-* "$a" should produce one token with token->str = "ls  -l  -a  -F"
-* If the token type is STRING it must be expanded 
-* without the spaces. Ex: 
-* In case that we have in env $a="ls  -l  -a  -F"
-* $a should produce four tokens, each token->str would have
-* ls, -l, -a, -F, respectively
-*/
-//retorna o token expandido e no caso em que a expansão gere vários tokens, retorna o último token da expansão
+ * If the token type is DOUBLE_QUOTE it must be expanded equally
+ * as is in the env. Ex:
+ * In case that we have in env $a="ls  -l  -a  -F"
+ * "$a" should produce one token with token->str = "ls  -l  -a  -F"
+ * If the token type is STRING it must be expanded
+ * without the spaces. Ex:
+ * In case that we have in env $a="ls  -l  -a  -F"
+ * $a should produce four tokens, each token->str would have
+ * ls, -l, -a, -F, respectively
+ */
+// retorna o token expandido e no caso em que a expansão gere vários tokens,
+//	retorna o último token da expansão
 t_token	*expand(t_token *token)
 {
 	if (token->type == DOUBLE_QUOTE)
 		return (expand_double_quote_token(token));
 	else
-		return (expand_token_int_n_tokens(token)); 
+		return (expand_token_int_n_tokens(token));
 }
 
-//TODO: tratar falha malloc itoa
+/* TO DO
+Função só funciona com o caso $? sozinho
+Refazer junto com a is_dolarquestion_mark
+-->> proteger malloc (ft_itoa) 
+ */
 char	*get_exit_status(int last_exit)
 {
 	return (ft_itoa(last_exit));
 }
 
 /*
-* If the token to be expand is $? get the exit status.
-* Otherwise check if it's expansible and expand it.
-*/
+ * If the token to be expand is $? get the exit status.
+ * Otherwise check if it's expansible and expand it.
+ */
 int	check_and_expand(t_token *token, int last_exit)
 {
 	if (is_dollarquestion_mark(token->str))
@@ -70,14 +75,13 @@ int	check_and_expand(t_token *token, int last_exit)
 }
 
 /*
-* Expand al the tokens of type DOUBLE_QUOTE or STRING
-*/
+ * Expand al the tokens of type DOUBLE_QUOTE or STRING
+ */
 int	expansion(t_token *first_token, int last_exit)
 {
 	while (first_token)
 	{
-		if (first_token->type == DOUBLE_QUOTE
-			|| first_token->type == STRING)
+		if (first_token->type == DOUBLE_QUOTE || first_token->type == STRING)
 			check_and_expand(first_token, last_exit);
 		first_token = first_token->next;
 	}
