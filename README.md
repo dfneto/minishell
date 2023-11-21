@@ -19,7 +19,7 @@ Organizar makefile
 ### Task 3 - Lucas
 
 Refactor all (refatorar a partir do execute command para o David poder alterar - colocar comentarios TODO para o david ou lucas fazerem depois)  
-Verificar quais builtins faltam e criar tarefas  
+Verificar quais builtins faltam e [criar tarefas](https://github.com/dfneto/minishell/blob/main/src/builtin/builtin_todo.md)    
 Atenção a função Export não tá funcionando  
 Lembrete: executar a env duas vezes  
 
