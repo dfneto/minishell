@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexical_analysis_create_tokens_utils.c             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/10/19 22:38:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:59:57 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,23 @@ t_token	*create_token(char *input, int start, int end, int type)
 	tok->next = NULL;
 	return (tok);
 }
+
+//TODO: juntar esse metodo com o original acima e colocar o next token como opcional ou se possível como obrigatorio
+t_token	*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand)
+{
+	t_token	*tok;
+
+	tok = (t_token *)malloc(sizeof(t_token));
+	if (!tok)
+		return (NULL);
+	tok->str = NULL;
+	if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE) | (type == STRING))
+		tok->str = ft_substr(input, start, end - start + 1);
+	tok->type = type;
+	tok->next = next_tok_after_expand;
+	return (tok);
+}
+
 
 t_token	*get_last_token(t_token *first)
 {

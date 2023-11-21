@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion_utils.c                                  :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/10 20:58:40 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:52:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_token	*create_token_split(char *str, t_token *next_token)
+{
+	t_token	*tok;
+
+	tok = (t_token *)malloc(sizeof(t_token));
+	if (!tok)
+		return (NULL);
+	tok->str = str;
+	tok->type = STRING;
+	tok->next = next_token;
+	return (tok);
+}
 
 int	is_alnum_or_slash(char c)
 {

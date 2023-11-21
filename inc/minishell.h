@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/18 14:06:23 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/21 12:00:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ char		*get_token_without_dolar(t_token *token);
 char		*get_pre_dolar_text(char *str, int *dolar_position, int i);
 char		*get_word_expanded(t_token *token, int *i, int dolar_position);
 void		remove_spaces(char **str);
+t_token		*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand);
+t_token		*create_token_split(char *str, t_token *next_token);
 t_token		*expand_token_int_n_tokens(t_token *token);
 t_token		*expand_double_quote_token(t_token *token);
 t_token		*lexical_analysis(char *input);
