@@ -76,13 +76,12 @@ t_process	*create_process(t_token *token, int num_cmd)
 		}
 		if (token->str)
 		{
-			process->cmd[i] = ft_strdup(token->str);
+			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
 			if (process->cmd[i] == NULL)
 			{
-				perror("strdup");
+				perror("ft_strjoin");
 				exit(EXIT_FAILURE);
 			}
-			i++;
 		}
 		else if (token->type == PIPE)
 			break ;
@@ -92,9 +91,11 @@ t_process	*create_process(t_token *token, int num_cmd)
 			while (token && !token->str)
 				token = token->next;
 		}
+		else if (process->cmd[i] && token->type == SPC)
+			i++;
 		token = token->next;
 	}
-	// print_process(process);
+	//print_process(process);
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	return (process);
