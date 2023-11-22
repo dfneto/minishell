@@ -31,7 +31,7 @@ char	*get_input(int last_exit)
 	{
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
-			exit (last_exit);
+			exit(last_exit);
 	}
 	else if (input && *input)
 	{

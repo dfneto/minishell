@@ -23,7 +23,7 @@ void	add_token_after_aux(t_token **aux, t_token *new_token)
 //$a patata: retorna o token -F com este apontando ao token patata
 t_token	*expand3(t_token *token)
 {
-	printf("expandindo split_token: %s\n", token->str);
+	//printf("expandindo split_token: %s\n", token->str);
 	size_t			i;
 	int			start;
 	char		*token_str;
@@ -39,7 +39,7 @@ t_token	*expand3(t_token *token)
 		token->str = ft_strdup("");
 		return token;
 	}
-	printf("expansão: %s\n", token_str);
+	//printf("expansão: %s\n", token_str);
 	token->str = NULL;
 	aux = token;
 	i = 0;
@@ -69,7 +69,7 @@ t_token	*expand3(t_token *token)
 //e retorna o token -F com este apontando ao token patata
 t_token	*expand4(t_token *token, char *pre_dolar)
 {
-	printf("expandindo split_token: %s\n", token->str);
+	//printf("expandindo split_token: %s\n", token->str);
 	size_t			i;
 	int			start;
 	char		*token_str;
@@ -189,27 +189,27 @@ t_token	*expand_with_text_before_token(t_token *token)
 	pre_dolar = NULL;
 	//joined = NULL;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-	printf("pre-dolar: %s\n", pre_dolar);
+	//printf("pre-dolar: %s\n", pre_dolar);
 	token->str = ft_substr(token->str, dolar_position, ft_strlen(token->str) - ft_strlen(pre_dolar));
 	
 	
 	//inicialização
 	i = 0;
 	new_token = NULL;
-	printf("Token a ser expandido: %s\n", token->str);
+	//printf("Token a ser expandido: %s\n", token->str);
 	split = ft_split(token->str, '$');
 	aux = token;
 	next_tok_after_expand = token->next;
 	token->str = split[0];
-	printf("split #%d que deve ser expandido: %s\n", 0, split[0]);
+	//printf("split #%d que deve ser expandido: %s\n", 0, split[0]);
 	int j = 1;
 	while (split[j]) //$a$b$c => token $a, token $b, token $c
 	{
 		new_token = create_token_split(split[j++], next_tok_after_expand);
 		add_token_after_aux(&aux, new_token);
 	}
-	printf("Lista de tokens recebidos:\n");
-	print_list(token);
+	//printf("Lista de tokens recebidos:\n");
+	//print_list(token);
 
 
 

@@ -25,6 +25,7 @@ int	ft_pwd(char **argv, char ***env, int last_exit)
 	current_dir = (char *)malloc(sizeof(char) * PATH_MAX);
 	if (current_dir == NULL)
 		return (-1);
+	/* USAR ENV $PWD */
 	current_dir = getcwd(current_dir, PATH_MAX);
 	printf("%s\n", current_dir);
 	free(current_dir);
