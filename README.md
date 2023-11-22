@@ -12,6 +12,7 @@ O 2 eh uma copia alterada do 1 e o 4 alterada do 3, sendo que no método 2 eh ch
 
 echo "$USER$USER" -> deve printar sem aspas
 testar hola$USER$USER$USER
+testar $z, hola$z quando z eh uma variável não existente em env
 
 ### Task 2
 
