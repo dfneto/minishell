@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 13:36:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:43:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	add_token_after_aux(t_token **aux, t_token *new_token)
 //$a patata: retorna o token -F com este apontando ao token patata
 t_token	*expand3(t_token *token)
 {
-	printf("expandindo split_token: %s\n", token->str);
+	//printf("expandindo split_token: %s\n", token->str);
 	size_t			i;
 	int			start;
 	char		*token_str;
@@ -39,7 +39,7 @@ t_token	*expand3(t_token *token)
 		token->str = ft_strdup("");
 		return token;
 	}
-	printf("expansão: %s\n", token_str);
+	//printf("expansão: %s\n", token_str);
 	token->str = NULL;
 	aux = token;
 	i = 0;
@@ -69,7 +69,7 @@ t_token	*expand3(t_token *token)
 //e retorna o token -F com este apontando ao token patata
 t_token	*expand4(t_token *token, char *pre_dolar)
 {
-	printf("expandindo split_token: %s\n", token->str);
+	//printf("expandindo split_token: %s\n", token->str);
 	size_t			i;
 	int			start;
 	char		*token_str;
