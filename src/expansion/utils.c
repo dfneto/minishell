@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 12:33:58 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:49:48 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,17 @@ int	is_dollarquestion_mark(char *str)
 	if (str[0] == '$' && str[1] == '?')
 		return (1);
 	return (0);
+}
+
+/*
+* Jump the spaces in a string starting in the i position of the string
+* Return: the indice of the first not space char
+*/
+int	ignore_spaces(char *str, int i)
+{
+	while (str[i] && str[i] != ' ')
+		i++;
+	return (i);
 }
 
 char	*get_pre_dolar_text(char *str, int *dolar_position, int i)

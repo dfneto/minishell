@@ -6,109 +6,50 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 13:43:09 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:40:29 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_token_after_aux(t_token **aux, t_token *new_token)
+t_token *set_token_str(t_token *token, char *value)
 {
-	(*aux)->next = new_token;
-    (*aux) = new_token;
+	token->str = ft_strdup(value);
+	return token;
 }
 
-//return the last part of the token expanded or the token in case that the expansion is null
-//ex: a="ls   -l    -a  -F   " 
-//$a patata: retorna o token -F com este apontando ao token patata
-t_token	*expand3(t_token *token)
+/*
+* Receive a token starting by $. Ex: $a
+* Return: the last part of the token expanded or the token in the 
+* case that the expansion is null
+* ex: a="ls   -l    -a  -F   " 
+* $a patata: returns the token -F with token->next = patata
+*/
+t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 {
-	//printf("expandindo split_token: %s\n", token->str);
-	size_t			i;
-	int			start;
-	char		*token_str;
-	t_token		*aux;
-	t_token		*new_token;
+	char		*expanded_str;
 	t_token		*next_tok_after_expand;
 
-	new_token = NULL;
 	next_tok_after_expand = token->next;
-	token_str = getenv(token->str);
-	if (token_str == NULL)
-	{
-		token->str = ft_strdup("");
-		return token;
-	}
-	//printf("expansão: %s\n", token_str);
+	expanded_str = getenv(token->str);
+	if (expanded_str == NULL)
+		return (set_token_str(token, ""));
 	token->str = NULL;
-	aux = token;
-	i = 0;
-	while(i < ft_strlen(token_str))
-	{
-		if (token_str[i] != ' ') 
-		{
-			start = i;
-			while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
-				i++;
-			if (!token->str) //so entra a primeira vez para cada split_token
-				token->str = ft_substr(token_str, start, i - start);
-			else
-			{
-				new_token = create_token_with_next(token_str, start, i - 1, STRING, next_tok_after_expand);
-				add_token_after_aux(&aux, new_token);
-			}
-		}
-		i++;
-	}
-	return aux; 
+	return (create_tok_per_word_in(expanded_str, pre_dolar, next_tok_after_expand, token));
 }
 
-//return the last part of the token expanded or the token in case that the expansion is null
-//ex: a="ls   -l    -a  -F   " 
-//$a patata: => token ls, token -l, token -a, token -F
-//e retorna o token -F com este apontando ao token patata
-t_token	*expand4(t_token *token, char *pre_dolar)
-{
-	//printf("expandindo split_token: %s\n", token->str);
-	size_t			i;
-	int			start;
-	char		*token_str;
-	t_token		*aux;
-	t_token		*new_token;
-	t_token		*next_tok_after_expand;
 
-	new_token = NULL;
-	next_tok_after_expand = token->next;
-	token_str = getenv(token->str);
-	if (token_str == NULL)
-	{
-		token->str = ft_strdup("");
-		return token;
-	}
-	token->str = NULL;
-	aux = token;
-	i = 0;
-	while(i < ft_strlen(token_str))
-	{
-		if (token_str[i] != ' ') 
-		{
-			start = i;
-			while (token_str[i] && token_str[i] != ' ') //serve para quitar os espaços
-				i++;
-			if (!token->str) //so entra a primeira vez para cada split_token
-				token->str = ft_strjoin(pre_dolar, ft_substr(token_str, start, i - start));
-			else
-			{
-				new_token = create_token_with_next(token_str, start, i - 1, STRING, next_tok_after_expand);
-				add_token_after_aux(&aux, new_token);
-			}
-		}
-		i++;
-	}
-	return (aux);
-}
 
-/*criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens:
+/* 
+* Pequena aula de quando enviar um ponteiro ou o seu endereço:
+* no add_token_after eu envio &ponteiro quando vou alterar o valor do ponteiro no método chamado e quero o valor atualizado aqui,
+* se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de aux a cada
+* while, assim que quero saber seu valor aqui. Então, devo enviar seu endereço. Diferentemente
+* de next_tok_after_expand do qual não será atualizado no método chamado ou new_token que é
+* atualizado e retornado.
+*/
+/*
+* criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens:
 * $b e $c porque $a já foi criado e por isso
 * começamos j=1 porque o j=0 ja foi criado
 * return: the amount of token dollars created
@@ -120,14 +61,11 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 
 	i = 1;
 	new_token = NULL;
-	while (split[i]) //$a$b$c => token $a, token $b, token $c
+	while (split[i])
 	{
 		new_token = create_token_split(split[i], next_tok_after_expand);
-		add_token_after_aux(&aux, new_token); //envio &ponteiro quando vou alterar o valor do ponteiro no método chamado e quero o valor atualizado aqui,
-		i++;									//se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de aux a cada
-												//while, assim que quero saber seu valor aqui. Então, devo enviar seu endereço. Diferentemente
-												//de next_tok_after_expand do qual não será atualizado no método chamado ou new_token que é
-												//atualizado e retornado.
+		add_token_after(&aux, new_token); 
+		i++;
 		
 	}
 	return (i);
@@ -163,14 +101,13 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 
 	split = ft_split(token->str, '$');
 	token->str = split[0]; //reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	
 	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
 	aux = NULL;
 	
-	//agora vou expandir cada split_token
+	//agora vou expandir cada token_$ criado
 	while (token && i < tokens_$_created) 
 	{
-		aux = expand3(token);
+		aux = expand_token_dolar(token, NULL);
 		token = aux->next; 
 		i++;
 	}
@@ -214,28 +151,20 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	
 	split = ft_split(token->str, '$');
 	token->str = split[0];
-
 	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
 	aux = NULL;
-	// while (split[j]) //$a$b$c => token $a, token $b, token $c
-	// {
-	// 	aux = create_token_split(split[j], next_tok_after_expand);
-	// 	add_token_after_aux(&aux, aux);
-	// 	j++;
-	// }
 
 	//aqui vou tratar o primeiro $a diferente dos $b$c. Vou expandir $a e fazer o join com pre-dolar
-	token = expand4(token, pre_dolar);
+	token = expand_token_dolar(token, pre_dolar);
 	token = token->next;
 
 	//agora vou expandir cada split_token
 	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
 	{
-		aux = expand3(token);
+		aux = expand_token_dolar(token, NULL);
 		token = aux->next; 
 		i++;
 	}
-
 	return token;	
 }
 

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/22 12:23:55 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:35:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_builtin
 }   t_builtin;
 
 int			check_open_quotes(char *input);
+int			ignore_spaces(char *str, int i);
 int			clean_input(char **input);
 int			is_exit(char *input);
 int			expansion(t_token *first_token, int last_exit);
@@ -111,8 +112,11 @@ int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
 void		remove_spaces(char **str);
+void		add_token_after(t_token **token, t_token *new_token);
 char		*get_token_without_dolar(t_token *token);
 char		*get_pre_dolar_text(char *str, int *dolar_position, int i);
+char		*deals_with_the_first_word(char *token_str, int i, int start, char *pre_dolar);
+t_token		*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *next_tok_after_expand, t_token *token);
 t_token		*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand);
 t_token		*create_token_split(char *str, t_token *next_token);
 t_token		*expand_token_int_n_tokens(t_token *token);
