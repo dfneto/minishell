@@ -11,6 +11,7 @@ No arquivo expansio devo refatorar os métodos expand:
 O 2 eh uma copia alterada do 1 e o 4 alterada do 3, sendo que no método 2 eh chamado o metodo 4 para um caso de hola$a e o 3 para $b$c (no caos de token hola$a$b$c)
 
 echo "$USER$USER" -> deve printar sem aspas
+testar hola$USER$USER$USER
 
 ### Task 2
 

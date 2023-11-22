@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 12:30:56 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:09:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,11 @@ t_token	*expand4(t_token *token, char *pre_dolar)
 	return (aux);
 }
 
-//criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens
-//começamos como j=1 porque o j=0 ja foi criado
-//return: the amount of token dollars created
+/*criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens:
+* $b e $c porque $a já foi criado e por isso
+* começamos j=1 porque o j=0 ja foi criado
+* return: the amount of token dollars created
+*/
 int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *next_tok_after_expand)
 {
 	int			i;
@@ -131,19 +133,20 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 	return (i);
 }
 
-/* In the case that you have a token of the for $a$b$c
+/* In the case that you have a token of the form $a$b$c
 * it will split in $a, $b, $c, expand each of them and
 * after the split and expansion will
 * return: the last token created after the expansion
 * ex: export a="ls -la"
-* $a Z-> will return the token->str=-la and 
+* $a Z-> will return the token->str=-la 
+* (the token before is the 'ls') and  
 * token->next = token Z 
 * test cases:
 * $a$a$a
 * a $USER$USER a
 * a $a$a$a a
 */
-t_token	*expand_withOUT_text_before_token(t_token *token)
+t_token	*expand_tok_withOUT_text_before(t_token *token)
 {
 	int			i;
 	int			tokens_$_created;
@@ -157,8 +160,6 @@ t_token	*expand_withOUT_text_before_token(t_token *token)
 	aux = token;
 	split = ft_split(token->str, '$');
 	token->str = split[0]; //reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	
-	//crio um token para cada split e adiciono o token criado na sequencia
 	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
 	aux = NULL;
 	while (token && i < tokens_$_created) //agora vou expandir cada split_token
@@ -170,26 +171,37 @@ t_token	*expand_withOUT_text_before_token(t_token *token)
 	return token;
 }
 
-//return the last token created after the expansion
-//hola$a
-//hola$a$b$c     -----> hola $a    $b  $c
-t_token	*expand_with_text_before_token(t_token *token)
+/* In the case that you have a token of the form hola$a$b$c
+* it will split in hola$a, $b, $c, expand eacch of them and
+* after the split and expansion will
+* return: the last token created after the expansion
+* ex: export a="ls -la"
+* hola$a Z-> will return the token->str=-la 
+* (the token before is the 'holals') and 
+* token->next = token Z 
+* test cases:
+* hola$a b
+* hola$a$a$a b
+* hola$USER$USER b
+*/
+t_token	*expand_tok_with_text_before(t_token *token)
 {
 	int			i;
 	int			dolar_position;
+	// int			tokens_$_created;
 	char		*pre_dolar;
-	//char		*joined;
 	t_token		*new_token;
 	char		**split = NULL;
 	t_token 	*aux;
 	t_token 	*next_tok_after_expand; 
 
+
+
 	i = 0;
+	split = NULL;
 	dolar_position = 0;
 	pre_dolar = NULL;
-	//joined = NULL;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-	printf("pre-dolar: %s\n", pre_dolar);
 	token->str = ft_substr(token->str, dolar_position, ft_strlen(token->str) - ft_strlen(pre_dolar));
 	
 	
@@ -252,8 +264,8 @@ t_token	*expand_token_int_n_tokens(t_token *token)
 
 	last_token_expanded = NULL;
 	if (token->str[0] == '$')
-		last_token_expanded = expand_withOUT_text_before_token(token);
+		last_token_expanded = expand_tok_withOUT_text_before(token);
 	else
-		last_token_expanded = expand_with_text_before_token(token);
+		last_token_expanded = expand_tok_with_text_before(token);
 	return (last_token_expanded);
 }
