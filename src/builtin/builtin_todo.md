@@ -45,7 +45,8 @@ Remove variaveis de ambiente!
 ### O que faz no momento?
 Imprime uma frase linda dizendo que não existe essa função  
 ### TO DO:
-Tudo...  
+Prototipo inicial funciona    
+Seg fault as vezes  
 Unset pode usar a função de buscar variavel criada para a função export  
 **Essa função ainda depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
 
@@ -64,5 +65,5 @@ Sair do programa com código que for passado como variável
 ### O que faz no momento?
 Sair do programa com código que for passado como variável  
 ### TO DO:
-Acredito que nada  
+Ver casos estupido... tipo exit --  
 
