@@ -54,10 +54,9 @@ Unset pode usar a função de buscar variavel criada para a função export
 Imprime env na ordem que ele estiver (que para mim parece random...)  
 Só imprime variaveis que tenham valor.  
 ### O que faz no momento?
-Imprime todas as variaveis (uma vez)  
+Imprime todas as variaveis  
 ### TO DO:
 **Essa função ainda depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
-Se seguir com arrays verificar se a impressao com char *** não deleta a lista como faz agora...  
 
 ## Exit
 ### O que deve fazer?
