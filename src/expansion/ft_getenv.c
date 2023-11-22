@@ -12,7 +12,6 @@
 
 #include <minishell.h>
 
-// while is alnum _
 char    *ft_getenv(char *name, char **env, int last_exit)
 {
     if (name[0] == '?')

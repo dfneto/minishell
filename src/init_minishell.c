@@ -31,7 +31,7 @@ char	*get_input(int last_exit)
 	{
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
-			exit(last_exit);
+		exit(last_exit);
 	}
 	else if (input && *input)
 	{
@@ -65,10 +65,11 @@ void	init_minishell(char ***envp)
 		{
 			first_token = lexical_analysis(input);
 			expansion(first_token, last_exit);
+			//printf("Lista de tokens finais:\n");
+			//print_list(first_token);
 			first_process = process_creation(first_token);
 			last_exit = execute_cmd(first_process, envp, last_exit, functions);
-			//printf("Lista de tokens finais:\n");
-			// print_list(first_token);
+
 		}
 		clean_input(&input);
 	}

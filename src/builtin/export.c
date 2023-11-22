@@ -21,7 +21,7 @@ static void	print_ordered(char **env)
 	char	**ordered;
 	int		i;
 
-	printf("print_ordered\n");
+	//printf("print_ordered\n");
 	ordered = create_ordered_env(env);
 	if (ordered == NULL)
 		return ;
@@ -62,12 +62,11 @@ int	add_env(char *str, char ***env)
 	i = 0;
 	while ((*env)[i] != NULL)
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 2));
+	new_env = (char **)ft_calloc(i + 2, sizeof(char *));
 	if (new_env == NULL)
 		return (1);
 	else
 	{
-		ft_memset(new_env, 0, sizeof(char *) * (i + 2));
 		i = 0;
 		while ((*env)[i] != NULL)
 		{

@@ -65,10 +65,9 @@ char	**create_ordered_env(char **env)
 	i = 0;
 	while (env[i] != NULL)
 		i++;
-	or_env = (char **)malloc((i + 1) * sizeof(char *));
+	or_env = (char **)ft_calloc((i + 1), sizeof(char *));
 	if (or_env == NULL)
 		ft_perror(errno, "malloc error");
-	ft_memset(or_env, 0, (i + 1) * sizeof(char *));
 	i = 0;
 	while (env[i] != NULL)
 	{
