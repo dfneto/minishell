@@ -19,6 +19,11 @@ char    *ft_getenv(char *name, char **env, int last_exit)
         return (ft_itoa(last_exit));
     while (*env)
     {
-
+        if (!ft_strncmp(name, *env, ft_strlen(name))
+            && (*env)[ft_strlen(name)] == '=')
+            return (ft_substr(*env, ft_strchr(*env, '=') + 1 - *env,
+                ft_strchr(*env, '\0') - ft_strchr(*env, '=')));
+        env++;
     }
+    return (NULL);
 }

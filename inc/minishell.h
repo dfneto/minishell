@@ -133,6 +133,9 @@ t_process	*create_process(t_token *token, int i);
 
 // VVVVVV LUKITAS VVVVV
 
+char    *ft_getenv(char *name, char **env, int last_exit);
+
+
 
 void    init_signals(void);
 void    init_minishell(char ***envp);
