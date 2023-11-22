@@ -36,6 +36,28 @@ void	clean_array(char **arr)
 	}
 }
 
+void print_path(char *path)
+{
+	int return_val;
+
+	errno = 0;
+	return_val = access(path, F_OK);
+	printf("PATH: %s - F_OK: %d - errno: %d\n", path, return_val, errno);
+	return_val = access(path, X_OK);
+	printf("PATH: %s - X_OK: %d - errno: %d\n", path, return_val, errno);
+}
+
+int	is_cmd_executable(char *cmd)
+{
+	while (*cmd)
+	{
+		if (*cmd == '/')
+			return (1);
+		cmd++;
+	}
+	return (0);
+}
+
 char	*get_path(char **cmd)
 {
 	char	*abs_path;
@@ -43,12 +65,17 @@ char	*get_path(char **cmd)
 	int		i;
 
 	i = 0;
-	abs_path = (char *)malloc(sizeof(char) * PATH_MAX);
+	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
 		return (NULL);
-	ft_strlcat(abs_path, cmd[0], PATH_MAX);
-	if (!access(abs_path, X_OK))
-		return (abs_path);
+	if (is_cmd_executable(cmd[0]))
+	{
+		ft_strlcat(abs_path, cmd[0], PATH_MAX);
+	//	printf("CMD: %s\n", cmd[0]);
+	//	print_path(abs_path);
+		if (!access(abs_path, X_OK))
+			return (abs_path);
+	}
 	paths = ft_split(getenv("PATH"), ':');
 	if (paths)
 	{
@@ -58,6 +85,7 @@ char	*get_path(char **cmd)
 			ft_strlcpy(abs_path, paths[i], ft_strlen(paths[i]) + 1);
 			ft_strlcat(abs_path, "/", PATH_MAX);
 			ft_strlcat(abs_path, cmd[0], PATH_MAX);
+	//		print_path(abs_path);
 			if (!access(abs_path, X_OK))
 			{
 				clean_array(paths);
