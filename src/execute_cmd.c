@@ -58,7 +58,7 @@ int	is_cmd_executable(char *cmd)
 	return (0);
 }
 
-char	*get_path(char **cmd)
+char	*get_path(char **cmd, char **env, int last_exit)
 {
 	char	*abs_path;
 	char	**paths;
@@ -71,12 +71,12 @@ char	*get_path(char **cmd)
 	if (is_cmd_executable(cmd[0]))
 	{
 		ft_strlcat(abs_path, cmd[0], PATH_MAX);
-	//	printf("CMD: %s\n", cmd[0]);
-	//	print_path(abs_path);
+		//printf("CMD: %s\n", cmd[0]);
+		//print_path(abs_path);
 		if (!access(abs_path, X_OK))
 			return (abs_path);
 	}
-	paths = ft_split(getenv("PATH"), ':');
+	paths = ft_split(ft_getenv("PATH", env, last_exit), ':');
 	if (paths)
 	{
 		while (paths[i])
@@ -85,7 +85,7 @@ char	*get_path(char **cmd)
 			ft_strlcpy(abs_path, paths[i], ft_strlen(paths[i]) + 1);
 			ft_strlcat(abs_path, "/", PATH_MAX);
 			ft_strlcat(abs_path, cmd[0], PATH_MAX);
-	//		print_path(abs_path);
+			//print_path(abs_path);
 			if (!access(abs_path, X_OK))
 			{
 				clean_array(paths);
@@ -99,11 +99,11 @@ char	*get_path(char **cmd)
 	return (NULL);
 }
 
-int	is_executable(char **cmd, char **envp)
+int	is_executable(char **cmd, char **envp, int last_exit)
 {
 	char	*path;
 
-	path = get_path(cmd);
+	path = get_path(cmd, envp, last_exit);
 	if (path == NULL)
 	{
 		print_error("Brazilian Shell: ");
@@ -143,7 +143,7 @@ int	execute_single_cmd(char **cmd, char ***env, int last_exit,
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
-			is_executable(cmd, *env);
+			is_executable(cmd, *env, last_exit);
 		else
 		{
 			wait(&last_exit);
@@ -217,35 +217,6 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit,
 		i++;
 	}
 	last_exit = WEXITSTATUS(last_exit);
-	/* 	while (process)
-		{
-			if (process->next)
-			{
-				check = pipe(process->fd);
-				if (check == -1)
-					exit(EXIT_FAILURE);
-			}
-			check = fork();
-			if (check < 0)
-				exit(EXIT_FAILURE);
-			if (check == CHILD)
-			{
-				child_pipes(process);
-				exit(execute_single_cmd(process->cmd, env, last_exit,
-						functions));
-			}
-			else
-			{
-				if (process->prev)
-				{
-					close(process->prev->fd[0]);
-					close(process->prev->fd[1]);
-				}
-				wait(&last_exit);
-				last_exit = WEXITSTATUS(last_exit);
-			}
-			process = process->next;
-		} */
 	return (last_exit);
 }
 

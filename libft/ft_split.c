@@ -75,14 +75,17 @@ char	**ft_split(char const *s, char c)
 	char	**r;
 	size_t	words;
 
-	words = count_words(s, c);
-	r = (char **) malloc (sizeof(char *) * (words + 1));
-	if (r != NULL)
+	if(s)
 	{
-		if (set_words (r, s, words + 1, c))
-			return (r);
-		else
-			return (NULL);
+		words = count_words(s, c);
+		r = (char **) malloc (sizeof(char *) * (words + 1));
+		if (r != NULL)
+		{
+			if (set_words (r, s, words + 1, c))
+				return (r);
+			else
+				return (NULL);
+		}
 	}
 	return (NULL);
 }

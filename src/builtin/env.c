@@ -16,17 +16,19 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// Verificar erro.. char *** ta fudendo o bagulho
-
 int	ft_env(char **argv, char ***env, int last_exit)
 {
+	char **tmp;
+	
 	(void)argv;
 	(void)last_exit;
+	tmp = *env;
 	while (**env)
 	{
 		if (strrchr(**env, '='))
 			printf("%s\n", **env);
 		(*env)++;
 	}
+	*env = tmp;
 	return (0);
 }
