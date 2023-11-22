@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/21 11:52:00 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:33:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,8 @@ int	is_dollarquestion_mark(char *str)
 	return (0);
 }
 
-void	remove_spaces(char **str)
+char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
 {
-	// fazer um ft_strtrim para quitar los espacios de principio y del final. ex: _____hola_julia____-> hola_julia
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-	}
+	*dolar_position = get_dolar_position(str, i);
+	return (ft_substr(str, i, *dolar_position - i));
 }
