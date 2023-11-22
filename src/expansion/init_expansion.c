@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 12:34:08 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:28:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*get_exit_status(int last_exit)
  */
 int	check_and_expand(t_token *token, int last_exit)
 {
+	//TODO: testar 123$? -> se resolver por aqui retiramos o last do ft_getenv
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))

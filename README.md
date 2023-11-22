@@ -72,3 +72,6 @@ Na verdade deve retornar
 ### Task 10
 
 LEAKSSSSSSS!
+
+### Task 11
+Alterar todas as expansões para usar a ft_getenv
