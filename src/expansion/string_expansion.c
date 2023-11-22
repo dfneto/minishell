@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 13:09:51 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:36:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,14 +158,20 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
+
+	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
+
 	split = ft_split(token->str, '$');
 	token->str = split[0]; //reaproveitamos o token atual, mas para isso precisamos alterar seu valor
+	
 	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
 	aux = NULL;
-	while (token && i < tokens_$_created) //agora vou expandir cada split_token
+	
+	//agora vou expandir cada split_token
+	while (token && i < tokens_$_created) 
 	{
 		aux = expand3(token);
-		token = aux->next; //ou token = next token do ultimo token expandido
+		token = aux->next; 
 		i++;
 	}
 	return token;
@@ -187,55 +193,46 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 t_token	*expand_tok_with_text_before(t_token *token)
 {
 	int			i;
-	int			dolar_position;
-	// int			tokens_$_created;
-	char		*pre_dolar;
-	t_token		*new_token;
-	char		**split = NULL;
+	int			tokens_$_created;
+	char		**split;
 	t_token 	*aux;
 	t_token 	*next_tok_after_expand; 
-
-
+	
+	int			dolar_position;
+	char		*pre_dolar;
 
 	i = 0;
 	split = NULL;
-	dolar_position = 0;
+	next_tok_after_expand = token->next;
+	aux = token;
+	
+	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 	pre_dolar = NULL;
+	dolar_position = 0;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
 	token->str = ft_substr(token->str, dolar_position, ft_strlen(token->str) - ft_strlen(pre_dolar));
 	
-	
-	//inicialização
-	i = 0;
-	new_token = NULL;
-	printf("Token a ser expandido: %s\n", token->str);
 	split = ft_split(token->str, '$');
-	aux = token;
-	next_tok_after_expand = token->next;
 	token->str = split[0];
-	printf("split #%d que deve ser expandido: %s\n", 0, split[0]);
-	int j = 1;
-	while (split[j]) //$a$b$c => token $a, token $b, token $c
-	{
-		new_token = create_token_split(split[j++], next_tok_after_expand);
-		add_token_after_aux(&aux, new_token);
-	}
-	printf("Lista de tokens recebidos:\n");
-	print_list(token);
 
-
+	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
+	aux = NULL;
+	// while (split[j]) //$a$b$c => token $a, token $b, token $c
+	// {
+	// 	aux = create_token_split(split[j], next_tok_after_expand);
+	// 	add_token_after_aux(&aux, aux);
+	// 	j++;
+	// }
 
 	//aqui vou tratar o primeiro $a diferente dos $b$c. Vou expandir $a e fazer o join com pre-dolar
-	
 	token = expand4(token, pre_dolar);
 	token = token->next;
 
-
-
-	while (token && i < j - 1) //agora vou expandir cada split_token //entender pq tem que ser j - 1, do contrário da vários erros
+	//agora vou expandir cada split_token
+	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
 	{
-		next_tok_after_expand = expand3(token);
-		token = next_tok_after_expand->next; //ou token = next token do ultimo token expandido
+		aux = expand3(token);
+		token = aux->next; 
 		i++;
 	}
 
