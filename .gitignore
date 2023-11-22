@@ -8,6 +8,5 @@ obj/*
 *.d
 minishell
 *.dSYM/
-mpanic
-mpanic/*
+
 

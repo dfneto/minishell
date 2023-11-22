@@ -22,13 +22,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-char	*get_input(void)
+char	*get_input(int last_exit)
 {
 	char	*input;
 
 	input = readline(PROMPT);
 	if (input == NULL)
-		perror("Readline failed");
+	{
+		if (isatty(STDIN_FILENO))
+			write(2, "exit\n", 6);
+			exit (last_exit);
+	}
 	else if (input && *input)
 	{
 		add_history(input);
@@ -54,7 +58,7 @@ void	init_minishell(char ***envp)
 	first_process = NULL;
 	while (42)
 	{
-		input = get_input();
+		input = get_input(last_exit);
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0')
