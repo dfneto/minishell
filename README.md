@@ -30,7 +30,7 @@ Sinais
 
 Redirect && heredoc 
 
-### Task 6 - Lucas
+### Task 6 - Lucas - Aparentemente ok
 
 Executavel precisa ./ ????  
 Execve executa arquivos baseados na pasta que ele esta e nao necessita ./  
