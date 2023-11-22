@@ -20,6 +20,8 @@ static int	is_num(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;
+	if (!ft_isdigit(*str))
+		return (0);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -32,11 +34,10 @@ static int	is_num(char *str)
 int	ft_exit(char **argv, char ***env, int last_exit)
 {
 	(void)env;
-	(void)last_exit;
-	printf("exit\n");
+	//printf("exit\n");
 	argv++;
 	if (argv[0] == NULL)
-		exit(0);
+		exit(last_exit);
 	if (is_num(argv[0]) && argv[1] == NULL)
 		exit(ft_atoi(argv[0]));
 	else if (!is_num(argv[0]))
