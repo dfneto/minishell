@@ -6,17 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 17:40:29 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:52:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_token *set_token_str(t_token *token, char *value)
-{
-	token->str = ft_strdup(value);
-	return token;
-}
 
 /*
 * Receive a token starting by $. Ex: $a
@@ -37,8 +31,6 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 	token->str = NULL;
 	return (create_tok_per_word_in(expanded_str, pre_dolar, next_tok_after_expand, token));
 }
-
-
 
 /* 
 * Pequena aula de quando enviar um ponteiro ou o seu endereço:

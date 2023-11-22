@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 17:34:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:51:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ void	add_token_after(t_token **token, t_token *new_token)
 {
 	(*token)->next = new_token;
     (*token) = new_token;
+}
+
+t_token *set_token_str(t_token *token, char *value)
+{
+	token->str = ft_strdup(value);
+	return token;
 }
 
 /*

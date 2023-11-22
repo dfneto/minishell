@@ -10,10 +10,6 @@ No arquivo expansio devo refatorar os métodos expand:
 2->4,3 //caso hola$a$b$c
 O 2 eh uma copia alterada do 1 e o 4 alterada do 3, sendo que no método 2 eh chamado o metodo 4 para um caso de hola$a e o 3 para $b$c (no caos de token hola$a$b$c)
 
-echo "$USER$USER" -> deve printar sem aspas
-testar hola$USER$USER$USER
-testar $z, hola$z quando z eh uma variável não existente em env
-
 ### Task 2
 
 Organizar makefile  
@@ -76,3 +72,22 @@ LEAKSSSSSSS!
 
 ### Task 11
 Alterar todas as expansões para usar a ft_getenv
+
+### Task 12
+echo "$USER$USER" -> deve printar sem aspas
+testar hola$USER$USER$USER
+export a="  ls   -l   -a  -F   "
+testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
+
+Resolver:
+testar $z, hola$z quando z eh uma variável não existente em env
+
+Resolver:
+export a="  ls   -l   -a  -F   "
+export b="ls   -la  "
+
+hola$a
+bash: hola: command not found
+
+hola$b
+bash: holals: command not found
