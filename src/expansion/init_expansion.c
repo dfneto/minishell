@@ -1,34 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion.c                                        :+:      :+:    :+:   */
+/*   init_expansion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/18 16:28:26 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:34:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_word_expanded(t_token *token, int *i, int dolar_position)
-{
-	char	*word_to_expand;
-
-	word_to_expand = NULL;
-	while (is_alnum_or_slash(token->str[*i]))
-		(*i)++;
-	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
-			- dolar_position - 1);
-	return (getenv(word_to_expand));
-}
-
-char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
-{
-	*dolar_position = get_dolar_position(str, i);
-	return (ft_substr(str, i, *dolar_position - i));
-}
 
 /*
  * If the token type is DOUBLE_QUOTE it must be expanded equally

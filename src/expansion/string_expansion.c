@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/21 23:56:59 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:30:56 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,19 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 	return (i);
 }
 
-//a $USER$USER a - ok
-//a $a$a$a a - ok
-t_token	*expand1(t_token *token) //$a$a$a
+/* In the case that you have a token of the for $a$b$c
+* it will split in $a, $b, $c, expand each of them and
+* after the split and expansion will
+* return: the last token created after the expansion
+* ex: export a="ls -la"
+* $a Z-> will return the token->str=-la and 
+* token->next = token Z 
+* test cases:
+* $a$a$a
+* a $USER$USER a
+* a $a$a$a a
+*/
+t_token	*expand_withOUT_text_before_token(t_token *token)
 {
 	int			i;
 	int			tokens_$_created;
@@ -160,12 +170,10 @@ t_token	*expand1(t_token *token) //$a$a$a
 	return token;
 }
 
-
-
-
-// hola$a
-// hola$a$b$c     -----> hola $a    $b  $c
-t_token	*expand2(t_token *token)
+//return the last token created after the expansion
+//hola$a
+//hola$a$b$c     -----> hola $a    $b  $c
+t_token	*expand_with_text_before_token(t_token *token)
 {
 	int			i;
 	int			dolar_position;
@@ -223,23 +231,29 @@ t_token	*expand2(t_token *token)
 }
 
 /*
-* Can expand one token into 1 or more tokens.
+* Expand one token into 1 or more tokens.
+* return: the last token created after the expansion
+* There are 2 cases to expand:
+* $a$b$c
+# some_text$a$b$c
+* Ex:
+*	$a="ls   -la" -> tokens: ls, -la
+*   $b="    ls    -l    -a    -F    " -> tokens: ls, -l -a, -F
+*   hola$a -> tokens: holals, -la
+*   hola$USER$USER -> token: holadaviferndaviferndavifern
+*	$USER$USER - ok
+*	$b$b Z > -> tokens: ls, -l -a, -F, Z
+*	$a$a Z -> tokens: ls, -la, ls -la, Z
+*	$a Z -> tokens: ls, -la, Z
 */
-/* Casos que devem passar
-    $a=ls   -la - ok
-    $b=     ls    -l    -a    -F    / - ok
-    hola$a - ok
-    hola$USER$USER -> deve ter o mesmo comportamento de quandao esta entre "": get_expanded_token(token)
-	$USER$USER - ok
-	$a$a a=ls   -l  -a  -F   <fim> -> ok
-	$a$a b -> ok
-	$a b -> ok
-*/
-//return the last token created after the expansion
 t_token	*expand_token_int_n_tokens(t_token *token)
 {
-	if (token->str[0] == '$') //$a$a$a
-		return (expand1(token));
+	t_token	*last_token_expanded;
+
+	last_token_expanded = NULL;
+	if (token->str[0] == '$')
+		last_token_expanded = expand_withOUT_text_before_token(token);
 	else
-		return (expand2(token)); //TODO: hola$a
+		last_token_expanded = expand_with_text_before_token(token);
+	return (last_token_expanded);
 }
