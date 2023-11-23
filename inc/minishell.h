@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/22 17:51:21 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:13:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		print_list(t_token *root);
 void		remove_spaces(char **str);
+char		*remove_pre_dolar_text(char *str, int start);
 void		add_token_after(t_token **token, t_token *new_token);
 char		*get_token_without_dolar(t_token *token);
 char		*get_pre_dolar_text(char *str, int *dolar_position, int i);

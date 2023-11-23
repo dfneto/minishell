@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 17:51:07 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:13:04 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ void	add_token_after(t_token **token, t_token *new_token)
 {
 	(*token)->next = new_token;
     (*token) = new_token;
+}
+
+/*
+* Remove an certain amount of chars (size_to_remove) 
+* from a string str starting from start char and
+* return: the new string
+*/
+char	*remove_pre_dolar_text(char *str, int start)
+{
+	return (ft_substr(str, start, ft_strlen(str) - start));
 }
 
 t_token *set_token_str(t_token *token, char *value)
