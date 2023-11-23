@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/23 17:13:04 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:48:11 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,16 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *ne
 	
 	i = 0;
 	new_token = NULL;
-	while(i < ft_strlen(expanded_str))
-	{
+
+	printf("String a ser tokenizada: %s\n", expanded_str);
+	printf("token->str: %s\n", token->str);
+	printf("next_tok_after_expand->str: %s\n", next_tok_after_expand->str);
+	while(i < ft_strlen(expanded_str)) 
+	{ //TODO: tratar aqui a transformação de N espaços em 1 token space
+		if (expanded_str[i] == ' ')
+		//crio um token vazio do tipo str
+		//faco token->str = " " e token->type = space e tolen->next para o token vazio
+		//token = token->next
 		if (expanded_str[i] != ' ') 
 		{
 			start = i;

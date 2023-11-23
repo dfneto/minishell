@@ -2,7 +2,7 @@
 
 ## TO DO
 
-### Task 1
+### Task 1 - OK
 
 Refactor
 No arquivo expansio devo refatorar os métodos expand:
@@ -73,14 +73,12 @@ LEAKSSSSSSS!
 ### Task 11
 Alterar todas as expansões para usar a ft_getenv
 
-### Task 12
-echo "$USER$USER" -> deve printar sem aspas
-testar hola$USER$USER$USER
-export a="  ls   -l   -a  -F   "
-testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
+### Task 12 - BUGS
+Resolver: OK!!!
+testar $z, hola$z quando z eh uma variável não existente em env
 
 Resolver:
-testar $z, hola$z quando z eh uma variável não existente em env
+Criar um token espaço para quando houver n espaços
 
 Resolver:
 export a="  ls   -l   -a  -F   "
@@ -91,3 +89,9 @@ bash: hola: command not found
 
 hola$b
 bash: holals: command not found
+
+Verificar:
+echo "$USER$USER" -> deve printar sem aspas
+testar hola$USER$USER$USER
+export a="  ls   -l   -a  -F   "
+testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
