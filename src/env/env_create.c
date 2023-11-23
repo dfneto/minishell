@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:17:20 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/14 11:17:22 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:16:23 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	clean_env(t_env *env)
 	}
 }
 
-
 // MODIFICAR PARA ADICIONAR EM ORDEM
 int	add_node_to_env(t_env *env, t_node *node)
 {
@@ -48,9 +47,6 @@ int	add_node_to_env(t_env *env, t_node *node)
 	return (0);
 }
 
-
-// CRIAR ORDENADA?
-// MUDAR t_env e deixar t_node
 int	create_env(t_env *env, char **envp)
 {
 	int		i;

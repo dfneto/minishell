@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:17:20 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/14 11:17:22 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:17:18 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ char **create_fucking_array(t_env env)
 
 2. função que deleta o array (talvez não seja necessaria)
  */
-int ft_unsetenv(t_env *env, char *name)
+int	ft_unsetenv(t_env *env, char *name)
 {
 	t_node	*tmp;
 	t_node	*prev;
-	
+
 	if (name == NULL)
 		return (1);
 	tmp = env->head;
@@ -50,6 +50,9 @@ int ft_unsetenv(t_env *env, char *name)
 }
 
 
+/* 
+REFACTOR IT
+*/
 int	ft_setenv(t_env *env, char *name, char *value, int ow)
 {
 	t_node	*tmp;
@@ -62,22 +65,28 @@ int	ft_setenv(t_env *env, char *name, char *value, int ow)
 	{
 		if (!ft_strcmp(tmp->name, name))
 		{
-			if (ow)
+			if (ow && tmp->value)
 			{
 				free(tmp->value);
+				tmp->value = value;
+				return (0);
+			}
+			else if (ow)
+			{
 				tmp->value = value;
 				return (0);
 			}
 			else
 			{
 				current_env = ft_strdup(tmp->value);
-				free(tmp->value);
+				if (tmp->value)
+					free(tmp->value);
 				tmp->value = ft_strjoin(current_env, value);
 				free(current_env);
 				if (!tmp->value)
 					return (1);
+				return (0);
 			}
-
 		}
 		tmp = tmp->next;
 	}

@@ -116,22 +116,10 @@ int	is_executable(char **cmd, t_env envp, int last_exit)
 	exit(EXIT_FAILURE);
 }
 
-void	child_pipes(t_process *process)
-{
-	if (process->prev)
-	{
-		dup2(process->prev->fd[0], 0);
-		close(process->prev->fd[0]);
-		close(process->prev->fd[1]);
-	}
-	if (process->next)
-	{
-		close(process->fd[0]);
-		dup2(process->fd[1], 1);
-		close(process->fd[1]);
-	}
-}
-
+/* 
+REFACTOR
+FORK desnecessario... as vezes
+*/
 int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 		t_builtin functions[])
 {
@@ -160,6 +148,10 @@ void	close_pipes(int pipe[])
 	close(pipe[1]);
 }
 
+/* 
+REFACTOR
+TOO FUCKING BIG
+*/
 int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {

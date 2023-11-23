@@ -16,96 +16,136 @@
 #include <stdio.h>
 #include <unistd.h>
 
-//DELETE? Change...
-/* static void	print_ordered(t_env env)
+int add_alphabetical(t_node **head, t_node *new_node)
 {
-	char	**ordered;
-	int		i;
+	t_node	*current;
+	
+	if (!new_node)
+		return (1);
+	if (*head == NULL || ft_strcmp((*head)->name, new_node->name) >= 0)
+	{
+		new_node->next = *head;
+		*head = new_node;
+	}
+	else
+	{
+		current = *head;
+		while (current->next != NULL && ft_strcmp(current->next->name, new_node->name) < 0)
+			current = current->next;
+		new_node->next = current->next;
+		current->next = new_node;
+	}
+	return (0);
+}
 
-	//printf("print_ordered\n");
+t_node	*create_ordered_env(t_env env)
+{
+	t_node	*head;
+	t_node 	*tmp;
+
+	head = NULL;
+	while (env.head)
+	{
+		if (!env.head->value)
+			tmp = create_node(ft_strdup(env.head->name), NULL);
+		else
+			tmp = create_node(ft_strdup(env.head->name), ft_strdup(env.head->value));
+		if (add_alphabetical(&head, tmp))
+			break ;
+		env.head = env.head->next;
+	}
+	return (head);
+}
+
+static void	print_ordered(t_env env)
+{
+	t_node	*ordered;
+	t_node	*tmp;
+
 	ordered = create_ordered_env(env);
 	if (ordered == NULL)
 		return ;
-	i = 0;
-	while (ordered[i] != NULL)
+	while (ordered)
 	{
-		printf("declare -x %s\n", ordered[i]);
-		i++;
+		tmp = ordered;
+		printf("declare -x %s", ordered->name);
+		if (ordered->value)
+			printf("=\"%s\"\n", ordered->value);
+		else
+			printf("\n");
+		ordered = ordered->next;
+		clean_node(tmp);
 	}
-	clean_env(&ordered);
-} */
+}
 
-
-// Talvez de pra usar
-/* static int	is_valid_env(char *str)
+static int	is_valid_env(char *str)
 {
 	if (!(ft_isalpha(*str) || *str == '_'))
-		return (0);
+		return (-1);
 	str++;
 	while (*str && *str != '=' && *str != '+')
 	{
 		if (!ft_isalnum(*str))
-			return (0);
+			return (-1);
 		str++;
 	}
 	if (*str == '+')
 	{
 		str++;
-		if (*str != '=')
+		if (*str == '=')
 			return (0);
+		return (-1);
 	}
 	return (1);
-} */
+}
 
-//DELETE?
-/* int	add_env(char *str, t_env *env)
-{
-	char	**new_env;
-	int		i;
+/*
+SegFault	-> TEST= ou TEST
+			-> strdup na criaçāo do node
 
-	i = 0;
-	while ((*env)[i] != NULL)
-		i++;
-	new_env = (char **)ft_calloc(i + 2, sizeof(char *));
-	if (new_env == NULL)
-		return (1);
-	else
-	{
-		i = 0;
-		while ((*env)[i] != NULL)
-		{
-			new_env[i] = (*env)[i];
-			i++;
-		}
-		new_env[i] = ft_strdup(str);
-		free(*env);
-		*env = new_env;
-	}
-	return (0);
-} */
-
+TODO:
+	-> Rever parsing do env
+ */
 int	ft_export(char **argv, t_env *env, int last_exit)
 {
-	//int	ret;
+	int	ret;
+	int mode;
+	size_t	pos;
 
 	(void)last_exit;
-	(void)env;
-	//ret = 0;
-	(void)argv;
-/* 	if (*argv == NULL)
+	ret = 0;
+
+	argv++;
+	if (*argv == NULL)
 	{
 		print_ordered(*env);
 		return (ret);
-	} */
-/* 	while (*argv)
+	}
+	while (*argv)
 	{
-		if (is_valid_env(*argv))
-			ft_setenv(env, *argv,)
-			add_env(*argv, env);
+		mode = is_valid_env(*argv);
+		if (mode >= 0)
+		{
+			//separar e checkar seg fault
+			if (mode)
+			{
+				pos = ft_strchr(*argv, '=') - *argv;
+				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 1), mode);
+			}
+			else
+			{
+				pos = ft_strchr(*argv, '+') - *argv;
+				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 2), mode);
+			}
+		}
 		else
+		{
 			ret = 1;
+			print_error("Brazilian Shell: export: `");
+			print_error(*argv);
+			print_error("\': not a valid identifier\n");
+		}
 		argv++;
-	} */
-	printf("NOT IMPLEMENTED\n");
-	return (0);
+	}
+	return (ret);
 }
