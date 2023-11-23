@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   node_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/23 16:15:18 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/11/23 16:15:53 by lsulzbac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 void	clean_node(t_node *node)
@@ -11,7 +23,7 @@ void	clean_node(t_node *node)
 
 t_node	*create_node(char *name, char *value)
 {
-	t_node *node;
+	t_node	*node;
 
 	if (name == NULL)
 		return (NULL);

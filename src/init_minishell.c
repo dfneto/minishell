@@ -71,7 +71,6 @@ void	init_minishell(t_env *envp)
 			//print_list(first_token);
 			first_process = process_creation(first_token);
 			last_exit = execute_cmd(first_process, envp, last_exit, functions);
-
 		}
 		clean_input(&input);
 	}

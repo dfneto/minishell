@@ -13,6 +13,18 @@
 #include "libft.h"
 #include "minishell.h"
 
+void	print_array(char **cmd)
+{
+	int i = 0;
+
+	printf("cmd...\n");
+	while (cmd[i])
+	{
+		printf("%s\n", cmd[i]);
+		i++;
+	}
+}
+
 int	execute_builtins(char **argv, t_env *env, int last_exit,
 		t_builtin functions[])
 {
@@ -22,7 +34,10 @@ int	execute_builtins(char **argv, t_env *env, int last_exit,
 	while (i < BUILTINS_NUM)
 	{
 		if (!ft_strcmp(functions[i].name, argv[0]))
-			return (functions[i].function(argv, env, last_exit));
+		{
+			//print_array(argv);
+			return (functions[i].function(argv, env, last_exit));	
+		}
 		i++;
 	}
 	return (-1);

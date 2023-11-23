@@ -180,7 +180,7 @@ void	clean_node(t_node *node);
 //Old stuff...
 int	add_env(char *str, t_env *env);
 char    *expand_env(char *name, char **env, int last_exit);
-char   **create_ordered_env(char **env);
+t_node   *create_ordered_env(t_env env);
 
 void	ft_perror(int err, char *msg);
 
