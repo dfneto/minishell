@@ -12,6 +12,7 @@ SRC_DIR_LEXICAL_ANALYSIS = src/lexical_analysis
 SRC_DIR_BUILTIN = src/builtin
 SRC_DIR_PROCESS = src/process
 SRC_DIR_UTIL = src/utils
+SRC_DIR_ENV = src/env
 OBJ_DIR = obj
 DEP_DIR = dep
 INC_DIR = inc
@@ -21,12 +22,13 @@ SRC = main.c init_minishell.c execute_cmd.c # init_signals.c
 	
 # Expansion source files (located in the SRC_DIR_EXPANSION directory)
 BUL_SRC = cd.c export.c echo.c pwd.c \
-	exit.c env.c env_utils.c export_utils.c \
-	unset.c execute_builtins.c init_builtins.c
-EXP_SRC = init_expansion.c utils.c string_expansion.c double_quotes_expansion.c ft_getenv.c utils_2.c
+	exit.c env.c export_utils.c init_builtins.c\
+	unset.c execute_builtins.c 
+EXP_SRC = init_expansion.c utils.c string_expansion.c double_quotes_expansion.c utils_2.c
 LEX_SRC = lexical_analysis.c create_tokens.c utils.c
 PROC_SRC = process_quotes.c process_creation.c process_utils.c
 UTILS_SRC = print_error.c ft_perror.c printers.c
+ENV_SRC = env_create.c env_utils.c node_utils.c
 
 # Combine main source files and expansion source files and adjust the paths for object files
 FULL_SRC = $(addprefix $(SRC_DIR)/, $(SRC)) \
@@ -34,7 +36,8 @@ FULL_SRC = $(addprefix $(SRC_DIR)/, $(SRC)) \
 	$(addprefix $(SRC_DIR_LEXICAL_ANALYSIS)/, $(LEX_SRC)) \
 	$(addprefix $(SRC_DIR_BUILTIN)/, $(BUL_SRC)) \
 	$(addprefix $(SRC_DIR_PROCESS)/, $(PROC_SRC)) \
-	$(addprefix $(SRC_DIR_UTIL)/, $(UTILS_SRC))
+	$(addprefix $(SRC_DIR_UTIL)/, $(UTILS_SRC)) \
+	$(addprefix $(SRC_DIR_ENV)/, $(ENV_SRC))
 OBJ = $(FULL_SRC:%.c=$(OBJ_DIR)/%.o)
 DEP = $(FULL_SRC:%.c=$(DEP_DIR)/%.d)
 
@@ -63,6 +66,10 @@ $(OBJ_DIR)/src/utils/%.o: $(SRC_DIR_UTIL)/%.c | setup
 	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
 	@mv $(@:.o=.d) $(DEP_DIR)/
 
+$(OBJ_DIR)/src/env/%.o: $(SRC_DIR_ENV)/%.c | setup
+	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
+	@mv $(@:.o=.d) $(DEP_DIR)/
+
 all: setup lib $(NAME) 
 
 $(NAME): $(lib) $(OBJ)
@@ -76,6 +83,7 @@ setup:
 	@mkdir -p $(OBJ_DIR)/src/builtin
 	@mkdir -p $(OBJ_DIR)/src/process
 	@mkdir -p $(OBJ_DIR)/src/utils
+	@mkdir -p $(OBJ_DIR)/src/env
 	@mkdir -p $(DEP_DIR)
 
 clean:

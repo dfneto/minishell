@@ -39,7 +39,7 @@ int	ft_chdir(char *str)
 
 /* COLOCAR GETCWD AQUI... EM ALGUM LUGAR */
 
-int	ft_cd(char **argv, char ***env, int last_exit)
+int	ft_cd(char **argv, t_env *env, int last_exit)
 {
 	int	argc;
 

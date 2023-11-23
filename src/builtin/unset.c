@@ -16,41 +16,13 @@
 #include <unistd.h>
 #include <minishell.h>
 
-void try_to_unset(char *name, char ***env)
-{
-	int	i;
-	
-	i = 0;
-	while ((*env)[i])
-	{
-		printf("%s\n", (*env)[i]);
-		if (!ft_strncmp(name, (*env)[i], ft_strlen(name))
-            && (*env)[i][ft_strlen(name)] == '=')
-			{
-				printf("Found: %s\n", name);
-				free((*env)[i]);
-				(*env)[i] = NULL;	
-				i++;
-				while ((*env)[i])
-				{
-					printf("Swapping: %s\n", (*env)[i]);
-
-					(*env)[i - 1] = (*env)[i];
-					(*env)[i] = NULL;
-					i++;
-				}
-			}
-		i++;
-	}
-}
-
-int	ft_unset(char **argv, char ***env, int last_exit)
+int	ft_unset(char **argv, t_env *env, int last_exit)
 {
 	(void)last_exit;
 	argv++;
 	while (*argv)
 	{
-		try_to_unset(*argv, env);
+		ft_unsetenv(env, *argv);
 		argv++;
 	}
 	return (0);

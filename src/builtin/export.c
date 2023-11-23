@@ -16,7 +16,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static void	print_ordered(char **env)
+//DELETE? Change...
+/* static void	print_ordered(t_env env)
 {
 	char	**ordered;
 	int		i;
@@ -32,9 +33,11 @@ static void	print_ordered(char **env)
 		i++;
 	}
 	clean_env(&ordered);
-}
+} */
 
-static int	is_valid_env(char *str)
+
+// Talvez de pra usar
+/* static int	is_valid_env(char *str)
 {
 	if (!(ft_isalpha(*str) || *str == '_'))
 		return (0);
@@ -52,9 +55,10 @@ static int	is_valid_env(char *str)
 			return (0);
 	}
 	return (1);
-}
+} */
 
-int	add_env(char *str, char ***env)
+//DELETE?
+/* int	add_env(char *str, t_env *env)
 {
 	char	**new_env;
 	int		i;
@@ -78,27 +82,30 @@ int	add_env(char *str, char ***env)
 		*env = new_env;
 	}
 	return (0);
-}
+} */
 
-int	ft_export(char **argv, char ***env, int last_exit)
+int	ft_export(char **argv, t_env *env, int last_exit)
 {
-	int	ret;
+	//int	ret;
 
 	(void)last_exit;
-	ret = 0;
-	argv++;
-	if (*argv == NULL)
+	(void)env;
+	//ret = 0;
+	(void)argv;
+/* 	if (*argv == NULL)
 	{
 		print_ordered(*env);
 		return (ret);
-	}
-	while (*argv)
+	} */
+/* 	while (*argv)
 	{
 		if (is_valid_env(*argv))
+			ft_setenv(env, *argv,)
 			add_env(*argv, env);
 		else
 			ret = 1;
 		argv++;
-	}
-	return (ret);
+	} */
+	printf("NOT IMPLEMENTED\n");
+	return (0);
 }

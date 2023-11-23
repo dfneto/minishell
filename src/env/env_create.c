@@ -16,69 +16,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	clean_env(char ***env)
+void	clean_env(t_env *env)
 {
-	int	i;
+	t_node	*tmp;
 
-	if (env == NULL || *env == NULL)
+	tmp = env->head;
+	while (tmp)
 	{
-		return ;
+		tmp = env->head->next;
+		clean_node(env->head);
+		env->head = tmp;
 	}
-	i = 0;
-	while ((*env)[i])
-	{
-		free((*env)[i]);
-		(*env)[i] = NULL;
-		i++;
-	}
-	free(*env);
-	*env = NULL;
 }
 
-char	*expand_env(char *name, char **env, int last_exit)
-{
-	int	i;
 
-	i = 0;
-	name++;
-	if (name[0] == '?')
-		return (ft_itoa(last_exit));
-	while (env[i] != NULL)
+// MODIFICAR PARA ADICIONAR EM ORDEM
+int	add_node_to_env(t_env *env, t_node *node)
+{
+	if (node == NULL)
+		return (1);
+	if (!env->head)
 	{
-		if (!ft_strncmp(name, env[i], ft_strlen(name))
-			&& env[i][ft_strlen(name)] == '=')
-			return (ft_substr(env[i], ft_strchr(env[i], '=') + 1 - env[i],
-					ft_strchr(env[i], '\0') - ft_strchr(env[i], '=')));
-		i++;
+		env->head = node;
+		env->tail = node;
 	}
-	return (ft_strdup("NOT FOUND!"));
+	else
+	{
+		env->tail->next = node;
+		env->tail = node;
+	}
+	return (0);
 }
 
-char	**create_env(char **envp)
+
+// CRIAR ORDENADA?
+// MUDAR t_env e deixar t_node
+int	create_env(t_env *env, char **envp)
 {
-	char	**env;
 	int		i;
+	t_node	*node;
+	size_t	pos;
 
 	i = 0;
 	while (envp[i] != NULL)
-		i++;
-	env = (char **)malloc((i + 1) * sizeof(char *));
-	if (env == NULL)
 	{
-		perror("env malloc");
-		exit(errno);
-	}
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		env[i] = ft_strdup(envp[i]);
-		if (env[i] == NULL)
-		{
-			perror("env variable malloc");
-			exit(errno);
-		}
+		pos = ft_strchr(envp[i], '=') - envp[i];
+		node = create_node(ft_substr(envp[i], 0, pos),
+				ft_strdup(envp[i] + pos + 1));
+		if (add_node_to_env(env, node))
+			return (1);
 		i++;
 	}
-	env[i] = NULL;
-	return (env);
+	if (ft_setenv(env, "OLDPWD", NULL, 1) || ft_setenv(env, "SHELL",
+			ft_strdup("/home/lucas/Documents/42cursus/minishell/minishell"), 1))
+		return (1);
+	return (0);
 }

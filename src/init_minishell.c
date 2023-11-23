@@ -25,12 +25,14 @@
 char	*get_input(int last_exit)
 {
 	char	*input;
+	int		wr;
 
 	input = readline(PROMPT);
 	if (input == NULL)
 	{
 		if (isatty(STDIN_FILENO))
-			write(2, "exit\n", 6);
+			wr = write(2, "exit\n", 6);
+		(void)wr;
 		exit(last_exit);
 	}
 	else if (input && *input)
@@ -45,7 +47,7 @@ char	*get_input(int last_exit)
 	return (input);
 }
 
-void	init_minishell(char ***envp)
+void	init_minishell(t_env *envp)
 {
 	char		*input;
 	static int	last_exit;

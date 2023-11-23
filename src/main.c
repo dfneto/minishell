@@ -17,11 +17,17 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	**env;
+	t_env	env;
+	
 
 	(void)argc;
 	(void)argv;
-	env = create_env(envp);
+	env.head = NULL;
+	env.tail = NULL;
+
+	if (create_env(&env, envp))
+		return (EXIT_FAILURE);	
 	init_minishell(&env);
+	clean_env(&env);
 	return (0);
 }

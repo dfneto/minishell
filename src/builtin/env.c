@@ -16,19 +16,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_env(char **argv, char ***env, int last_exit)
+void	print_env(t_env env)
 {
-	char **tmp;
-	
+	t_node	*tmp;
+
+	tmp = env.head;
+	while (tmp)
+	{
+		if (tmp->value)
+			printf("%s=%s\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
+}
+
+int	ft_env(char **argv, t_env *env, int last_exit)
+{
 	(void)argv;
 	(void)last_exit;
-	tmp = *env;
-	while (**env)
-	{
-		if (strrchr(**env, '='))
-			printf("%s\n", **env);
-		(*env)++;
-	}
-	*env = tmp;
+	print_env(*env);
 	return (0);
 }

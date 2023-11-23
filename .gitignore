@@ -9,4 +9,4 @@ obj/*
 minishell
 *.dSYM/
 mpanic
-
+*.log

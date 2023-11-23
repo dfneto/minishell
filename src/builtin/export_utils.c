@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	open_space_to_insert(char ***env, int j)
+/* void	open_space_to_insert(t_env *env, int j)
 {
 	int	i;
 
@@ -28,7 +28,7 @@ void	open_space_to_insert(char ***env, int j)
 		(*env)[i] = (*env)[i - 1];
 		i--;
 	}
-}
+} */
 
 int	ft_strcmp(char *str1, char *str2)
 {
@@ -40,7 +40,7 @@ int	ft_strcmp(char *str1, char *str2)
 	return (*str1 - *str2);
 }
 
-int	compare_name(char *str1, char *str2)
+/* int	compare_name(char *str1, char *str2)
 {
 	char	*name1;
 	char	*name2;
@@ -83,3 +83,4 @@ char	**create_ordered_env(char **env)
 	}
 	return (or_env);
 }
+ */

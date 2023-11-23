@@ -93,10 +93,23 @@ typedef struct s_process
 	int					outfile; 
 }t_process;
 
+typedef struct s_node
+{
+	char			*name;
+	char			*value;
+	struct s_node	*next;
+}	t_node;
+
+typedef struct s_env
+{
+	t_node	*head;
+	t_node	*tail;
+}	t_env;
+
 typedef struct s_builtin
 {
     char    *name;
-    int     (*function)(char **, char ***, int);
+    int     (*function)(char **, t_env *, int);
 }   t_builtin;
 
 int			check_open_quotes(char *input);
@@ -138,23 +151,35 @@ t_process	*create_process(t_token *token, int i);
 
 // VVVVVV LUKITAS VVVVV
 
-char    *ft_getenv(char *name, char **env, int last_exit);
-
-
-
 void    init_signals(void);
-void    init_minishell(char ***envp);
-int    execute_cmd(t_process *process, char ***envp, int last_exit, t_builtin funcitons[]);
+void    init_minishell(t_env *envp);
+int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
 
 // Process utils
 //t_process   *create_process(char *input, int in, int out);
 void    clean_process(t_process **process);
 
-// Env functions
-char   **create_env(char **envp);
-int	add_env(char *str, char ***env);
+/* Env functions */
+// Env Creation/Cleaning Functions
+int   create_env(t_env *env, char **envp);
+void    clean_env(t_env *env);
+int	add_node_to_env(t_env *env, t_node *node);
+
+// Env Utils Functions
+void	print_env(t_env env);
+int		ft_setenv(t_env *env, char *name, char *value, int ow);
+char    *ft_getenv(char *name, t_env env, int last_exit);
+int 	ft_unsetenv(t_env *env, char *name);
+
+/* Node functions */
+t_node	*create_node(char *name, char *value);
+void	clean_node(t_node *node);
+
+
+
+//Old stuff...
+int	add_env(char *str, t_env *env);
 char    *expand_env(char *name, char **env, int last_exit);
-void    clean_env(char ***env);
 char   **create_ordered_env(char **env);
 
 void	ft_perror(int err, char *msg);
@@ -162,19 +187,19 @@ void	ft_perror(int err, char *msg);
 //Init builtins
 void	init_builtins(t_builtin array[]);
 
-int	execute_builtins(char **argv, char ***env, int last_exit, t_builtin functions[]);
+int	execute_builtins(char **argv, t_env *env, int last_exit, t_builtin functions[]);
 
 int	ft_strcmp(char *str1, char *str2);
 int print_error(char *str);
 
 
 // Built-in functions
-int ft_echo(char **argv, char ***env, int last_exit);
-int ft_pwd(char **argv, char ***env, int last_exit);
-int ft_exit(char **argv, char ***env, int last_exit);
-int	ft_env(char **argv, char ***env, int last_exit);
-int	ft_cd(char **argv, char ***env, int last_exit);
-int	ft_export(char **argv, char ***env, int last_exit);
-int	ft_unset(char **argv, char ***env, int last_exit);
+int ft_echo(char **argv, t_env *env, int last_exit);
+int ft_pwd(char **argv, t_env *env, int last_exit);
+int ft_exit(char **argv, t_env *env, int last_exit);
+int	ft_env(char **argv, t_env *env, int last_exit);
+int	ft_cd(char **argv, t_env *env, int last_exit);
+int	ft_export(char **argv, t_env *env, int last_exit);
+int	ft_unset(char **argv, t_env *env, int last_exit);
 
 #endif

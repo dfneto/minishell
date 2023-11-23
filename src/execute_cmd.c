@@ -58,7 +58,7 @@ int	is_cmd_executable(char *cmd)
 	return (0);
 }
 
-char	*get_path(char **cmd, char **env, int last_exit)
+char	*get_path(char **cmd, t_env env, int last_exit)
 {
 	char	*abs_path;
 	char	**paths;
@@ -99,7 +99,7 @@ char	*get_path(char **cmd, char **env, int last_exit)
 	return (NULL);
 }
 
-int	is_executable(char **cmd, char **envp, int last_exit)
+int	is_executable(char **cmd, t_env envp, int last_exit)
 {
 	char	*path;
 
@@ -111,7 +111,8 @@ int	is_executable(char **cmd, char **envp, int last_exit)
 		print_error(": command not found\n");
 		exit(127);
 	}
-	execve(path, cmd, envp);
+	//Converter t_env em array e trocar no NULL abaixo
+	execve(path, cmd, NULL);
 	exit(EXIT_FAILURE);
 }
 
@@ -131,7 +132,7 @@ void	child_pipes(t_process *process)
 	}
 }
 
-int	execute_single_cmd(char **cmd, char ***env, int last_exit,
+int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int	fork_id;
@@ -159,7 +160,7 @@ void	close_pipes(int pipe[])
 	close(pipe[1]);
 }
 
-int	execute_multi_cmd(t_process *process, char ***env, int last_exit,
+int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int			check;
@@ -220,7 +221,7 @@ int	execute_multi_cmd(t_process *process, char ***env, int last_exit,
 	return (last_exit);
 }
 
-int	execute_cmd(t_process *process, char ***envp, int last_exit,
+int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
 	int	og_stdout;

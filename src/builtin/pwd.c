@@ -14,8 +14,9 @@
 #include <limits.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <minishell.h>
 
-int	ft_pwd(char **argv, char ***env, int last_exit)
+int	ft_pwd(char **argv, t_env *env, int last_exit)
 {
 	char	*current_dir;
 
