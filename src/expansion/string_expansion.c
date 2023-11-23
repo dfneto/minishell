@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 17:52:00 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:14:10 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	pre_dolar = NULL;
 	dolar_position = 0;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-	token->str = ft_substr(token->str, dolar_position, ft_strlen(token->str) - ft_strlen(pre_dolar));
-	
+	token->str = remove_pre_dolar_text(token->str, dolar_position);
+
 	split = ft_split(token->str, '$');
 	token->str = split[0];
 	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
