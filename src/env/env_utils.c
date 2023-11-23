@@ -49,6 +49,10 @@ int	ft_unsetenv(t_env *env, char *name)
 	return (1);
 }
 
+
+/* 
+REFACTOR IT
+*/
 int	ft_setenv(t_env *env, char *name, char *value, int ow)
 {
 	t_node	*tmp;
