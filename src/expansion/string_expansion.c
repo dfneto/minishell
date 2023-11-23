@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/23 17:14:10 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:02:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,37 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 * começamos j=1 porque o j=0 ja foi criado
 * return: the amount of token dollars created
 */
-int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *next_tok_after_expand)
+int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *next_tok_after_expand, int a)
 {
 	int			i;
 	t_token 	*new_token;
 
-	i = 1;
-	new_token = NULL;
-	while (split[i])
+	if (a == 1) //TODO: melhorar essa nojeira!
 	{
-		new_token = create_token_split(split[i], next_tok_after_expand);
-		add_token_after(&aux, new_token); 
-		i++;
-		
+		i = 1;
+		new_token = NULL;
+		while (split[i])
+		{
+			new_token = create_token_split(split[i], next_tok_after_expand);
+			add_token_after(&aux, new_token); 
+			i++;
+			
+		}
+		return (i);
 	}
-	return (i);
+	else //a == 0
+	{
+		i = 0;
+		new_token = NULL;
+		while (split[i])
+		{
+			new_token = create_token_split(split[i], next_tok_after_expand);
+			add_token_after(&aux, new_token); 
+			i++;
+			
+		}
+		return (i + 1);
+	}
 }
 
 /* In the case that you have a token of the form $a$b$c
@@ -84,16 +100,28 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 	t_token		*aux;
 	t_token 	*next_tok_after_expand; 
 
+	/* RELATED TO PRE DOLAR TEXT */
+	// int			dolar_position;
+	// char		*pre_dolar;
+	
 	i = 0;
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
 
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
-
+// 	pre_dolar = NULL;
+// 	dolar_position = 0;
+// 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
+// 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
+	
+	//fazemos o split
 	split = ft_split(token->str, '$');
-	token->str = split[0]; //reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
+	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
+	token->str = split[0]; 
+
+
+	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
 	aux = NULL;
 	
 	//agora vou expandir cada token_$ criado
@@ -127,6 +155,7 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	t_token 	*aux;
 	t_token 	*next_tok_after_expand; 
 	
+	/* RELATED TO PRE DOLAR TEXT */
 	int			dolar_position;
 	char		*pre_dolar;
 
@@ -139,16 +168,21 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	pre_dolar = NULL;
 	dolar_position = 0;
 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-	token->str = remove_pre_dolar_text(token->str, dolar_position);
+	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
+	
+	//fazemos o split
+	split = ft_split(str_without_pre_dolar_text, '$');
+	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
+	token->str = pre_dolar;
 
-	split = ft_split(token->str, '$');
-	token->str = split[0];
-	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand);
+	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
 	aux = NULL;
 
-	//aqui vou tratar o primeiro $a diferente dos $b$c. Vou expandir $a e fazer o join com pre-dolar
-	token = expand_token_dolar(token, pre_dolar);
 	token = token->next;
+	//TODO: refatorar o expand_token_dolar e demais métodos para remover o pre_dolar
+	//aqui vou tratar o primeiro $a diferente dos $b$c. Vou expandir $a e fazer o join com pre-dolar
+	// token = expand_token_dolar(token, pre_dolar);
+	
 
 	//agora vou expandir cada split_token
 	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
