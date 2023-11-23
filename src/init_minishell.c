@@ -46,6 +46,23 @@ char	*get_input(int last_exit)
 	}
 	return (input);
 }
+/* 
+REFACTOR
+E colocar em um lugar melhor s2
+*/
+void 	clean_tokens(t_token *first)
+{
+	t_token *tmp;
+
+	while (first)
+	{
+		tmp = first;
+		first = first->next;
+		if (tmp->str)
+			free(tmp->str);
+		free(tmp);		
+	}
+}
 
 void	init_minishell(t_env *envp)
 {
@@ -55,6 +72,7 @@ void	init_minishell(t_env *envp)
 	t_process	*first_process;
 	t_builtin	functions[BUILTINS_NUM];
 
+	(void)envp;
 	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
@@ -67,11 +85,14 @@ void	init_minishell(t_env *envp)
 		{
 			first_token = lexical_analysis(input);
 			expansion(first_token, last_exit);
+			
 			//printf("Lista de tokens finais:\n");
 			//print_list(first_token);
 			first_process = process_creation(first_token);
 			last_exit = execute_cmd(first_process, envp, last_exit, functions);
 		}
+		clean_tokens(first_token);
+		first_token = NULL;
 		clean_input(&input);
 	}
 	clear_history();
