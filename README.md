@@ -95,3 +95,7 @@ echo "$USER$USER" -> deve printar sem aspas
 testar hola$USER$USER$USER
 export a="  ls   -l   -a  -F   "
 testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
+
+
+### Task 13 - BUGS
+Quando digito espaço somente no minishell da segfault

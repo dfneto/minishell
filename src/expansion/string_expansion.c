@@ -6,11 +6,25 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/23 18:02:08 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:59:21 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	has_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 /*
 * Receive a token starting by $. Ex: $a
@@ -29,7 +43,13 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 	if (expanded_str == NULL)
 		return (set_token_str(token, ""));
 	token->str = NULL;
-	return (create_tok_per_word_in(expanded_str, pre_dolar, next_tok_after_expand, token));
+	if (has_space(expanded_str))
+		return (create_tok_per_word_in(expanded_str, pre_dolar, next_tok_after_expand, token));
+	else //TODO: talvez deva alterar o compartamento de quando a string expandida (ex: $USER -> david) não tenha espaço para se 
+	{	//assemelhar ao caso em que tem espaço, ou não tbm. Porque se eu tenhoo que token->str tem um valor diferente de nulo tbm da erro de segfault
+		token->str = expanded_str;
+		return (token);
+	}
 }
 
 /* 
@@ -108,7 +128,8 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
-
+	tokens_$_created = 0;
+	
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 // 	pre_dolar = NULL;
 // 	dolar_position = 0;
@@ -163,6 +184,7 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
+	tokens_$_created = 0;
 	
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 	pre_dolar = NULL;
