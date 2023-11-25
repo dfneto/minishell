@@ -16,11 +16,24 @@
 #include <stdio.h>
 #include <unistd.h>
 
+/* CRIAR FUNÇÃO PARA OS CASOS:
+MAIOR QUE LONG_MAX=+9223372036854775807
+MENOR QUE LONG_MIN=-9223372036854775808
+ */
+static int	is_too_big(char *str)
+{
+	(void)str;
+	return (0);	
+}
+
 static int	is_num(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
+		return (0);
+	// definir onde colocar esse teste...
+	if (is_too_big(str))
 		return (0);
 	while (*str)
 	{
@@ -36,9 +49,10 @@ int	ft_exit(char **argv, t_env *env, int last_exit)
 	(void)env;
 	//printf("exit\n");
 	argv++;
-	if (argv[0] == NULL)
+	// RESOLVE O CASO '--' mas nao gostei... refactor só se sobrar tempo
+	if (argv[0] == NULL || (!strcmp(argv[0], "--") && !argv[1]))
 		exit(last_exit);
-	if (is_num(argv[0]) && argv[1] == NULL)
+	if (argv[1] == NULL && is_num(argv[0]))
 		exit(ft_atoi(argv[0]));
 	else if (!is_num(argv[0]))
 	{

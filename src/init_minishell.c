@@ -46,6 +46,12 @@ char	*get_input(int last_exit)
 	}
 	return (input);
 }
+
+void	print_token_info(t_token *tok)
+{
+	if (tok)
+		printf("my mem: %p\ntype>%d - str: %s\nnext: %p\n\n", tok, tok->type, tok->str, tok->next);
+}
 /* 
 REFACTOR
 E colocar em um lugar melhor s2
@@ -56,6 +62,7 @@ void 	clean_tokens(t_token *first)
 
 	while (first)
 	{
+		//print_token_info(first);
 		tmp = first;
 		first = first->next;
 		if (tmp->str)
@@ -85,6 +92,12 @@ void	init_minishell(t_env *envp)
 		{
 			first_token = lexical_analysis(input);
 			//TODO: na expansao estou alterando o first_token, mas o ideal seria nao alterá-lo porque depois vai dar problema na limpeza
+/* 			t_token *tmp = first_token;
+			while (tmp)
+			{
+				print_token_info(tmp);
+				tmp = tmp->next;
+			} */
 			expansion(first_token, last_exit);
 			
 			// printf("Lista de tokens finais:\n");

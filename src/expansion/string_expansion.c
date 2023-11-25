@@ -39,7 +39,12 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 	t_token		*next_tok_after_expand;
 
 	next_tok_after_expand = token->next;
+
+	/*VVVVVVVVVVVVV PROBLEMA DO TOKEN CLEAN ESTAVA AQUI VVVVVVVVVVV */
 	expanded_str = getenv(token->str);
+	/* ɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅ
+	Acho que isso vai ser resolvido quando trocar pro ft_getenv */
+	
 	if (expanded_str == NULL)
 		return (set_token_str(token, ""));
 	token->str = NULL;

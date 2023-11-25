@@ -52,6 +52,7 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *ne
 	
 	i = 0;
 	first_token_alterated = 0;
+	start = 0;
 	while(i < ft_strlen(expanded_str)) 
 	{ 
 		while (expanded_str[i] && expanded_str[i] == ' ')//avança os espaços

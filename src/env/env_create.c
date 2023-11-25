@@ -29,7 +29,6 @@ void	clean_env(t_env *env)
 	}
 }
 
-// MODIFICAR PARA ADICIONAR EM ORDEM
 int	add_node_to_env(t_env *env, t_node *node)
 {
 	if (node == NULL)
