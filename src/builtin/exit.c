@@ -20,20 +20,61 @@
 MAIOR QUE LONG_MAX=+9223372036854775807
 MENOR QUE LONG_MIN=-9223372036854775808
  */
+static int	compare_pos(char *str)
+{
+	int	my_len;
+	int	max_len;
+
+	if (*str == '+')
+		str++;
+	while (*str == '0')
+		str++;
+	my_len = ft_strlen(str);
+	max_len = ft_strlen(L_MAX);
+	if (my_len < max_len)
+		return (0);
+	if (my_len > max_len)
+		return (1);
+	if (ft_strcmp(str, L_MAX) > 0)
+		return (1);
+	return (0);
+}
+
+static int	compare_neg(char *str)
+{
+	int	my_len;
+	int	max_len;
+
+	str++;
+	while (*str == '0')
+		str++;
+	my_len = ft_strlen(str);
+	max_len = ft_strlen(L_MIN);
+	if (my_len < max_len)
+		return (0);
+	if (my_len > max_len)
+		return (1);
+	if (ft_strcmp(str, L_MIN) > 0)
+		return (1);
+	return (0);
+}
+
 static int	is_too_big(char *str)
 {
-	(void)str;
-	return (0);	
+	if (*str == '-')
+		return (compare_neg(str));
+	else
+		return (compare_pos(str));
 }
 
 static int	is_num(char *str)
 {
+	char	*cpy;
+
+	cpy = str;
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
-		return (0);
-	// definir onde colocar esse teste...
-	if (is_too_big(str))
 		return (0);
 	while (*str)
 	{
@@ -41,15 +82,15 @@ static int	is_num(char *str)
 			return (0);
 		str++;
 	}
+	if (is_too_big(cpy))
+		return (0);
 	return (1);
 }
 
 int	ft_exit(char **argv, t_env *env, int last_exit)
 {
 	(void)env;
-	//printf("exit\n");
 	argv++;
-	// RESOLVE O CASO '--' mas nao gostei... refactor só se sobrar tempo
 	if (argv[0] == NULL || (!strcmp(argv[0], "--") && !argv[1]))
 		exit(last_exit);
 	if (argv[1] == NULL && is_num(argv[0]))

@@ -37,6 +37,10 @@
 # define GREATER_CHAR 62
 # define LESS_CHAR 60
 # define PIPE_CHAR 124
+
+# define L_MAX "9223372036854775807"
+# define L_MIN "9223372036854775808"
+
 // typedef enum char //usar isso ou os defines?
 // {
 // 	,
