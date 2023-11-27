@@ -191,7 +191,10 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 				dup2(process->outfile, STDOUT_FILENO);
 			}
 			close_pipes(process->fd);
-			exit(execute_single_cmd(process->cmd, env, last_exit, functions));
+			last_exit = execute_builtins(process->cmd, env, last_exit, functions);
+			if (last_exit == -1)
+				is_executable(process->cmd, *env, last_exit);
+			exit(last_exit);
 		}
 		else
 		{
