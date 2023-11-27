@@ -58,44 +58,45 @@ int	is_cmd_executable(char *cmd)
 	return (0);
 }
 
+void	get_abs_path(char **abs_path, char *path, char *cmd)
+{
+	ft_bzero(*abs_path, PATH_MAX);
+	ft_strlcpy(*abs_path, path, ft_strlen(path) + 1);
+	ft_strlcat(*abs_path, "/", PATH_MAX);
+	ft_strlcat(*abs_path, cmd, PATH_MAX);
+}
+
 char	*get_path(char **cmd, t_env env, int last_exit)
 {
 	char	*abs_path;
-	char	**paths;
-	int		i;
+	char	*paths;
+	char	*path;
 
-	i = 0;
+	if (is_cmd_executable(cmd[0]) && !access(cmd[0], X_OK))
+		return (cmd[0]);
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
 		return (NULL);
-	if (is_cmd_executable(cmd[0]))
+	paths = ft_getenv("PATH", env, last_exit);
+	if (!paths)
 	{
-		ft_strlcat(abs_path, cmd[0], PATH_MAX);
-		//printf("CMD: %s\n", cmd[0]);
+		free(abs_path);
+		return (NULL);
+	}
+	path = ft_strtok(paths, ":");
+	while(path)
+	{
+		get_abs_path(&abs_path, path, cmd[0]);
 		//print_path(abs_path);
 		if (!access(abs_path, X_OK))
-			return (abs_path);
-	}
-	paths = ft_split(ft_getenv("PATH", env, last_exit), ':');
-	if (paths)
-	{
-		while (paths[i])
 		{
-			ft_bzero(abs_path, PATH_MAX);
-			ft_strlcpy(abs_path, paths[i], ft_strlen(paths[i]) + 1);
-			ft_strlcat(abs_path, "/", PATH_MAX);
-			ft_strlcat(abs_path, cmd[0], PATH_MAX);
-			//print_path(abs_path);
-			if (!access(abs_path, X_OK))
-			{
-				clean_array(paths);
-				return (abs_path);
-			}
-			i++;
+			free(paths);
+			return (abs_path);
 		}
-		clean_array(paths);
-		free(abs_path);
+		path = ft_strtok(NULL, ":");
 	}
+	free(paths);
+	free(abs_path);
 	return (NULL);
 }
 

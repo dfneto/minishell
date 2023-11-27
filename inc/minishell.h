@@ -180,7 +180,8 @@ int 	ft_unsetenv(t_env *env, char *name);
 t_node	*create_node(char *name, char *value);
 void	clean_node(t_node *node);
 
-
+/* UTILS */
+char    *ft_strtok(char *input, const char *delim);
 
 //Old stuff...
 int	add_env(char *str, t_env *env);
