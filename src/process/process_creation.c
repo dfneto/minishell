@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/27 20:13:04 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:28:40 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	print_process(t_process *process)
 	}
 }
 
-t_process	*create_process_luks(t_token *token, int num_cmd)
+//TODO: diverge do bash esse caso: $"USER" ou $"dadsa"
+t_process	*create_process(t_token *token, int num_cmd)
 {
 	t_process	*process;
 	int			i;
@@ -101,7 +102,25 @@ t_process	*create_process_luks(t_token *token, int num_cmd)
 	return (process);
 }
 
-t_process	*create_process(t_token *token, int num_token_str)
+/*
+* Entender o codigo do lucas
+echo
+echo hola
+hola$a
+hola$b
+e"c"h'o' waka waka
+
+
+echo hola | echo david
+
+
+$a -> seg fault
+$b
+
+$a$a
+$b$b
+*/
+t_process	*create_process_davis(t_token *token, int num_token_str)
 {
 	t_process	*process;
 	int			i;
@@ -123,13 +142,16 @@ t_process	*create_process(t_token *token, int num_token_str)
 	}
 	while (token && i < num_token_str)
 	{
+		printf("token str: %s, token type: %d, i = %d\n", token->str, token->type, i);
 		if (token->type == SPC)
 		{
+			printf("1\n");
 			token = token->next;
 			i++;
 		}
 		else if (token->str) //type STR, DOUB ou SING
 		{
+			printf("3\n");
 			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
 			token = token->next;
 		}	
@@ -186,7 +208,7 @@ t_process	*process_creation(t_token *first_token)
 		}
 		if (i > 0)
 		{
-			process = create_process(tmp, i);
+			process = create_process(tmp, i); //tmp eh o numero de token str que tenho
 			add_process(&head, process);
 		}
 		else
