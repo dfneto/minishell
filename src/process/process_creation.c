@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/10 20:33:51 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:13:04 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_process(t_process *process)
 	}
 }
 
-t_process	*create_process(t_token *token, int num_cmd)
+t_process	*create_process_luks(t_token *token, int num_cmd)
 {
 	t_process	*process;
 	int			i;
@@ -69,7 +69,7 @@ t_process	*create_process(t_token *token, int num_cmd)
 	}
 	while (token)
 	{
-		if (i == num_cmd + 1)
+		if (i == num_cmd + 1) //TODO: em que momento isso acontecerá?
 		{
 			perror("i == num");
 			exit(EXIT_FAILURE);
@@ -98,6 +98,48 @@ t_process	*create_process(t_token *token, int num_cmd)
 	//print_process(process);
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
+	return (process);
+}
+
+t_process	*create_process(t_token *token, int num_token_str)
+{
+	t_process	*process;
+	int			i;
+
+	i = 0;
+	process = (t_process *)ft_calloc(1, sizeof(t_process));
+	process->infile = STDIN_FILENO;
+	process->outfile = STDOUT_FILENO;
+	if (process == NULL)
+	{
+		perror("malloc process");
+		exit(EXIT_FAILURE);
+	}
+	process->cmd = (char **)ft_calloc(num_token_str + 1, sizeof(char *));
+	if (process->cmd == NULL)
+	{
+		perror("malloc cmd");
+		exit(EXIT_FAILURE);
+	}
+	while (token && i < num_token_str)
+	{
+		if (token->type == SPC)
+		{
+			token = token->next;
+			i++;
+		}
+		else if (token->str) //type STR, DOUB ou SING
+		{
+			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
+			token = token->next;
+		}	
+	}
+	printf("num_tok_str: %d\n", num_token_str);
+	printf("process criado: \n");
+	i = 0;
+	while (process->cmd[i])
+		printf("<%s>", process->cmd[i++]);
+	printf("\n");
 	return (process);
 }
 
@@ -152,3 +194,22 @@ t_process	*process_creation(t_token *first_token)
 	}
 	return (head);
 }
+/* TODO:
+Ver com o Lucas por que isso passa
+#      |ls
+Makefile                README.md               dep     
+# > < | ls
+Makefile                README.md               dep   
+
+quando não deveria:
+bash-3.2$ > < |ls
+bash: syntax error near unexpected token `<'
+bash-3.2$ > < | ls
+bash: syntax error near unexpected token `<'
+bash-3.2$  > < | ls
+bash: syntax error near unexpected token `<'
+bash-3.2$   | ls
+bash: syntax error near unexpected token `|'
+bash-3.2$   | ls
+bash: syntax error near unexpected token `|'
+*/

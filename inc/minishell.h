@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/23 17:13:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:50:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct s_token
 	struct s_token	*next;
 }t_token;
 
-//falta colocar infile outfile
 typedef struct s_process
 {
 	int					index;

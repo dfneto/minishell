@@ -45,7 +45,7 @@ Struct env? Array env? Ó duvida cruel!
 Colocar a lib readline dentro do projeto (A REFLETIR)
 
 
-### Task 9
+### Task 9 - DOING
 Na criacao do processo juntar tokens que nao tenham espaco entre eles.
 echo $USER$USER -> deve printar sem espaço
 Ex: echo $USER$USER$USER deve retornar dois tokens: echo e lsulzbaclsulzbaclsulzbac
@@ -65,6 +65,19 @@ Na verdade deve retornar
 <-lals>
 <-la>
 
+Testar:
+$"USER"
+bash: USER: command not found -> correto
+
+Testar:
+bash-3.2$ export a="    ls    -la   "
+bash-3.2$ echo$a
+ls -la
+bash-3.2$ echo$USER
+bash: echodavifern: command not found
+bash-3.2$ export b="ls -la"
+bash-3.2$ echo$b
+bash: echols: command not found
 
 ### Task 10
 
@@ -73,7 +86,7 @@ LEAKSSSSSSS!
 ### Task 11
 Alterar todas as expansões para usar a ft_getenv
 
-### Task 12 - BUGS
+### Task 12 - BUGS - OK
 Resolver: OK!!!
 testar $z, hola$z quando z eh uma variável não existente em env
 
@@ -90,12 +103,15 @@ bash: hola: command not found
 hola$b
 bash: holals: command not found
 
-Verificar:
+
+### Task 13 - BUGS
+Quando digito espaço somente no minishell da segfault
+
+
+### Task 14 - Tirar aspas - OK
 echo "$USER$USER" -> deve printar sem aspas
 testar hola$USER$USER$USER
 export a="  ls   -l   -a  -F   "
 testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
 
 
-### Task 13 - BUGS
-Quando digito espaço somente no minishell da segfault
