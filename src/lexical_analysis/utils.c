@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/21 11:59:57 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:14:15 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ t_token	*create_token(char *input, int start, int end, int type)
 	if (!tok)
 		return (NULL);
 	tok->str = NULL;
-	if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE) | (type == STRING))
+	if (type == STRING)
 		tok->str = ft_substr(input, start, end - start + 1);
+	else if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE))
+		tok->str = ft_substr(input, start + 1, end - start - 1);
 	tok->type = type;
 	tok->next = NULL;
 	return (tok);
