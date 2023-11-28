@@ -100,10 +100,11 @@ void	init_minishell(t_env *envp)
 			} */
 			expansion(first_token, last_exit);
 			
-			// printf("Lista de tokens finais:\n");
-			// print_list(first_token);
+/* 			printf("Lista de tokens finais:\n");
+			print_list(first_token); */
 			first_process = process_creation(first_token);
-			last_exit = execute_cmd(first_process, envp, last_exit, functions);
+			if (first_process)
+				last_exit = execute_cmd(first_process, envp, last_exit, functions);
 		}
 		// clean_tokens(first_token); -> POR HORA ESTA COMENTADO PORQUE TENHO QUE ALTERAR O FUNCIONAMENTO DO EXPANSION PARA NAO ALTERAR O FIRST_TOKEN
 		first_token = NULL;
