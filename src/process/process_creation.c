@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/28 12:27:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 12:34:31 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,22 +191,3 @@ t_process	*process_creation(t_token *first_token)
 	}
 	return (head);
 }
-/* TODO:
-Ver com o Lucas por que isso passa
-#      |ls
-Makefile                README.md               dep     
-# > < | ls
-Makefile                README.md               dep   
-
-quando não deveria:
-bash-3.2$ > < |ls
-bash: syntax error near unexpected token `<'
-bash-3.2$ > < | ls
-bash: syntax error near unexpected token `<'
-bash-3.2$  > < | ls
-bash: syntax error near unexpected token `<'
-bash-3.2$   | ls
-bash: syntax error near unexpected token `|'
-bash-3.2$   | ls
-bash: syntax error near unexpected token `|'
-*/
