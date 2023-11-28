@@ -66,7 +66,7 @@ void	get_abs_path(char **abs_path, char *path, char *cmd)
 	ft_strlcat(*abs_path, cmd, PATH_MAX);
 }
 
-char	*get_path(char **cmd, t_env env, int last_exit)
+char	*get_path(char **cmd, t_env env)
 {
 	char	*abs_path;
 	char	*paths;
@@ -77,7 +77,7 @@ char	*get_path(char **cmd, t_env env, int last_exit)
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
 		return (NULL);
-	paths = ft_getenv("PATH", env, last_exit);
+	paths = ft_getenv("PATH", env);
 	if (!paths)
 	{
 		free(abs_path);
@@ -100,11 +100,11 @@ char	*get_path(char **cmd, t_env env, int last_exit)
 	return (NULL);
 }
 
-int	is_executable(char **cmd, t_env envp, int last_exit)
+int	is_executable(char **cmd, t_env envp)
 {
 	char	*path;
 
-	path = get_path(cmd, envp, last_exit);
+	path = get_path(cmd, envp);
 	if (path == NULL)
 	{
 		print_error("Brazilian Shell: ");
@@ -133,7 +133,7 @@ int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
-			is_executable(cmd, *env, last_exit);
+			is_executable(cmd, *env);
 		else
 		{
 			wait(&last_exit);
@@ -194,7 +194,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 			close_pipes(process->fd);
 			last_exit = execute_builtins(process->cmd, env, last_exit, functions);
 			if (last_exit == -1)
-				is_executable(process->cmd, *env, last_exit);
+				is_executable(process->cmd, *env);
 			exit(last_exit);
 		}
 		else

@@ -96,14 +96,12 @@ int	ft_setenv(t_env *env, char *name, char *value, int ow)
 	return (0);
 }
 
-char	*ft_getenv(char *name, t_env env, int last_exit)
+char	*ft_getenv(char *name, t_env env)
 {
-	if (name[0] == '?')
-		return (ft_itoa(last_exit));
 	while (env.head)
 	{
 		if (!ft_strcmp(name, env.head->name))
-			return (ft_strdup(env.head->value));
+			return (env.head->value);
 		env.head = env.head->next;
 	}
 	return (NULL);

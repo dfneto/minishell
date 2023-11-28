@@ -25,12 +25,12 @@
  */
 // retorna o token expandido e no caso em que a expansão gere vários tokens,
 //	retorna o último token da expansão
-t_token	*expand(t_token *token)
+t_token	*expand(t_token *token, t_env env)
 {
 	if (token->type == DOUBLE_QUOTE)
-		return (expand_double_quote_token(token));
+		return (expand_double_quote_token(token, env));
 	else
-		return (expand_token_int_n_tokens(token));
+		return (expand_token_int_n_tokens(token, env));
 }
 
 /* TO DO
@@ -47,25 +47,25 @@ char	*get_exit_status(int last_exit)
  * If the token to be expand is $? get the exit status.
  * Otherwise check if it's expansible and expand it.
  */
-int	check_and_expand(t_token *token, int last_exit)
+int	check_and_expand(t_token *token, int last_exit, t_env env)
 {
 	//TODO: testar 123$? -> se resolver por aqui retiramos o last do ft_getenv
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))
-		token = expand(token);
+		token = expand(token, env);
 	return (1);
 }
 
 /*
  * Expand al the tokens of type DOUBLE_QUOTE or STRING
  */
-int	expansion(t_token *first_token, int last_exit)
+int	expansion(t_token *first_token, int last_exit, t_env env)
 {
 	while (first_token)
 	{
 		if (first_token->type == DOUBLE_QUOTE || first_token->type == STRING)
-			check_and_expand(first_token, last_exit);
+			check_and_expand(first_token, last_exit, env);
 		first_token = first_token->next;
 	}
 	return (0);

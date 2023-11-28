@@ -33,18 +33,14 @@ int	has_space(char *str)
 * ex: a="ls   -l    -a  -F   " 
 * $a patata: returns the token -F with token->next = patata
 */
-t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
+t_token	*expand_token_dolar(t_token *token, char *pre_dolar, t_env env)
 {
 	char		*expanded_str;
 	t_token		*next_tok_after_expand;
 
 	next_tok_after_expand = token->next;
 
-	/*VVVVVVVVVVVVV PROBLEMA DO TOKEN CLEAN ESTAVA AQUI VVVVVVVVVVV */
-	expanded_str = ft_strdup(getenv(token->str));
-	/* ɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅ
-	Acho que isso vai ser resolvido quando trocar pro ft_getenv */
-	
+	expanded_str = ft_strdup(ft_getenv(token->str, env));
 	if (expanded_str == NULL)
 		return (set_token_str(token, ""));
 	token->str = NULL;
@@ -117,7 +113,7 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 * a $USER$USER a
 * a $a$a$a a
 */
-t_token	*expand_tok_withOUT_text_before(t_token *token)
+t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 {
 	int			i;
 	int			tokens_$_created;
@@ -153,7 +149,7 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 	//agora vou expandir cada token_$ criado
 	while (token && i < tokens_$_created) 
 	{
-		aux = expand_token_dolar(token, NULL);
+		aux = expand_token_dolar(token, NULL, env);
 		token = aux->next; 
 		i++;
 	}
@@ -173,7 +169,7 @@ t_token	*expand_tok_withOUT_text_before(t_token *token)
 * hola$a$a$a b
 * hola$USER$USER b
 */
-t_token	*expand_tok_with_text_before(t_token *token)
+t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 {
 	int			i;
 	int			tokens_$_created;
@@ -214,7 +210,7 @@ t_token	*expand_tok_with_text_before(t_token *token)
 	//agora vou expandir cada split_token
 	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
 	{
-		aux = expand_token_dolar(token, NULL);
+		aux = expand_token_dolar(token, NULL, env);
 		token = aux->next; 
 		i++;
 	}
@@ -237,14 +233,14 @@ t_token	*expand_tok_with_text_before(t_token *token)
 *	$a$a Z -> tokens: ls, -la, ls -la, Z
 *	$a Z -> tokens: ls, -la, Z
 */
-t_token	*expand_token_int_n_tokens(t_token *token)
+t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
 {
 	t_token	*last_token_expanded;
 
 	last_token_expanded = NULL;
 	if (token->str[0] == '$')
-		last_token_expanded = expand_tok_withOUT_text_before(token);
+		last_token_expanded = expand_tok_withOUT_text_before(token, env);
 	else
-		last_token_expanded = expand_tok_with_text_before(token);
+		last_token_expanded = expand_tok_with_text_before(token, env);
 	return (last_token_expanded);
 }

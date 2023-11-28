@@ -119,7 +119,7 @@ int			check_open_quotes(char *input);
 int			ignore_spaces(char *str, int i);
 int			clean_input(char **input);
 int			is_exit(char *input);
-int			expansion(t_token *first_token, int last_exit);
+int			expansion(t_token *first_token, int last_exit, t_env env);
 int			is_expansible(char *str);
 int			get_dolar_position(char *str, int i);
 int			is_expansible(char *str);
@@ -137,8 +137,8 @@ t_token 	*set_token_str(t_token *token, char *value);
 t_token		*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *next_tok_after_expand, t_token *token);
 t_token		*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand);
 t_token		*create_token_split(char *str, t_token *next_token);
-t_token		*expand_token_int_n_tokens(t_token *token);
-t_token		*expand_double_quote_token(t_token *token);
+t_token		*expand_token_int_n_tokens(t_token *token, t_env env);
+t_token		*expand_double_quote_token(t_token *token, t_env env);
 t_token		*lexical_analysis(char *input);
 t_token		*create_token(char *input, int start, int end, int type);
 t_token		*get_last_token(t_token *first);
@@ -172,7 +172,7 @@ int	add_node_to_env(t_env *env, t_node *node);
 // Env Utils Functions
 void	print_env(t_env env);
 int		ft_setenv(t_env *env, char *name, char *value, int ow);
-char    *ft_getenv(char *name, t_env env, int last_exit);
+char    *ft_getenv(char *name, t_env env);
 int 	ft_unsetenv(t_env *env, char *name);
 
 /* Node functions */

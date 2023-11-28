@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*get_word_expanded(t_token *token, int *i, int dolar_position)
+char	*get_word_expanded(t_token *token, int *i, int dolar_position, t_env env)
 {
 	char	*word_to_expand;
 
@@ -21,10 +21,10 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position)
 		(*i)++;
 	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
 			- dolar_position - 1);
-	return (getenv(word_to_expand));
+	return (ft_strdup(ft_getenv(word_to_expand, env)));
 }
 
-t_token	*expand_double_quote_token(t_token *token)
+t_token	*expand_double_quote_token(t_token *token, t_env env)
 {
 	int i;
 	int dolar_position;
@@ -42,7 +42,7 @@ t_token	*expand_double_quote_token(t_token *token)
 		i = dolar_position + 1;
 		if (token->str[i])
 			joined = ft_strjoin(joined, get_word_expanded(token, &i,
-						dolar_position));
+						dolar_position, env));
 	}
 	token->str = joined;
 	return (token);

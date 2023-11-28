@@ -97,8 +97,12 @@ void	init_minishell(t_env *envp)
 				print_token_info(tmp);
 				tmp = tmp->next;
 			} */
-			expansion(first_token, last_exit);
+			expansion(first_token, last_exit, *envp);
 			// TO DO: VALIDATE TOKENS
+			/* if (validate)
+				first_process = 
+				... execute
+			 */
 /* 			printf("Lista de tokens finais:\n");
 			print_list(first_token); */
 			first_process = process_creation(first_token);
