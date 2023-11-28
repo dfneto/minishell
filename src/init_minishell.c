@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/24 15:03:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 12:27:27 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	init_minishell(t_env *envp)
 		if (input[0] != '\0')
 		{
 			first_token = lexical_analysis(input);
-			//TODO: na expansao estou alterando o first_token, mas o ideal seria nao alterá-lo porque depois vai dar problema na limpeza
 /* 			t_token *tmp = first_token;
 			while (tmp)
 			{
@@ -105,7 +104,7 @@ void	init_minishell(t_env *envp)
 			first_process = process_creation(first_token);
 			last_exit = execute_cmd(first_process, envp, last_exit, functions);
 		}
-		// clean_tokens(first_token); -> POR HORA ESTA COMENTADO PORQUE TENHO QUE ALTERAR O FUNCIONAMENTO DO EXPANSION PARA NAO ALTERAR O FIRST_TOKEN
+		// clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
 		first_token = NULL;
 		clean_input(&input);
 	}

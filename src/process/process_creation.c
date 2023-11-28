@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/27 21:28:40 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 12:27:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	print_process(t_process *process)
 	}
 }
 
-//TODO: diverge do bash esse caso: $"USER" ou $"dadsa"
-t_process	*create_process(t_token *token, int num_cmd)
+t_process	*create_process_L(t_token *token, int num_cmd)
 {
 	t_process	*process;
 	int			i;
@@ -102,25 +101,7 @@ t_process	*create_process(t_token *token, int num_cmd)
 	return (process);
 }
 
-/*
-* Entender o codigo do lucas
-echo
-echo hola
-hola$a
-hola$b
-e"c"h'o' waka waka
-
-
-echo hola | echo david
-
-
-$a -> seg fault
-$b
-
-$a$a
-$b$b
-*/
-t_process	*create_process_davis(t_token *token, int num_token_str)
+t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
 	int			i;
@@ -142,26 +123,20 @@ t_process	*create_process_davis(t_token *token, int num_token_str)
 	}
 	while (token && i < num_token_str)
 	{
-		printf("token str: %s, token type: %d, i = %d\n", token->str, token->type, i);
-		if (token->type == SPC)
+		if (token->str) //type STR, DOUB ou SING
 		{
-			printf("1\n");
-			token = token->next;
-			i++;
-		}
-		else if (token->str) //type STR, DOUB ou SING
-		{
-			printf("3\n");
 			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
 			token = token->next;
 		}	
+		else if (token->type == SPC)
+		{
+			token = token->next;
+			if (process->cmd[i])
+				i++;
+		}
+		else if (token->type == PIPE)
+			break;
 	}
-	printf("num_tok_str: %d\n", num_token_str);
-	printf("process criado: \n");
-	i = 0;
-	while (process->cmd[i])
-		printf("<%s>", process->cmd[i++]);
-	printf("\n");
 	return (process);
 }
 

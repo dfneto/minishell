@@ -45,7 +45,7 @@ Struct env? Array env? Ó duvida cruel!
 Colocar a lib readline dentro do projeto (A REFLETIR)
 
 
-### Task 9 - DOING
+### Task 9 - OK
 Na criacao do processo juntar tokens que nao tenham espaco entre eles.
 echo $USER$USER -> deve printar sem espaço
 Ex: echo $USER$USER$USER deve retornar dois tokens: echo e lsulzbaclsulzbaclsulzbac
@@ -64,10 +64,6 @@ Na verdade deve retornar
 <-lals>
 <-lals>
 <-la>
-
-Testar:
-$"USER"
-bash: USER: command not found -> correto
 
 Testar:
 bash-3.2$ export a="    ls    -la   "
@@ -114,4 +110,25 @@ testar hola$USER$USER$USER
 export a="  ls   -l   -a  -F   "
 testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)
 
+### Task 15 - Exceção
+Testar:
+$"USER"
+bash: USER: command not found -> correto
 
+### Task 16 - Funcionamento em desacordo com o bash
+#      |ls
+Makefile                README.md               dep     
+# > < | ls
+Makefile                README.md               dep   
+
+quando não deveria:
+bash-3.2$ > < |ls
+bash: syntax error near unexpected token `<'
+bash-3.2$ > < | ls
+bash: syntax error near unexpected token `<'
+bash-3.2$  > < | ls
+bash: syntax error near unexpected token `<'
+bash-3.2$   | ls
+bash: syntax error near unexpected token `|'
+bash-3.2$   | ls
+bash: syntax error near unexpected token `|'
