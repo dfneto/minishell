@@ -99,10 +99,11 @@ void	init_minishell(t_env *envp)
 			} */
 			expansion(first_token, last_exit);
 			
-			// printf("Lista de tokens finais:\n");
-			// print_list(first_token);
+/* 			printf("Lista de tokens finais:\n");
+			print_list(first_token); */
 			first_process = process_creation(first_token);
-			last_exit = execute_cmd(first_process, envp, last_exit, functions);
+			if (first_process)
+				last_exit = execute_cmd(first_process, envp, last_exit, functions);
 		}
 		// clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
 		first_token = NULL;

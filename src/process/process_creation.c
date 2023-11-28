@@ -186,8 +186,9 @@ t_process	*process_creation(t_token *first_token)
 			process = create_process(tmp, i); //tmp eh o numero de token str que tenho
 			add_process(&head, process);
 		}
-		else
+		else if (first_token)
 			first_token = first_token->next;
+	
 	}
 	return (head);
 }
