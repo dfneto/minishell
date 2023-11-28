@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/27 18:50:34 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:26:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <limits.h>
+# include <fcntl.h>
 
 # define PROMPT "\033[38;5;143mbr.sh$ \033[0;39m"
 # define QUOTE_OPENED "You have to close your quotes"

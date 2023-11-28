@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/24 14:04:44 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 21:14:22 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,21 @@ void	print_list(t_token *root)
 		root = root->next;
 	}
 }
+
+// void	print_process_list(t_process *root)
+// {
+// 	int i;
+	
+// 	i = 0;
+// 	while (root)
+// 	{
+// 		printf("executando comando: ");
+// 		while (first_process->cmd[i])
+// 		{
+// 			printf("%s ", first_process->cmd[i]);
+// 			i++;
+// 		}
+// 		printf("\n");
+// 		printf("outfile: %d\n", first_process->outfile);
+// 	}
+// }

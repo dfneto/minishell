@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/28 12:34:31 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:08:57 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,13 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 	return (process);
 }
 
+//#echo david      > f1       > f2 -> apagar os arquivos depois de criados
+//TODO: echo   vaca   >   f1 |   echo patata   > f2 > f3 
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
 	int			i;
+	int			file;
 
 	i = 0;
 	process = (t_process *)ft_calloc(1, sizeof(t_process));
@@ -125,8 +128,12 @@ t_process	*create_process(t_token *token, int num_token_str)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
-			//printf("proc --> %s <--\n", token->str);
 			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
+			if (process->cmd[i] == NULL)
+			{
+				perror("ft_strjoin");
+				exit(EXIT_FAILURE);
+			}
 			token = token->next;
 		}	
 		else if (token->type == SPC)
@@ -137,7 +144,16 @@ t_process	*create_process(t_token *token, int num_token_str)
 		}
 		else if (token->type == PIPE)
 			break;
-		else
+		else if (token->type == OUTPUT_REDIRECTION)
+		{
+			token = token->next;
+			if (token->type == SPC) //saltar os espaços
+				token = token->next;
+			file = open(token->str, O_WRONLY | O_CREAT, 0777); //pega o nome do arquivo
+			process->outfile = file;
+			token = token->next; //salto o nome do arquivo
+		}
+		else //outros casos - para nao dar erro
 		{
 			//It is a redirection
 			token = token->next;
@@ -174,10 +190,7 @@ t_process	*process_creation(t_token *first_token)
 		while (first_token)
 		{
 			if (first_token->str)
-			{
-				//printf("--> %s <---\n", first_token->str);
 				i++;
-			}
 			/* 			if (first_token->type == OUTPUT_REDIRECTION
 							|| first_token->type == APPEND)
 						{
