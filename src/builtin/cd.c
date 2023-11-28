@@ -59,7 +59,11 @@ int	ft_chdir(char *str)
 	return (0);
 }
 
-/* COLOCAR GETCWD AQUI... EM ALGUM LUGAR */
+/*
+COLOCAR GETCWD AQUI... EM ALGUM LUGAR 
+ REFACTOR TUDO
+ VERIFICAR TROCA DE ENV -> PWD & OLDPWD
+ */
 
 int	ft_cd(char **argv, t_env *env, int last_exit)
 {
@@ -78,6 +82,8 @@ int	ft_cd(char **argv, t_env *env, int last_exit)
 			return (ft_chdir(ft_getenv("OLDPWD", *env)));
 		else if (!ft_strcmp(argv[1], "~"))
 			return (ft_chdir(ft_getenv("HOME", *env)));
+		else if (argv[1][0] == '\0')
+			return (0);
 		else
 			return (ft_chdir(argv[1]));
 	}
