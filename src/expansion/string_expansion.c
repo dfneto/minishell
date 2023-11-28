@@ -41,7 +41,7 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar)
 	next_tok_after_expand = token->next;
 
 	/*VVVVVVVVVVVVV PROBLEMA DO TOKEN CLEAN ESTAVA AQUI VVVVVVVVVVV */
-	expanded_str = getenv(token->str);
+	expanded_str = ft_strdup(getenv(token->str));
 	/* ɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅɅ
 	Acho que isso vai ser resolvido quando trocar pro ft_getenv */
 	

@@ -20,35 +20,33 @@ Troca de folder...
     - PWD é altearada para minishell/src
     - OLDPWD é alterada para minishell
 - Estou usando getenv que pega do env original e acho que nao deveria ser usado. Criar função "ft_getenv" que pega do nosso env.  
-- **ft_getenv depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
+
 ## Pwd
 ### O que deve fazer?
 Imprimir folder atual  
 ### O que faz no momento?
 Imprime folder atual  
 ### TO DO:
-Acredito que nada. Pelo que entendi a função getcwd não depende das env para pegar o cwd correto  
+Trocar para ft_getenv e ver erros do panic  
 
 ## Export
 ### O que deve fazer?
 Export sozinho deve imprimir todas as variáveis de ambiente (inclusive as que não tem valor) em ordem alfabética. Export com argumentos deve adicionar/modificar as variaveis correspondentes  
 ### O que faz no momento?
-Imprime env em ordem e adiciona (não substitui e não faz comprovação se já existe para modificar...)  
+Imprime env em ordem e adiciona variavel de ambiente se tiver valor depois do =  
+Adiciona mais valores se usar o +=  
 ### TO DO:
-- **Essa função ainda depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
-- Implementar a busca se a variavel existe e substituir;  
-- Se mantiver como array, verificar se a impressão ou modificação não destroi o env.  
+- Ver seg fault no caso de export VAR -> variavel sem valor deve ser adicionada mas o valor deve ser deixado NULL   
+- Revisar casos que falham, as vezes o export repetidamente falha... nao sei pq    
 
 ## Unset
 ### O que deve fazer?
 Remove variaveis de ambiente!  
 ### O que faz no momento?
-Imprime uma frase linda dizendo que não existe essa função  
+Remove variaveis de ambiente!  
 ### TO DO:
-Prototipo inicial funciona    
-Seg fault as vezes  
-Unset pode usar a função de buscar variavel criada para a função export  
-**Essa função ainda depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
+Acho que esta ok  
+Testar mais e ver se não é isso que falha o export  
 
 ## Env
 ### O que deve fazer?
@@ -57,7 +55,7 @@ Só imprime variaveis que tenham valor.
 ### O que faz no momento?
 Imprime todas as variaveis  
 ### TO DO:
-**Essa função ainda depende de definir se vamos trocar o env pra lista ou seguimos com array.**  
+acho que esta ok  
 
 ## Exit
 ### O que deve fazer?
@@ -65,5 +63,7 @@ Sair do programa com código que for passado como variável
 ### O que faz no momento?
 Sair do programa com código que for passado como variável  
 ### TO DO:
-Ver casos estupido... tipo exit --  
-
+- Ver caso ' 3' e '3 '  
+- Exit return value e main faz limpeza  
+OU  
+Exit faz exit e teoricamente limpa toda a memória usada e por isso nao deveria gerar leaks  

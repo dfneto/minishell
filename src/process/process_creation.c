@@ -125,6 +125,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
+			//printf("proc --> %s <--\n", token->str);
 			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
 			token = token->next;
 		}	
@@ -136,6 +137,20 @@ t_process	*create_process(t_token *token, int num_token_str)
 		}
 		else if (token->type == PIPE)
 			break;
+		else
+		{
+			//It is a redirection
+			token = token->next;
+			while (token)
+			{
+				if (token->str)
+				{	
+					token = token->next;
+					break;
+				}
+				token = token->next;
+			}
+		}
 	}
 	return (process);
 }
@@ -159,7 +174,10 @@ t_process	*process_creation(t_token *first_token)
 		while (first_token)
 		{
 			if (first_token->str)
+			{
+				//printf("--> %s <---\n", first_token->str);
 				i++;
+			}
 			/* 			if (first_token->type == OUTPUT_REDIRECTION
 							|| first_token->type == APPEND)
 						{
@@ -183,7 +201,7 @@ t_process	*process_creation(t_token *first_token)
 		}
 		if (i > 0)
 		{
-			process = create_process(tmp, i); //tmp eh o numero de token str que tenho
+			process = create_process(tmp, i); //i eh o numero de token str que tenho, tmp é o primeiro token
 			add_process(&head, process);
 		}
 		else if (first_token)
