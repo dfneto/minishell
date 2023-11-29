@@ -21,6 +21,8 @@ Sinais
 ### Task 5 - REDIRECTS [ESS]
 
 Redirect && heredoc 
+Meu objetivo é fazer até sexta uma lista de redireções por processo e o heredoc e deixar pro mr Juppi fazer a execucação das redireções (lembrando que pode ter várias e ainda os pipes)
+Daí no sábado e domingo faria os sinais e o sr Juppi o resto que faltava ;)
 
 
 ### Task 8 - READLINE [___]
