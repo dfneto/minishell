@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:31:12 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:58:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ void	clean_process(t_process **process)
 	}
 	free(*process);
 	*process = NULL;
+}
+
+void	add_redirect(t_process *process, t_redirect *redirect) //acho que nao precisa ser um **processo
+{
+	while(process->redirect)
+		process->redirect = process->redirect->next;
+	process->redirect = redirect;
 }
 
 /* t_process	*create_process(char *input, int in, int out)

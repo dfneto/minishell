@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/28 21:14:22 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:45:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,24 @@ void	print_list(t_token *root)
 		else
 			print_type(root->type);
 		root = root->next;
+	}
+}
+
+void	print_redirect(t_redirect *redirect)
+{
+	while (redirect)
+	{
+		printf("redirect: ");
+		if (redirect->type == OUTPUT_REDIRECTION)
+			printf("> ");
+		else if (redirect->type == APPEND)
+			printf(">> ");
+		else if (redirect->type == INPUT_REDIRECTION)
+			printf("< ");
+		else if (redirect->type == HERE_DOC)
+			printf("<< ");
+		printf("- file name: %s\n", redirect->name);
+		redirect = redirect->next;
 	}
 }
 

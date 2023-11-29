@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/28 19:26:51 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:58:50 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,17 @@ typedef enum token_type
 */
 typedef struct s_token
 {
-	int				type;
+	int				type; //creio que deveria ter o tipo token_type
 	char			*str;
 	struct s_token	*next;
-}t_token;
+}	t_token;
+
+typedef struct s_redirect
+{
+	t_type				type;
+	char				*name;
+	struct s_redirect	*next;
+}t_redirect;
 
 typedef struct s_process
 {
@@ -94,8 +101,11 @@ typedef struct s_process
 	struct s_process	*next;
 	struct s_process	*prev;
 	int					infile;
-	int					outfile; 
-}t_process;
+	int					outfile;
+	struct s_redirect	*redirect;
+}	t_process;
+
+
 
 typedef struct s_node
 {
@@ -127,7 +137,9 @@ int			is_expansible(char *str);
 int			is_alnum_or_slash(char c);
 int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
+void		add_redirect(t_process *process, t_redirect *redirect);
 void		print_list(t_token *root);
+void		print_redirect(t_redirect *redirect);
 void		remove_spaces(char **str);
 char		*remove_pre_dolar_text(char *str, int start);
 void		add_token_after(t_token **token, t_token *new_token);

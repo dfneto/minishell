@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/29 21:00:01 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/29 23:06:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 
 //#echo david      > f1       > f2 -> apagar os arquivos depois de criados
 //TODO: echo   vaca   >   f1 |   echo patata   > f2 > f3 
+//aqui estamos criando o comando do processo (comando e argumentos) e também as redireções
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
 	int			i;
-	int			file;
 
 	i = 0;
 	process = (t_process *)ft_calloc(1, sizeof(t_process));
@@ -124,6 +124,14 @@ t_process	*create_process(t_token *token, int num_token_str)
 		perror("malloc cmd");
 		exit(EXIT_FAILURE);
 	}
+	/* crio a redirecao do processo */
+	t_redirect *redirect = (t_redirect *)ft_calloc(1, sizeof(t_redirect));
+	if (redirect == NULL)
+	{
+		perror("malloc redirect");
+		exit(EXIT_FAILURE);
+	}
+
 	while (token && i < num_token_str)
 	{
 		if (token->str) //type STR, DOUB ou SING
@@ -136,23 +144,25 @@ t_process	*create_process(t_token *token, int num_token_str)
 			}
 			token = token->next;
 		}	
-		else if (token->type == SPC)
+		else if (token->type == SPC)//se encontro um espaço
 		{
-			token = token->next;
-			if (process->cmd[i])
+			token = token->next; //vou para o próximo token
+			if (process->cmd[i]) //e se já tenho algo escrito no comando vou para o próximo comando, assim se a linha começa com um espaço ou tem um espaço depois do pipe eu salto esse espaço mas não mudo de comando
 				i++;
 		}
 		else if (token->type == PIPE)
 			break;
-		else if (token->type == OUTPUT_REDIRECTION)
-		{
-			token = token->next;
-			if (token->type == SPC) //saltar os espaços
-				token = token->next;
-			file = open(token->str, O_WRONLY | O_CREAT, 0777); //pega o nome do arquivo
-			process->outfile = file;
-			token = token->next; //salto o nome do arquivo
-		}
+		//wip
+		// else if (token->type == OUTPUT_REDIRECTION)
+		// {
+		// 	token = token->next;
+		// 	if (token->type == SPC)
+		// 		token = token->next;
+		// 	redirect->name = token->str;
+		// 	redirect->type = OUTPUT_REDIRECTION;
+		// 	redirect->next = NULL;
+		// 	token = token->next;
+		// }
 		else //outros casos - para nao dar erro
 		{
 			//It is a redirection
@@ -168,17 +178,21 @@ t_process	*create_process(t_token *token, int num_token_str)
 			}
 		}
 	}
+	// wip
+	// add_redirect(redirect, process);
+	// print_redirect(process->redirect);
+	//ao termino desse metodo vou ter os comandos, infile e outfile padrão ou -1, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
 	return (process);
 }
 
-//TODO: criar uma lista de redireções
+//TODO: criar uma lista de redireções ao criar o processo
 //ao criar a lista de redireção, se for um heredoc executo
 //executar um heredoc quer dizer entrar no bookle de readline
 //depois, na execucao, para cada processo vou executar uma funcao redir(comando)
-/*redir(comando)
+/*redir(comando) 
 {
-	while(first_redirec)
-	{
+	while(first_redirec) para cada redireção do comando ...
+	{ aqui vou preencher o infile/outfile do processo
 		crio o arquivo e retorno o fd (crio o arquivo a depender do tipo de redireção porque um abro com truncate, outro com append ...), 
 			se o processo.outfile == -1: processo.outfile = fd criado
 			se o processo.outfile != -1: , close (processo.outfile) e processo.outfile = fd criado
@@ -234,7 +248,7 @@ t_process	*process_creation(t_token *first_token)
 		}
 		else if (first_token)
 			first_token = first_token->next;
-	
 	}
+	//ao termino terei uma lista de processos e cada processo com seus comandos e sua lista de redireções
 	return (head);
 }
