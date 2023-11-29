@@ -175,6 +175,7 @@ void	print_env(t_env env);
 int		ft_setenv(t_env *env, char *name, char *value, int ow);
 char    *ft_getenv(char *name, t_env env);
 int 	ft_unsetenv(t_env *env, char *name);
+char	**get_env_array(t_env env);
 
 /* Node functions */
 t_node	*create_node(char *name, char *value);

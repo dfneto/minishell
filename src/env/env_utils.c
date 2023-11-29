@@ -23,6 +23,38 @@ char **create_fucking_array(t_env env)
 
 2. função que deleta o array (talvez não seja necessaria)
  */
+char	**get_env_array(t_env env)
+{
+	char	**array;
+	t_node	*tmp;
+	int		i;
+
+	i = 0;	
+	tmp = env.head;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	array = (char **) ft_calloc(i + 1, sizeof(char *));
+	if (!array)
+		return (NULL);
+	tmp = env.head;
+	while (i--)
+	{
+		if (tmp->value)
+		{
+			array[i] = ft_strjoin(tmp->name, "=");
+			array[i] = ft_strjoin(array[i], tmp->value);
+		}
+		else
+			array[i] = ft_strdup(tmp->name);
+		tmp = tmp->next;
+	}
+	return (array);
+}
+
+
 int	ft_unsetenv(t_env *env, char *name)
 {
 	t_node	*tmp;

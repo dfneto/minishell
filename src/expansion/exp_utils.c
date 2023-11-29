@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 t_token	*create_token_split(char *str, t_token *next_token)
 {
@@ -48,12 +49,19 @@ int	get_dolar_position(char *str, int i)
 	return (i - 1);
 }
 
+/* 
+Modifiquei aqui pq dava um erro quando passava o valgrind.
+Em casos sem expansão o i retornava fora do tamanho da str
+EX: ls retornava um i = 3 e dai quando ia pro if tava fora e podia dar seg fault (nao sei pq nao dava...)
+
+Retirei tambem o is_alnum_or_slash pq nao acho que deve ser testado aqui
+*/
 int	is_expansible(char *str)
 {
 	int	i;
 
-	i = get_dolar_position(str, 0) + 1;
-	if (is_alnum_or_slash(str[i]))
+	i = get_dolar_position(str, 0);
+	if (str[i])
 		return (1);
 	return (0);
 }

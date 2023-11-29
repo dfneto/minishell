@@ -89,13 +89,9 @@ char	*get_path(char **cmd, t_env env)
 		get_abs_path(&abs_path, path, cmd[0]);
 		//print_path(abs_path);
 		if (!access(abs_path, X_OK))
-		{
-			free(paths);
 			return (abs_path);
-		}
 		path = ft_strtok(NULL, ":");
 	}
-	free(paths);
 	free(abs_path);
 	return (NULL);
 }
@@ -112,8 +108,7 @@ int	is_executable(char **cmd, t_env envp)
 		print_error(": command not found\n");
 		exit(127);
 	}
-	//Converter t_env em array e trocar no NULL abaixo
-	execve(path, cmd, NULL);
+	execve(path, cmd, get_env_array(envp));
 	exit(EXIT_FAILURE);
 }
 
