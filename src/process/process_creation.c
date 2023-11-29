@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/28 20:08:57 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:00:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,21 @@ t_process	*create_process(t_token *token, int num_token_str)
 	return (process);
 }
 
+//TODO: criar uma lista de redireções
+//ao criar a lista de redireção, se for um heredoc executo
+//executar um heredoc quer dizer entrar no bookle de readline
+//depois, na execucao, para cada processo vou executar uma funcao redir(comando)
+/*redir(comando)
+{
+	while(first_redirec)
+	{
+		crio o arquivo e retorno o fd (crio o arquivo a depender do tipo de redireção porque um abro com truncate, outro com append ...), 
+			se o processo.outfile == -1: processo.outfile = fd criado
+			se o processo.outfile != -1: , close (processo.outfile) e processo.outfile = fd criado
+		se da algum erro na criacao do arquivo eu retorno o erro e termino
+	}
+}*/
+//depois executo o comando
 t_process	*process_creation(t_token *first_token)
 {
 	t_process	*head;
