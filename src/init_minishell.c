@@ -97,17 +97,20 @@ void	init_minishell(t_env *envp)
 				print_token_info(tmp);
 				tmp = tmp->next;
 			} */
-			expansion(first_token, last_exit, *envp);
 			// TO DO: VALIDATE TOKENS
 			/* if (validate)
 				first_process = 
 				... execute
 			 */
-/* 			printf("Lista de tokens finais:\n");
-			print_list(first_token); */
-			first_process = process_creation(first_token);
-			if (first_process)
-				last_exit = execute_cmd(first_process, envp, last_exit, functions);
+			if(!validate_tokens(first_token))
+			{
+				expansion(first_token, last_exit, *envp);
+	/* 			printf("Lista de tokens finais:\n");
+				print_list(first_token); */
+				first_process = process_creation(first_token);
+				if (first_process)
+					last_exit = execute_cmd(first_process, envp, last_exit, functions);
+			}
 		}
 		clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
 		first_token = NULL;

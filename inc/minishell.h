@@ -70,7 +70,8 @@ typedef enum token_type
 	APPEND = 5,
 	INPUT_REDIRECTION = 6,
 	HERE_DOC = 7,
-	PIPE = 8
+	PIPE = 8,
+	NL = 9
 }	t_type;
 
 /*
@@ -220,5 +221,8 @@ int	ft_env(char **argv, t_env *env, int last_exit);
 int	ft_cd(char **argv, t_env *env, int last_exit);
 int	ft_export(char **argv, t_env *env, int last_exit);
 int	ft_unset(char **argv, t_env *env, int last_exit);
+
+
+int validate_tokens(t_token *token);
 
 #endif
