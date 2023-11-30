@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 22:11:37 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:16:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,11 @@ t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
 	t_redirect 	*redirect;
+	t_type			type;
 	int			i;
 
 	i = 0;
+	type = -1;
 	process = (t_process *)ft_calloc(1, sizeof(t_process));
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
@@ -140,47 +142,18 @@ t_process	*create_process(t_token *token, int num_token_str)
 		}
 		else if (token->type == PIPE)
 			break;
-		//wip
-		else if (token->type == OUTPUT_REDIRECTION)
-		{/* crio a redirecao do processo */
+		else 
+		{
+			type = token->type;
 			token = token->next;
 			if (token->type == SPC)
 				token = token->next;
-			redirect = create_redirect(token->str, OUTPUT_REDIRECTION);
+			redirect = create_redirect(token->str, type);
 			add_redirect(&(process->redirect), redirect);
 			token = token->next;
 		}
-		else if (token->type == APPEND)
-		{/* crio a redirecao do processo */
-			token = token->next;
-			if (token->type == SPC)
-				token = token->next;
-			redirect = create_redirect(token->str, APPEND);
-			add_redirect(&(process->redirect), redirect);
-			token = token->next;
-		}
-		else if (token->type == INPUT_REDIRECTION)
-		{/* crio a redirecao do processo */
-			token = token->next;
-			if (token->type == SPC)
-				token = token->next;
-			redirect = create_redirect(token->str, INPUT_REDIRECTION);
-			add_redirect(&(process->redirect), redirect);
-			token = token->next;
-		}
-		else if (token->type == HERE_DOC)
-		{/* crio a redirecao do processo */
-			token = token->next;
-			if (token->type == SPC)
-				token = token->next;
-			redirect = create_redirect(token->str, HERE_DOC);
-			add_redirect(&(process->redirect), redirect);
-			token = token->next;
-		}
-		// wip
-		// printf("AQUI\n");
 	}
-	print_redirect(process->redirect);
+	// print_redirect(process->redirect);
 	//ao termino desse metodo vou ter os comandos, infile e outfile padrão ou -1, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
 	return (process);
 }
