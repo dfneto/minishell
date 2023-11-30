@@ -3,7 +3,7 @@
 ## TO DO
 
 - David: 5, 4
-- Lucas: 16, 10, 3, 4
+- Lucas: 10, 3, 4
 
 ### Task 2 - MAKEFILE [___]
 
@@ -40,25 +40,6 @@ Testar:
 $"USER"
 bash: USER: command not found -> correto  
 $
-
-### Task 16 - VALIDATE TOKEN [ESS]
-
-|ls  
-Makefile                README.md               dep       
-$> < | ls$  
-Makefile                README.md               dep   
-
-quando não deveria:  
-bash-3.2$ > < |ls  
-bash: syntax error near unexpected token `<'  
-bash-3.2$ > < | ls  
-bash: syntax error near unexpected token `<'  
-bash-3.2$  > < | ls  
-bash: syntax error near unexpected token `<'  
-bash-3.2$   | ls  
-bash: syntax error near unexpected token `|'  
-bash-3.2$   | ls  
-bash: syntax error near unexpected token `|'  
 
 
 ## DONE
@@ -161,3 +142,21 @@ bash: : command not found
 
 
 
+### Task 16 - VALIDATE TOKEN [ESS]
+
+|ls  
+Makefile                README.md               dep       
+$> < | ls$  
+Makefile                README.md               dep   
+
+quando não deveria:  
+bash-3.2$ > < |ls  
+bash: syntax error near unexpected token `<'  
+bash-3.2$ > < | ls  
+bash: syntax error near unexpected token `<'  
+bash-3.2$  > < | ls  
+bash: syntax error near unexpected token `<'  
+bash-3.2$   | ls  
+bash: syntax error near unexpected token `|'  
+bash-3.2$   | ls  
+bash: syntax error near unexpected token `|'  
