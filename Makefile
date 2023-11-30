@@ -26,7 +26,7 @@ BUL_SRC = cd.c export.c echo.c pwd.c \
 	unset.c execute_builtins.c 
 EXP_SRC = init_expansion.c exp_utils.c string_expansion.c double_quotes_expansion.c exp_utils2.c
 LEX_SRC = init_lexical_analysis.c create_tokens.c lex_utils.c
-PROC_SRC = process_quotes.c process_creation.c process_utils.c
+PROC_SRC = process_quotes.c process_creation.c process_utils.c process_creation_utills.c
 UTILS_SRC = print_error.c ft_perror.c printers.c ft_strtok.c
 ENV_SRC = env_create.c env_utils.c node_utils.c
 

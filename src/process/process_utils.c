@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/29 22:58:36 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:48:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,24 @@ void	clean_process(t_process **process)
 	*process = NULL;
 }
 
-void	add_redirect(t_process *process, t_redirect *redirect) //acho que nao precisa ser um **processo
+/*
+* Resolvi fazer esse add ponteiro de forma diferente para treinar 
+* o uso de **
+*/
+void	add_redirect(t_redirect **first, t_redirect *new)
 {
-	while(process->redirect)
-		process->redirect = process->redirect->next;
-	process->redirect = redirect;
+	t_redirect	*temp;
+	if (!new)
+		return ;
+	if (*first == NULL)
+		*first = new;
+	else
+	{
+		temp = (*first);
+		while (temp != NULL && temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
 }
 
 /* t_process	*create_process(char *input, int in, int out)

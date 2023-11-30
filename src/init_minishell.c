@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/28 12:27:27 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:04:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ void	init_minishell(t_env *envp)
 			}
 		}
 		clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
+		//limpar as redireções
+		//limpar os processos
 		first_token = NULL;
 		clean_input(&input);
 	}

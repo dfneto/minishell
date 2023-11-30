@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/29 22:58:50 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:58:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int			is_expansible(char *str);
 int			is_alnum_or_slash(char c);
 int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
-void		add_redirect(t_process *process, t_redirect *redirect);
+void		add_redirect(t_redirect **first, t_redirect *new);
 void		print_list(t_token *root);
 void		print_redirect(t_redirect *redirect);
 void		remove_spaces(char **str);
@@ -165,7 +165,7 @@ t_token		*create_redirec_tok(char *input, int *i, int type, int quote_char);
 t_token		*create_string_token(char *input, int *i);
 t_process	*process_creation(t_token *first_token);
 t_process	*create_process(t_token *token, int i);
-
+t_redirect  *create_redirect(char *name, t_type type);
 
 // VVVVVV LUKITAS VVVVV
 

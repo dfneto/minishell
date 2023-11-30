@@ -42,7 +42,24 @@ bash: USER: command not found -> correto
 $
 
 
+### Task 18 - SEFFAULT [ESS]
+br.sh$ >f1
+Imprimindo as redireções ...
+redirect: > - file name: f1
+[1]    9120 segmentation fault  ./minishell
+
+
+
+
+
+
+
+
+
+
+
 ## DONE
+
 
 ### Task 1 - OK
 

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/29 23:06:24 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:05:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,19 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 	return (process);
 }
 
-//#echo david      > f1       > f2 -> apagar os arquivos depois de criados
-//TODO: echo   vaca   >   f1 |   echo patata   > f2 > f3 
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções
+//echo hola > f1 - ok
+//echo hola > f1 > f2 - ok
+//echo hola >> f1
+//echo hola >> f1 >> f2
+//echo hola >> f1 >> f2 >> f3 >> f4
+//echo hola >> f1 > f2 >> f3 > f4
+//echo david      > f1       > f2 -> apagar os arquivos depois de criados
+//echo   vaca   >   f1 |   echo patata   > f2 > f3 
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
+	t_redirect 	*redirect;
 	int			i;
 
 	i = 0;
@@ -124,14 +131,6 @@ t_process	*create_process(t_token *token, int num_token_str)
 		perror("malloc cmd");
 		exit(EXIT_FAILURE);
 	}
-	/* crio a redirecao do processo */
-	t_redirect *redirect = (t_redirect *)ft_calloc(1, sizeof(t_redirect));
-	if (redirect == NULL)
-	{
-		perror("malloc redirect");
-		exit(EXIT_FAILURE);
-	}
-
 	while (token && i < num_token_str)
 	{
 		if (token->str) //type STR, DOUB ou SING
@@ -153,16 +152,15 @@ t_process	*create_process(t_token *token, int num_token_str)
 		else if (token->type == PIPE)
 			break;
 		//wip
-		// else if (token->type == OUTPUT_REDIRECTION)
-		// {
-		// 	token = token->next;
-		// 	if (token->type == SPC)
-		// 		token = token->next;
-		// 	redirect->name = token->str;
-		// 	redirect->type = OUTPUT_REDIRECTION;
-		// 	redirect->next = NULL;
-		// 	token = token->next;
-		// }
+		else if (token->type == OUTPUT_REDIRECTION)
+		{/* crio a redirecao do processo */
+			token = token->next;
+			if (token->type == SPC)
+				token = token->next;
+			redirect = create_redirect(token->str, OUTPUT_REDIRECTION);
+			add_redirect(&(process->redirect), redirect);
+			token = token->next;
+		}
 		else //outros casos - para nao dar erro
 		{
 			//It is a redirection
@@ -177,16 +175,17 @@ t_process	*create_process(t_token *token, int num_token_str)
 				token = token->next;
 			}
 		}
+		// wip
+		// printf("AQUI\n");
 	}
-	// wip
-	// add_redirect(redirect, process);
-	// print_redirect(process->redirect);
+	print_redirect(process->redirect);
 	//ao termino desse metodo vou ter os comandos, infile e outfile padrão ou -1, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
 	return (process);
 }
 
 //TODO: criar uma lista de redireções ao criar o processo
-//ao criar a lista de redireção, se for um heredoc executo
+//Depois de criar os processos e antes da execução:
+//procurar na lista de ao criar a lista de redireção por heredoc e se tiver executo
 //executar um heredoc quer dizer entrar no bookle de readline
 //depois, na execucao, para cada processo vou executar uma funcao redir(comando)
 /*redir(comando) 

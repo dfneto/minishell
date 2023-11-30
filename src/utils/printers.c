@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/29 22:45:26 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:48:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	print_list(t_token *root)
 
 void	print_redirect(t_redirect *redirect)
 {
+	printf("Imprimindo as redireções ...\n");
 	while (redirect)
 	{
 		printf("redirect: ");
