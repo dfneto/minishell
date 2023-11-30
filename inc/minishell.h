@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/30 21:58:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:11:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef enum token_type
 	INPUT_REDIRECTION = 6,
 	HERE_DOC = 7,
 	PIPE = 8,
-	NL = 9
+	NL = 9 //usamos isso, luki?
 }	t_type;
 
 /*
@@ -141,6 +141,7 @@ void		add_token(t_token **first, t_token *new);
 void		add_redirect(t_redirect **first, t_redirect *new);
 void		print_list(t_token *root);
 void		print_redirect(t_redirect *redirect);
+void		print_process(t_process *process);
 void		remove_spaces(char **str);
 char		*remove_pre_dolar_text(char *str, int start);
 void		add_token_after(t_token **token, t_token *new_token);
