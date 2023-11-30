@@ -72,6 +72,8 @@ char	*get_path(char **cmd, t_env env)
 	char	*paths;
 	char	*path;
 
+	if (cmd[0][0] == '\0')
+		return (NULL);
 	if (is_cmd_executable(cmd[0]) && !access(cmd[0], X_OK))
 		return (cmd[0]);
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
@@ -95,6 +97,10 @@ char	*get_path(char **cmd, t_env env)
 	free(abs_path);
 	return (NULL);
 }
+
+/* 
+REFACTOR
+Eliminar essa função??? */
 
 int	is_executable(char **cmd, t_env envp)
 {
@@ -218,6 +224,11 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 	int	og_stdout;
 
 	og_stdout = -1;
+	/*
+	TEM QUE REFAZER ESSA PARTE ABAIXO...
+	QUANDO CRIEI EU ESPERAVA QUE SÓ IA EXISTIR UM OUTPUT...
+	E REFAZER NO MULTI_CMD TB <o>
+	 */
 	if (!process->next)
 	{
 		if (process->outfile != STDOUT_FILENO)

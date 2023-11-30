@@ -3,7 +3,7 @@
 ## TO DO
 
 - David: 5, 4
-- Lucas: 11, 18, 16, 10, 3, 4
+- Lucas: 16, 10, 3, 4
 
 ### Task 2 - MAKEFILE [___]
 
@@ -33,8 +33,7 @@ Colocar a lib readline dentro do projeto (A REFLETIR)
 
 LEAKSSSSSSS de tokens e de processos
 
-### Task 11 - FT_GETENV [ESS] - 1 Lucas
-Alterar todas as expansões para usar a ft_getenv e avisar ao David
+
 
 ### Task 15 - $"USER" [___]
 Testar:
@@ -60,17 +59,6 @@ bash-3.2$   | ls
 bash: syntax error near unexpected token `|'  
 bash-3.2$   | ls  
 bash: syntax error near unexpected token `|'  
-
-### Task 17 - FUNCIONAMENTO DO "" [___]
-
-- Bash: 
-bash-3.2$ ""  
-bash: : command not found  
-- Minishell: nao faz nada xD  
-
-### Task 18 - FT_ENV TO ARR [ESS]
-
-- transformar ft_env em array para enviar para execve  
 
 
 ## DONE
@@ -155,3 +143,21 @@ echo "$USER$USER" -> deve printar sem aspas
 testar hola$USER$USER$USER
 export a="  ls   -l   -a  -F   "
 testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)  
+
+### Task 11 - FT_GETENV [ESS] - 1 Lucas
+Alterar todas as expansões para usar a ft_getenv e avisar ao David  
+
+### Task 18 - FT_ENV TO ARR [ESS]
+
+- transformar ft_env em array para enviar para execve  
+
+
+### Task 17 - FUNCIONAMENTO DO "" [___]
+
+- Bash: 
+bash-3.2$ ""  
+bash: : command not found  
+- Minishell: nao faz nada xD  
+
+
+
