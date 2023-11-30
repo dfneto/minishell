@@ -18,7 +18,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Main source files
-SRC = main.c init_minishell.c execute_cmd.c validate_tokens.c# init_signals.c
+SRC = main.c init_minishell.c execute_cmd.c validate_tokens.c heredoc.c# init_signals.c
 	
 # Expansion source files (located in the SRC_DIR_EXPANSION directory)
 BUL_SRC = cd.c export.c echo.c pwd.c \

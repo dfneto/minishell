@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 22:08:01 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:41:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,26 @@ void	print_redirect(t_redirect *redirect)
 	}
 }
 
-// void	print_process_list(t_process *root)
-// {
-// 	int i;
+void	print_process_list(t_process *root)
+{
+	int i;
 	
-// 	i = 0;
-// 	while (root)
-// 	{
-// 		printf("executando comando: ");
-// 		while (first_process->cmd[i])
-// 		{
-// 			printf("%s ", first_process->cmd[i]);
-// 			i++;
-// 		}
-// 		printf("\n");
-// 		printf("outfile: %d\n", first_process->outfile);
-// 	}
-// }
+	i = 0;
+	printf("Imprimindo os processos ...\n");
+	if (!root)
+		printf("Lista de processos nula ...\n");
+	while (root)
+	{
+		printf("processo: ");
+		while (root->cmd[i])
+		{
+			printf("%s ", root->cmd[i]);
+			i++;
+		}
+		printf("\n");
+		printf("outfile: %d\n", root->outfile);
+		printf("infile: %d\n", root->infile);
+		print_redirect(root->redirect);
+		root = root->next;
+	}
+}

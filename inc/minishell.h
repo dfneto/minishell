@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/30 22:11:54 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:43:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,9 @@ void		add_redirect(t_redirect **first, t_redirect *new);
 void		print_list(t_token *root);
 void		print_redirect(t_redirect *redirect);
 void		print_process(t_process *process);
+void		print_process_list(t_process *root);
 void		remove_spaces(char **str);
+void	    execute_heredoc(t_process *first_process);
 char		*remove_pre_dolar_text(char *str, int start);
 void		add_token_after(t_token **token, t_token *new_token);
 char		*get_token_without_dolar(t_token *token);

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 22:04:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 23:46:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,12 @@ void	init_minishell(t_env *envp)
 				print_list(first_token); */
 				first_process = process_creation(first_token);
 				if (first_process)
+				{
+					//wip: executar o heredoc
+					//execute_heredoc(first_process);
+					//print_process_list(first_process);
 					last_exit = execute_cmd(first_process, envp, last_exit, functions);
+				}
 			}
 		}
 		clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
