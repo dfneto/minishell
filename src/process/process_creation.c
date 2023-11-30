@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 22:05:01 by davifern         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:11:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,7 @@ static void	add_process(t_process **first, t_process *new)
 	}
 }
 
-void	print_process(t_process *process)
-{
-	int	i;
 
-	i = 0;
-	printf("Process created:\n");
-	while (process->cmd[i])
-	{
-		printf("%s\n", process->cmd[i]);
-		i++;
-	}
-}
 
 t_process	*create_process_L(t_token *token, int num_cmd)
 {
@@ -104,10 +93,10 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções
 //echo hola > f1 - ok
 //echo hola > f1 > f2 - ok
-//echo hola >> f1
-//echo hola >> f1 >> f2
-//echo hola >> f1 >> f2 >> f3 >> f4
-//echo hola >> f1 > f2 >> f3 > f4
+//echo hola >> f1 - ok
+//echo hola >> f1 >> f2 - ok
+//echo hola >> f1 >> f2 >> f3 >> f4 - ok
+//echo hola >> f1 > f2 >> f3 > f4 - ok
 //echo david      > f1       > f2 -> apagar os arquivos depois de criados
 //echo   vaca   >   f1 |   echo patata   > f2 > f3 
 t_process	*create_process(t_token *token, int num_token_str)
@@ -161,19 +150,32 @@ t_process	*create_process(t_token *token, int num_token_str)
 			add_redirect(&(process->redirect), redirect);
 			token = token->next;
 		}
-		else //outros casos - para nao dar erro
-		{
-			//It is a redirection
+		else if (token->type == APPEND)
+		{/* crio a redirecao do processo */
 			token = token->next;
-			while (token)
-			{
-				if (token->str)
-				{	
-					token = token->next;
-					break;
-				}
+			if (token->type == SPC)
 				token = token->next;
-			}
+			redirect = create_redirect(token->str, APPEND);
+			add_redirect(&(process->redirect), redirect);
+			token = token->next;
+		}
+		else if (token->type == INPUT_REDIRECTION)
+		{/* crio a redirecao do processo */
+			token = token->next;
+			if (token->type == SPC)
+				token = token->next;
+			redirect = create_redirect(token->str, INPUT_REDIRECTION);
+			add_redirect(&(process->redirect), redirect);
+			token = token->next;
+		}
+		else if (token->type == HERE_DOC)
+		{/* crio a redirecao do processo */
+			token = token->next;
+			if (token->type == SPC)
+				token = token->next;
+			redirect = create_redirect(token->str, HERE_DOC);
+			add_redirect(&(process->redirect), redirect);
+			token = token->next;
 		}
 		// wip
 		// printf("AQUI\n");
