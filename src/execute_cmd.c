@@ -19,6 +19,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/*
+Verificar se ainda esta sendo utilizada
+Se nao, delete
+*/
 void	clean_array(char **arr)
 {
 	int	i;
@@ -36,9 +40,13 @@ void	clean_array(char **arr)
 	}
 }
 
-void print_path(char *path)
+/*
+DEBUG FUNCTION
+DELETAR
+*/
+void	print_path(char *path)
 {
-	int return_val;
+	int	return_val;
 
 	errno = 0;
 	return_val = access(path, F_OK);
@@ -66,6 +74,11 @@ void	get_abs_path(char **abs_path, char *path, char *cmd)
 	ft_strlcat(*abs_path, cmd, PATH_MAX);
 }
 
+/*
+No refactor do single_cmd ela vai ter que ser chamada fora do fork,
+	no processo principal.
+Se ela for feita essa mudança, adicionar ft_strdup no ft_getenv
+*/
 char	*get_path(char **cmd, t_env env)
 {
 	char	*abs_path;
@@ -86,10 +99,10 @@ char	*get_path(char **cmd, t_env env)
 		return (NULL);
 	}
 	path = ft_strtok(paths, ":");
-	while(path)
+	while (path)
 	{
 		get_abs_path(&abs_path, path, cmd[0]);
-		//print_path(abs_path);
+		// print_path(abs_path);
 		if (!access(abs_path, X_OK))
 			return (abs_path);
 		path = ft_strtok(NULL, ":");
@@ -98,9 +111,9 @@ char	*get_path(char **cmd, t_env env)
 	return (NULL);
 }
 
-/* 
-REFACTOR
-Eliminar essa função??? */
+/*
+No REFACTOR das outras funções devemos eliminar essa função???
+*/
 
 int	is_executable(char **cmd, t_env envp)
 {
@@ -118,15 +131,22 @@ int	is_executable(char **cmd, t_env envp)
 	exit(EXIT_FAILURE);
 }
 
-/* 
+/*
+Função quando só existe um comando.
+1. Recebe o char **comando,
+2. Verifica se ele é builtin e executa se é,
+3. Caso não seja builtin, faz fork e tenta executar pelo execve
+
+TO DO:
 REFACTOR
-FORK desnecessario... as vezes
+FORK desnecessario se o comando não existe... verificar
 */
 int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int	fork_id;
 
+	// trocar por is_builtin e executar depois?
 	last_exit = execute_builtins(cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
@@ -150,7 +170,9 @@ void	close_pipes(int pipe[])
 	close(pipe[1]);
 }
 
-/* 
+/*
+Função que faz a execução de varios comandos, realizando os pipes e redirections
+Necessita revisão
 REFACTOR
 TOO FUCKING BIG
 */
@@ -193,7 +215,8 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 				dup2(process->outfile, STDOUT_FILENO);
 			}
 			close_pipes(process->fd);
-			last_exit = execute_builtins(process->cmd, env, last_exit, functions);
+			last_exit = execute_builtins(process->cmd, env, last_exit,
+					functions);
 			if (last_exit == -1)
 				is_executable(process->cmd, *env);
 			exit(last_exit);
@@ -218,6 +241,14 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	return (last_exit);
 }
 
+/*
+Função de entrada para a execução de comandos
+Recebe	o(s) processo(s) e executa
+Primeiro ve se existe mais de um processo:
+	1 processo: executa o redirection (se existe) do stdout e executa esse comando com a função execute_single_cmd
+	+ de 1 processo: executa a função execute_multi_cmd que vai controlar os pipes e redirections
+Return: O valor de saida do programa executado
+*/
 int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
@@ -228,7 +259,7 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 	TEM QUE REFAZER ESSA PARTE ABAIXO...
 	QUANDO CRIEI EU ESPERAVA QUE SÓ IA EXISTIR UM OUTPUT...
 	E REFAZER NO MULTI_CMD TB <o>
-	 */
+		*/
 	if (!process->next)
 	{
 		if (process->outfile != STDOUT_FILENO)
