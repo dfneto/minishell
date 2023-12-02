@@ -36,8 +36,6 @@ static void	add_process(t_process **first, t_process *new)
 	}
 }
 
-
-
 t_process	*create_process_L(t_token *token, int num_cmd)
 {
 	t_process	*process;
@@ -82,7 +80,8 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 		}
 		else if (process->cmd[i] && token->type == SPC)
 			i++;
-		token = token->next;
+		if (token)
+			token = token->next;
 	}
 	//print_process(process);
 	process->infile = STDIN_FILENO;
@@ -210,8 +209,15 @@ t_process	*process_creation(t_token *first_token)
 							heredoc = get_heredoc(first_token->next);
 							first_token = first_token->next;
 						} */
-			if (first_token->type == PIPE)
+			else if (first_token->type == PIPE)
 				break ;
+			/* ADICIONEI ESSE ELSE ABAIXO
+			ELE RESOLVE O SEGFAULT DA TASK 18 */
+			else if (first_token->type != SPC)
+			{
+				while (first_token && !first_token->str)
+					first_token = first_token->next;
+			}
 			first_token = first_token->next;
 		}
 		if (i > 0)
