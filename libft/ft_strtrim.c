@@ -59,16 +59,11 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	i = 0;
 	f = ft_strlen(s1);
-	if (f > 0)
-		f--;
 	while (look_set(s1[i], set) && i < f)
 		i++;
 	if (i == f)
 		return (return_empty());
-	else
-	{
-		while (look_set(s1[f], set) && f >= i)
-			f--;
-		return (return_trim(s1, i, f));
-	}
+	while (look_set(s1[--f], set) && f >= i)
+		;
+	return (return_trim(s1, i, f));
 }

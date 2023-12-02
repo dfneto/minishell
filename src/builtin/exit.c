@@ -71,19 +71,30 @@ static int	is_num(char *str)
 {
 	char	*cpy;
 
+	str = ft_strtrim(str, " ");
 	cpy = str;
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
+	{
+		free(cpy);
 		return (0);
+	}
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
+		{
+			free(cpy);
 			return (0);
+		}
 		str++;
 	}
 	if (is_too_big(cpy))
+	{
+		free(cpy);
 		return (0);
+	}
+	free(cpy);
 	return (1);
 }
 
