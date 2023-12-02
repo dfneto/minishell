@@ -18,19 +18,24 @@
 void	clean_process(t_process **process)
 {
 	int	i;
-
-	i = 0;
-	if ((*process)->cmd)
+	t_process *tmp;
+	
+	while (*process)
 	{
-		while ((*process)->cmd[i])
+		tmp = (*process)->next;
+		i = 0;
+		if ((*process)->cmd)
 		{
-			free((*process)->cmd[i]);
-			i++;
+			while ((*process)->cmd[i])
+			{
+				free((*process)->cmd[i]);
+				i++;
+			}
+			free((*process)->cmd);
 		}
-		free((*process)->cmd);
+		free(*process);
+		*process = tmp;
 	}
-	free(*process);
-	*process = NULL;
 }
 
 /*

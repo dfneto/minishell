@@ -86,27 +86,21 @@ void	init_minishell(t_env *envp)
 	while (42)
 	{
 		input = get_input(last_exit);
+/* 		if (!ft_strcmp(input, "exit"))
+		{
+			printf("EXITING...\n");
+			exit(EXIT_SUCCESS);
+		} */
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0')
 		{
 			first_token = lexical_analysis(input);
-/* 			t_token *tmp = first_token;
-			while (tmp)
-			{
-				print_token_info(tmp);
-				tmp = tmp->next;
-			} */
-			// TO DO: VALIDATE TOKENS
-			/* if (validate)
-				first_process = 
-				... execute
-			 */
 			if(!validate_tokens(first_token))
 			{
 				expansion(first_token, last_exit, *envp);
-	/* 			printf("Lista de tokens finais:\n");
-				print_list(first_token); */
+				// printf("Lista de tokens finais:\n");
+				// print_list(first_token);
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
@@ -118,6 +112,7 @@ void	init_minishell(t_env *envp)
 			}
 		}
 		clean_tokens(first_token); //TODO: ver com o Lucas o que ele tinha dito que era o problema de quando limpava os tokens
+		clean_process(&first_process);
 		//limpar as redireções
 		//limpar os processos
 		first_token = NULL;
