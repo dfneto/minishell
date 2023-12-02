@@ -29,18 +29,20 @@ Daí no sábado e domingo faria os sinais e o sr Juppi o resto que faltava ;)
 
 Colocar a lib readline dentro do projeto (A REFLETIR)
 
-### Task 10 - LEAKS [ESS]
-
-LEAKSSSSSSS de tokens e de processos
-
-
-
 ### Task 15 - $"USER" [___]
 Testar:
 $"USER"
 bash: USER: command not found -> correto  
 $
 
+### Task 19 - Leaks ou algo mais? [___]
+
+Leaks aparentemente estāo ok, mas o programa leaks trava em alguns comandos...  
+Ex.:  
+cmd_not_exist  
+echo test | wc  
+
+Será que tem leaks nesses comandos? E por que o leaks trava?
 
 ## DONE
 
@@ -166,4 +168,8 @@ bash: syntax error near unexpected token `|'
 br.sh$ >f1
 Imprimindo as redireções ...
 redirect: > - file name: f1
-[1]    9120 segmentation fault  ./minishell  
+[1]    9120 segmentation fault  ./minishell 
+
+### Task 10 - LEAKS [ESS]
+
+LEAKSSSSSSS de tokens e de processos  
