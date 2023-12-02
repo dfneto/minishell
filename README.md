@@ -3,7 +3,7 @@
 ## TO DO
 
 - David: 5, 4
-- Lucas: 10, 3, 4
+- Lucas: 3, 4
 
 ### Task 2 - MAKEFILE [___]
 
