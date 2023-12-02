@@ -21,6 +21,8 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position, t_env env)
 		(*i)++;
 	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
 			- dolar_position - 1);
+	if (word_to_expand == NULL)
+		return (ft_strdup(""));
 	return (ft_strdup(ft_getenv(word_to_expand, env)));
 }
 

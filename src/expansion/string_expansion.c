@@ -40,7 +40,10 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar, t_env env)
 
 	next_tok_after_expand = token->next;
 
-	expanded_str = ft_strdup(ft_getenv(token->str, env));
+	if (token->str == NULL)
+		expanded_str = ft_strdup("");
+	else
+		expanded_str = ft_strdup(ft_getenv(token->str, env));
 	if (expanded_str == NULL)
 		return (set_token_str(token, ""));
 	token->str = NULL;
