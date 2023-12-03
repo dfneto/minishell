@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:30:09 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:32:28 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,10 @@ t_process	*process_creation(t_token *first_token)
 			if (first_token->str)
 				num_tok_str++;
 			else if (first_token->type == PIPE)
+			{
+				first_token = first_token->next;
 				break ;
+			}
 			else if (first_token->type != SPC)
 			{
 				while (first_token && !first_token->str)
