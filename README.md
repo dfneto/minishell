@@ -2,8 +2,8 @@
 
 ## TO DO
 
-- David: 5, 4
-- Lucas: 3, 4
+- David: criar lista de redireções, 20, 4
+- Lucas: 3, 5
 
 ### Task 2 - MAKEFILE [___]
 
@@ -20,9 +20,9 @@ Sinais
 
 ### Task 5 - REDIRECTS [ESS]
 
-Redirect && heredoc 
-Meu objetivo é fazer até sexta uma lista de redireções por processo e o heredoc e deixar pro mr Juppi fazer a execucação das redireções (lembrando que pode ter várias e ainda os pipes)
-Daí no sábado e domingo faria os sinais e o sr Juppi o resto que faltava ;)
+Redirect (heredoc não)
+Pq mudei a forma como construímos os processos:
+
 
 
 ### Task 8 - READLINE [___]
@@ -43,6 +43,12 @@ cmd_not_exist
 echo test | wc  
 
 Será que tem leaks nesses comandos? E por que o leaks trava?
+
+
+### Task 20 - HEREDOC [ESS]
+Meu objetivo é fazer até sexta uma lista de redireções por processo e o heredoc e deixar pro mr Juppi fazer a execucação das redireções (lembrando que pode ter várias e ainda os pipes)
+Daí no sábado e domingo faria os sinais e o sr Juppi o resto que faltava ;)
+
 
 ## DONE
 

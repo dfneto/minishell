@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/30 23:43:02 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:42:49 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,10 @@ int			is_alnum_or_slash(char c);
 int			is_dollarquestion_mark(char *str);
 void		add_token(t_token **first, t_token *new);
 void		add_redirect(t_redirect **first, t_redirect *new);
-void		print_list(t_token *root);
-void		print_redirect(t_redirect *redirect);
-void		print_process(t_process *process);
+void		print_token(t_token *token);
+void		print_list(t_token *root); //mudar o nome para print_list_token
+void		print_redirect(t_redirect *redirect); //mudar o nome para print_list_redirect
+void		print_process(t_process *process); ////mudar o nome para print_list_process
 void		print_process_list(t_process *root);
 void		remove_spaces(char **str);
 void	    execute_heredoc(t_process *first_process);

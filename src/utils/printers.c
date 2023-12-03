@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 23:41:34 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:06:17 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,53 @@ void	print_list(t_token *root)
 	}
 }
 
+void	print_token(t_token *token)
+{
+	if (!token)
+		printf("Token nulo\n");
+	else if (token->str)
+		printf("<%s>\n", token->str);
+	else
+		print_type(token->type);
+}
+
 void	print_process(t_process *process)
 {
 	int	i;
 
 	i = 0;
-	printf("Process created:\n");
-	while (process->cmd[i])
+	if (process == NULL)
 	{
-		printf("%s\n", process->cmd[i]);
-		i++;
+		printf("Process NULL\n");
+		return;
 	}
+	else
+		printf("Processo nao eh nulo\n");
+	if (process->cmd == NULL)
+			printf("CMD eh nulo\n");
+	else
+	{
+		printf("CMD NAO eh nulo\n");
+		if (process->cmd[0] == NULL)
+			printf("CMD[0] eh nulo\n");
+		else
+			{
+				printf("CMD[0] NAO eh nulo\n");
+				while (process->cmd[i])
+				{
+					printf("%s\n", process->cmd[i]);
+					i++;
+				}
+			}
+	}	
+	print_redirect(process->redirect);
 }
 
 void	print_redirect(t_redirect *redirect)
 {
 	printf("Imprimindo as redireções ...\n");
+	if (!redirect)
+		printf("Redirect is NULL\n");
 	while (redirect)
 	{
 		printf("redirect: ");
