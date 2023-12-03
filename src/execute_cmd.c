@@ -92,7 +92,7 @@ char	*get_path(char **cmd, t_env env)
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
 		return (NULL);
-	paths = ft_getenv("PATH", env);
+	paths = ft_strdup(ft_getenv("PATH", env));
 	if (!paths)
 	{
 		free(abs_path);
@@ -104,31 +104,14 @@ char	*get_path(char **cmd, t_env env)
 		get_abs_path(&abs_path, path, cmd[0]);
 		// print_path(abs_path);
 		if (!access(abs_path, X_OK))
+		{
+			free(paths);
 			return (abs_path);
+		}
 		path = ft_strtok(NULL, ":");
 	}
 	free(abs_path);
 	return (NULL);
-}
-
-/*
-No REFACTOR das outras funções devemos eliminar essa função???
-*/
-
-int	is_executable(char **cmd, t_env envp)
-{
-	char	*path;
-
-	path = get_path(cmd, envp);
-	if (path == NULL)
-	{
-		print_error("Brazilian Shell: ");
-		print_error(cmd[0]);
-		print_error(": command not found\n");
-		exit(127);
-	}
-	execve(path, cmd, get_env_array(envp));
-	exit(EXIT_FAILURE);
 }
 
 /*
@@ -150,11 +133,22 @@ int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 	last_exit = execute_builtins(cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
+		char *path = get_path(cmd, *env);
+		if (path == NULL)
+		{
+			print_error("Brazilian Shell: ");
+			print_error(cmd[0]);
+			print_error(": command not found\n");
+			return(127);
+		}
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
-			is_executable(cmd, *env);
+		{
+			execve(path, cmd, get_env_array(*env));
+			exit(EXIT_FAILURE);
+		}
 		else
 		{
 			wait(&last_exit);
@@ -196,37 +190,56 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
-		check = fork();
-		if (check == -1)
-			exit(EXIT_FAILURE);
-		if (check == CHILD)
+		char *path = get_path(process->cmd, *env);
+		if (!is_builtins(process->cmd, functions) && !path)
 		{
-			if (i != 0)
-			{
-				dup2(process->prev->fd[0], STDIN_FILENO);
-				close_pipes(process->prev->fd);
-			}
-			if (i != num_proc - 1)
-			{
-				dup2(process->fd[1], STDOUT_FILENO);
-			}
-			else
-			{
-				dup2(process->outfile, STDOUT_FILENO);
-			}
+			close_pipes(process->prev->fd);
 			close_pipes(process->fd);
-			last_exit = execute_builtins(process->cmd, env, last_exit,
-					functions);
-			if (last_exit == -1)
-				is_executable(process->cmd, *env);
-			exit(last_exit);
+			print_error("Brazilian Shell: ");
+			print_error(process->cmd[0]);
+			print_error(": command not found\n");
+			if (!process->next)
+				return (127);
+			last_exit = 127;
 		}
 		else
 		{
-			if (i != 0)
-				close_pipes(process->prev->fd);
-			if (i == num_proc - 1)
+			
+			check = fork();
+			if (check == -1)
+				exit(EXIT_FAILURE);
+			if (check == CHILD)
+			{
+				if (i != 0)
+				{
+					dup2(process->prev->fd[0], STDIN_FILENO);
+					close_pipes(process->prev->fd);
+				}
+				if (i != num_proc - 1)
+				{
+					dup2(process->fd[1], STDOUT_FILENO);
+				}
+				else
+				{
+					dup2(process->outfile, STDOUT_FILENO);
+				}
 				close_pipes(process->fd);
+				last_exit = execute_builtins(process->cmd, env, last_exit,
+						functions);
+				if (last_exit == -1)
+				{
+					execve(get_path(process->cmd, *env), process->cmd, get_env_array(*env));
+					exit(EXIT_FAILURE); 
+				}
+				exit(last_exit);
+			}
+			else
+			{
+				if (i != 0)
+					close_pipes(process->prev->fd);
+				if (i == num_proc - 1)
+					close_pipes(process->fd);
+			}
 		}
 		process = process->next;
 		i++;
