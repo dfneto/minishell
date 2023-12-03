@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:28:58 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:30:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	em outro lugar, ao verificarmos if (process->next) não passar,
 	ao invés de passar com sujeira
 	*/
-	process = (t_process *)ft_calloc(sizeof(t_process));
+	process = (t_process *)ft_calloc(1, sizeof(t_process));
 	if (process == NULL)
 	{
 		perror("malloc process");
