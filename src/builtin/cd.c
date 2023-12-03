@@ -16,16 +16,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-/* static int	count_args(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-		i++;
-	return (i);
-} */
-
 int	ft_chdir(char *str, t_env *env)
 {
 	if (chdir(str))
@@ -60,7 +50,11 @@ int	ft_chdir(char *str, t_env *env)
 	{
 		char *path = (char *) ft_calloc(PATH_MAX, sizeof(char));
 		path = getcwd(path, PATH_MAX);
-		ft_setenv(env, "OLDPWD", ft_strdup(ft_getenv("PWD", *env)), 1);
+		char *pwd = ft_getenv("PWD", *env);
+		if (pwd == NULL)
+			ft_setenv(env, "OLDPWD",  NULL, 1);
+		else
+			ft_setenv(env, "OLDPWD", ft_strdup(ft_getenv("PWD", *env)), 1);
 		ft_setenv(env, "PWD", path, 1);
 	}
 	return (0);
@@ -80,7 +74,11 @@ int	ft_cd(char **argv, t_env *env, int last_exit)
 	if (argv[1])
 	{
 		if (!ft_strcmp(argv[1], "-"))
+		{
 			result = ft_chdir(ft_getenv("OLDPWD", *env), env);
+			if (!result)
+				printf("%s\n", ft_getenv("PWD", *env));
+		}
 		else if (!ft_strcmp(argv[1], "~"))
 			result = ft_chdir(ft_getenv("HOME", *env), env);
 		else if (argv[1][0] == '\0')
