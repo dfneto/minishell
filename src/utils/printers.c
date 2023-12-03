@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/02 18:04:18 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:06:17 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,26 @@ void	print_process(t_process *process)
 		printf("Process NULL\n");
 		return;
 	}
-	if (process != NULL)
+	else
 		printf("Processo nao eh nulo\n");
 	if (process->cmd == NULL)
-		printf("CMD eh nulo\n");
-	if (process->cmd != NULL)
-		printf("CMD NAO eh nulo\n");
-	if (process->cmd[0] == NULL)
-		printf("CMD[0] eh nulo\n");
-	if (process->cmd[0] != NULL)
-		printf("CMD[0] NAO eh nulo\n");
-	while (process->cmd[i])
+			printf("CMD eh nulo\n");
+	else
 	{
-		printf("%s\n", process->cmd[i]);
-		i++;
-	}
-	printf("AQUI\n");
+		printf("CMD NAO eh nulo\n");
+		if (process->cmd[0] == NULL)
+			printf("CMD[0] eh nulo\n");
+		else
+			{
+				printf("CMD[0] NAO eh nulo\n");
+				while (process->cmd[i])
+				{
+					printf("%s\n", process->cmd[i]);
+					i++;
+				}
+			}
+	}	
+	print_redirect(process->redirect);
 }
 
 void	print_redirect(t_redirect *redirect)
