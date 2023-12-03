@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:40:37 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:51:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,15 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 	return (process);
 }
 
-//aqui estamos criando o comando do processo (comando e argumentos) e também as redireções
+//aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
 //echo hola > f1 - ok
 //echo hola > f1 > f2 - ok
 //echo hola >> f1 - ok
 //echo hola >> f1 >> f2 - ok
 //echo hola >> f1 >> f2 >> f3 >> f4 - ok
 //echo hola >> f1 > f2 >> f3 > f4 - ok
-//echo david      > f1       > f2 -> apagar os arquivos depois de criados
-//echo   vaca   >   f1 |   echo patata   > f2 > f3 
+//echo david      > f1       > f2 - ok
+//echo   vaca   >   f1 |   echo patata   > f2 > f3 - ok
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
@@ -211,7 +211,10 @@ int	look_for_commands(t_token **head)
 		se da algum erro na criacao do arquivo eu retorno o erro e termino
 	}
 }*/
-//depois executo o comando
+/*
+* return: a list of process where each process can have an 
+* array of commands or a list of redirections
+*/ 
 t_process	*process_creation(t_token *first_token)
 {
 	t_process	*head;
