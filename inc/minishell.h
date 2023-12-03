@@ -210,7 +210,7 @@ void	ft_perror(int err, char *msg);
 
 //Init builtins
 void	init_builtins(t_builtin array[]);
-
+int is_builtins(char **argv, t_builtin functions[]);
 int	execute_builtins(char **argv, t_env *env, int last_exit, t_builtin functions[]);
 
 int	ft_strcmp(char *str1, char *str2);

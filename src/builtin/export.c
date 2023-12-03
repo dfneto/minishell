@@ -96,7 +96,9 @@ static int	is_valid_env(char *str)
 			return (0);
 		return (-1);
 	}
-	return (1);
+	if (*str)
+		return (1);
+	return (2);
 }
 
 /*
@@ -126,16 +128,21 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 		mode = is_valid_env(*argv);
 		if (mode >= 0)
 		{
-			//separar e checkar seg fault
-			if (mode)
+			//printf("%s\n", *argv);
+			if (mode == 1)
 			{
 				pos = ft_strchr(*argv, '=') - *argv;
+				//printf("pos %zus\n", pos);
 				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 1), mode);
 			}
-			else
+			else if (mode == 0)
 			{
 				pos = ft_strchr(*argv, '+') - *argv;
 				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 2), mode);
+			}
+			else
+			{
+				ft_setenv(env, *argv, NULL, 1);
 			}
 		}
 		else

@@ -25,6 +25,20 @@ void	print_array(char **cmd)
 	}
 }
 
+int is_builtins(char **argv, t_builtin functions[])
+{
+	int	i;
+
+	i = 0;
+	while (i < BUILTINS_NUM)
+	{
+		if (!ft_strcmp(functions[i].name, argv[0]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	execute_builtins(char **argv, t_env *env, int last_exit,
 		t_builtin functions[])
 {
