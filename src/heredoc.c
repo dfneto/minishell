@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:41:52 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 23:44:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:49:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 * tem 3 redireções: <<, >, <<. Assim, executo o primeiro heredoc,
 * salto o > e executo o segundo heredoc
 */
+//casos guia: 
+// cat << h1 >t1 | cat << h2 > t2
+//casos execeção:
+// cat << h1 > test > test2 < no << h2
 void    execute_heredoc(t_process *first_process)
 {
     t_redirect  *redirect;
