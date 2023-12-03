@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-static int	count_args(char **argv)
+/* static int	count_args(char **argv)
 {
 	int	i;
 
@@ -24,9 +24,9 @@ static int	count_args(char **argv)
 	while (argv[i])
 		i++;
 	return (i);
-}
+} */
 
-int	ft_chdir(char *str)
+int	ft_chdir(char *str, t_env *env)
 {
 	if (chdir(str))
 	{
@@ -56,6 +56,13 @@ int	ft_chdir(char *str)
 		}
 		return (1);
 	}
+	else
+	{
+		char *path = (char *) ft_calloc(PATH_MAX, sizeof(char));
+		path = getcwd(path, PATH_MAX);
+		ft_setenv(env, "OLDPWD", ft_strdup(ft_getenv("PWD", *env)), 1);
+		ft_setenv(env, "PWD", path, 1);
+	}
 	return (0);
 }
 
@@ -67,26 +74,23 @@ COLOCAR GETCWD AQUI... EM ALGUM LUGAR
 
 int	ft_cd(char **argv, t_env *env, int last_exit)
 {
-	int	argc;
+	int	result;
 
 	(void)last_exit;
-	argc = count_args(argv);
-	if (argc > 2)
-	{
-		print_error("Brazilian Shell: cd: too many arguments\n");
-		return (1);
-	}
 	if (argv[1])
 	{
 		if (!ft_strcmp(argv[1], "-"))
-			return (ft_chdir(ft_getenv("OLDPWD", *env)));
+			result = ft_chdir(ft_getenv("OLDPWD", *env), env);
 		else if (!ft_strcmp(argv[1], "~"))
-			return (ft_chdir(ft_getenv("HOME", *env)));
+			result = ft_chdir(ft_getenv("HOME", *env), env);
 		else if (argv[1][0] == '\0')
-			return (0);
+			result = 0;
 		else
-			return (ft_chdir(argv[1]));
+			result = ft_chdir(argv[1], env);
 	}
 	else
-		return (ft_chdir(ft_getenv("HOME", *env)));
+		return (ft_chdir(ft_getenv("HOME", *env), env));
+	if (result && argv[2])
+		print_error("Brazilian Shell: cd: too many arguments\n");
+	return (result);
 }
