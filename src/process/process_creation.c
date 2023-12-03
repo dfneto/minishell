@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/30 22:37:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:21:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,21 +107,25 @@ t_process	*create_process(t_token *token, int num_token_str)
 
 	i = 0;
 	type = -1;
-	process = (t_process *)ft_calloc(1, sizeof(t_process));
-	process->infile = STDIN_FILENO;
-	process->outfile = STDOUT_FILENO;
+	process = (t_process *)malloc(sizeof(t_process) + 1);
 	if (process == NULL)
 	{
 		perror("malloc process");
 		exit(EXIT_FAILURE);
 	}
-	process->cmd = (char **)ft_calloc(num_token_str + 1, sizeof(char *));
-	if (process->cmd == NULL)
+	process->infile = STDIN_FILENO;
+	process->outfile = STDOUT_FILENO;
+	process->cmd = NULL;
+	if (num_token_str > 0)
 	{
-		perror("malloc cmd");
-		exit(EXIT_FAILURE);
+		process->cmd = (char **)malloc((num_token_str + 1) * sizeof(char *));
+		if (process->cmd == NULL)
+		{
+			perror("malloc cmd");
+			exit(EXIT_FAILURE);
+		}
 	}
-	while (token && i < num_token_str)
+	while (token)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
@@ -136,12 +140,15 @@ t_process	*create_process(t_token *token, int num_token_str)
 		else if (token->type == SPC)//se encontro um espaço
 		{
 			token = token->next; //vou para o próximo token
-			if (process->cmd[i]) //e se já tenho algo escrito no comando vou para o próximo comando, assim se a linha começa com um espaço ou tem um espaço depois do pipe eu salto esse espaço mas não mudo de comando
-				i++;
+			if (num_token_str > 0) //eu só posso checar abaixo se eu tenho token str.
+			{
+				if (process->cmd[i]) //e se já tenho algo escrito no comando vou para o próximo comando, assim se a linha começa com um espaço ou tem um espaço depois do pipe eu salto esse espaço mas não mudo de comando
+					i++;
+			}
 		}
 		else if (token->type == PIPE)
 			break;
-		else 
+		else //aqui crio a lista de redireções
 		{
 			type = token->type;
 			token = token->next;
@@ -192,27 +199,8 @@ t_process	*process_creation(t_token *first_token)
 		{
 			if (first_token->str)
 				i++;
-			/* 			if (first_token->type == OUTPUT_REDIRECTION
-							|| first_token->type == APPEND)
-						{
-							outfile = get_outfile_fd(first_token->next,
-									first_token->type);
-							first_token = first_token->next;
-						}
-						if (first_token->type == INPUT_REDIRECTION)
-						{
-							infile = get_infile_fd(first_token->next);
-							first_token = first_token->next;
-						}
-						if (first_token->type == HERE_DOC)
-						{
-							heredoc = get_heredoc(first_token->next);
-							first_token = first_token->next;
-						} */
 			else if (first_token->type == PIPE)
 				break ;
-			/* ADICIONEI ESSE ELSE ABAIXO
-			ELE RESOLVE O SEGFAULT DA TASK 18 */
 			else if (first_token->type != SPC)
 			{
 				while (first_token && !first_token->str)
@@ -220,12 +208,14 @@ t_process	*process_creation(t_token *first_token)
 			}
 			first_token = first_token->next;
 		}
-		if (i > 0)
+		// printf("tenho %d token str\n", i);
+		if (i >= 0)
 		{
 			process = create_process(tmp, i); //i eh o numero de token str que tenho, tmp é o primeiro token
 			add_process(&head, process);
+			// print_process(process);
 		}
-		else if (first_token)
+		else if (first_token) //wip: mudar a logica para fazer isso no caso de ser pipe
 			first_token = first_token->next;
 	}
 	//ao termino terei uma lista de processos e cada processo com seus comandos e sua lista de redireções
