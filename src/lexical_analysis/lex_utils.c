@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   lex_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/27 18:14:15 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 16:13:27 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_token	*create_token(char *input, int start, int end, int type)
 {
 	t_token	*tok;
 
-	tok = (t_token *)malloc(sizeof(t_token));
+	tok = (t_token *)malloc(sizeof(t_token)); //todo: tenho que criar com duas posiçoes e colocar null na ultima?
 	if (!tok)
 		return (NULL);
 	tok->str = NULL;
