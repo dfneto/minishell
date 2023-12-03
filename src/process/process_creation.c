@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:32:28 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:40:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,30 +171,27 @@ t_process	*create_process(t_token *token, int num_token_str)
 	return (process);
 }
 
-//TODO: usar essa função que por hora foi criada e tem erros
 //Return the numbers of tokens that have str (DOUBLE, SINGLE QUOTE and STR tokens) per process
 int	look_for_commands(t_token **head)
 {
-	t_token *first_token;
 	int		num_tok_str;
 
-	first_token = *head;
 	num_tok_str = 0;
-	while (first_token)
+	while (*head)
 	{
-		if (first_token->str)
+		if ((*head)->str)
 			num_tok_str++;
-		else if (first_token->type == PIPE) //wip: simular a criacao de processos, comandos e redirecoes COM pipes
+		else if ((*head)->type == PIPE)
 		{
-			first_token = first_token->next;
+			*head = (*head)->next;
 			break ;
 		}
-		else if (first_token->type != SPC)
+		else if ((*head)->type != SPC)
 		{
-			while (first_token && !first_token->str)
-				first_token = first_token->next;
+			while (*head && !(*head)->str)
+				*head = (*head)->next;
 		}
-		first_token = first_token->next;
+		*head = (*head)->next;
 	}
 	return (num_tok_str);
 }
@@ -227,23 +224,7 @@ t_process	*process_creation(t_token *first_token)
 	while (first_token)
 	{
 		tmp = first_token;
-		num_tok_str = 0;
-		while (first_token)
-		{
-			if (first_token->str)
-				num_tok_str++;
-			else if (first_token->type == PIPE)
-			{
-				first_token = first_token->next;
-				break ;
-			}
-			else if (first_token->type != SPC)
-			{
-				while (first_token && !first_token->str)
-					first_token = first_token->next;
-			}
-			first_token = first_token->next;
-		}
+		num_tok_str = look_for_commands(&first_token);
 		process = create_process(tmp, num_tok_str);
 		add_process(&head, process);
 	}
