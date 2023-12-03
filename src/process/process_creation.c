@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 16:21:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/03 19:21:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,23 +107,34 @@ t_process	*create_process(t_token *token, int num_token_str)
 
 	i = 0;
 	type = -1;
+	/* ou usa um calloc abaixo ou ao fazer um malloc setar 
+	depois seus valores para NULL (process->next = NULL) 
+	para evitar de que haja algo em process->next e depois,
+	em outro lugar, ao verificarmos if (process->next) não passar,
+	ao invés de passar com sujeira
+	*/
 	process = (t_process *)malloc(sizeof(t_process) + 1);
 	if (process == NULL)
 	{
 		perror("malloc process");
 		exit(EXIT_FAILURE);
 	}
+	process->next = NULL;
+	process->redirect = NULL;
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	process->cmd = NULL;
 	if (num_token_str > 0)
-	{
+	{ 
 		process->cmd = (char **)malloc((num_token_str + 1) * sizeof(char *));
 		if (process->cmd == NULL)
 		{
 			perror("malloc cmd");
 			exit(EXIT_FAILURE);
 		}
+		process->cmd[0] = NULL;
+		process->cmd[1] = NULL;
+		process->cmd[2] = NULL;
 	}
 	while (token)
 	{
@@ -163,6 +174,34 @@ t_process	*create_process(t_token *token, int num_token_str)
 	return (process);
 }
 
+//TODO: usar essa função que por hora foi criada e tem erros
+//Return the numbers of tokens that have str (DOUBLE, SINGLE QUOTE and STR tokens) per process
+int	look_for_commands(t_token **head)
+{
+	t_token *first_token;
+	int		num_tok_str;
+
+	first_token = *head;
+	num_tok_str = 0;
+	while (first_token)
+	{
+		if (first_token->str)
+			num_tok_str++;
+		else if (first_token->type == PIPE) //wip: simular a criacao de processos, comandos e redirecoes COM pipes
+		{
+			first_token = first_token->next;
+			break ;
+		}
+		else if (first_token->type != SPC)
+		{
+			while (first_token && !first_token->str)
+				first_token = first_token->next;
+		}
+		first_token = first_token->next;
+	}
+	return (num_tok_str);
+}
+
 //TODO: criar uma lista de redireções ao criar o processo
 //Depois de criar os processos e antes da execução:
 //procurar na lista de ao criar a lista de redireção por heredoc e se tiver executo
@@ -184,21 +223,18 @@ t_process	*process_creation(t_token *first_token)
 	t_process	*head;
 	t_process	*process;
 	t_token		*tmp;
-	int			i;
+	int			num_tok_str;
 
-	// int			outfile = STDOUT_FILENO;
-	// int			infile = STDIN_FILENO;
-	// char		*heredoc;
 	head = NULL;
 	process = NULL;
 	while (first_token)
 	{
 		tmp = first_token;
-		i = 0;
+		num_tok_str = 0;
 		while (first_token)
 		{
 			if (first_token->str)
-				i++;
+				num_tok_str++;
 			else if (first_token->type == PIPE)
 				break ;
 			else if (first_token->type != SPC)
@@ -208,15 +244,8 @@ t_process	*process_creation(t_token *first_token)
 			}
 			first_token = first_token->next;
 		}
-		// printf("tenho %d token str\n", i);
-		if (i >= 0)
-		{
-			process = create_process(tmp, i); //i eh o numero de token str que tenho, tmp é o primeiro token
-			add_process(&head, process);
-			// print_process(process);
-		}
-		else if (first_token) //wip: mudar a logica para fazer isso no caso de ser pipe
-			first_token = first_token->next;
+		process = create_process(tmp, num_tok_str);
+		add_process(&head, process);
 	}
 	//ao termino terei uma lista de processos e cada processo com seus comandos e sua lista de redireções
 	return (head);
