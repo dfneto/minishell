@@ -102,6 +102,7 @@ void	init_minishell(t_env *envp)
 				// printf("Lista de tokens finais:\n");
 				// print_list(first_token);
 				first_process = process_creation(first_token);
+				//print_process_list(first_process);
 				if (first_process)
 				{
 					//wip: executar o heredoc

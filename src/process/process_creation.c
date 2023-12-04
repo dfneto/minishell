@@ -109,20 +109,42 @@ int	get_outfile(t_redirect *redirect)
 	return (fd);
 }
 
+int	get_infile(t_redirect *redirect)
+{
+	int	fd;
+	
+	fd = STDOUT_FILENO;
+	if (redirect->type == INPUT_REDIRECTION)
+		fd = open(redirect->name, O_RDONLY);
+	if (fd == -1)
+	{
+		print_error("error opening file ");
+		print_error(redirect->name);
+		print_error("\n");
+		//mudar para nao imprimir nada se falha. atualmente se falha mantem no stdin
+		fd = STDIN_FILENO;
+	}
+	return (fd);
+}
+
 void	set_redirects(t_process **process)
 {
 	if (*process == NULL)
 		return ;
 	while ((*process)->redirect)
 	{
-		if ((*process)->redirect->type != APPEND || (*process)->redirect->type == OUTPUT_REDIRECTION)
+		if ((*process)->redirect->type == APPEND || (*process)->redirect->type == OUTPUT_REDIRECTION)
 		{
 			if ((*process)->outfile != STDOUT_FILENO)
 				close((*process)->outfile);
 			(*process)->outfile = get_outfile((*process)->redirect);
 		}
-/* 		else if ((*process)->redirect->type == INPUT_REDIRECTION)
-			(*process)->outfile = get_infile((*process)->redirect); */
+		else if ((*process)->redirect->type == INPUT_REDIRECTION)
+		{
+			if ((*process)->infile != STDIN_FILENO)
+				close((*process)->infile);
+			(*process)->infile = get_infile((*process)->redirect);
+		}
 		(*process)->redirect = (*process)->redirect->next;
 	}
 }

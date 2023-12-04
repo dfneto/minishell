@@ -210,11 +210,6 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 				exit(EXIT_FAILURE);
 			if (check == CHILD)
 			{
-				if (i != 0)
-				{
-					dup2(process->prev->fd[0], STDIN_FILENO);
-					close_pipes(process->prev->fd);
-				}
 				if (process->outfile == STDOUT_FILENO && process->next)
 				{
 					dup2(process->fd[1], STDOUT_FILENO);
@@ -223,6 +218,30 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 				{
 					dup2(process->outfile, STDOUT_FILENO);
 				}
+				if (process->prev && process->infile == STDIN_FILENO)
+				{
+					dup2(process->prev->fd[0], STDIN_FILENO);
+					close_pipes(process->prev->fd);
+				}
+				else
+				{
+					dup2(process->infile, STDIN_FILENO);
+					if (process->prev)
+						close_pipes(process->prev->fd);
+	/* 				char buffer[1];
+					int  bytes;
+					bytes = read(process->infile, buffer, 1);
+					while (bytes > 0)
+					{
+						if (write(process->outfile, buffer, 1) != bytes)
+						{
+							//falha no write, ver erros e o que fazer...
+							break ;
+						}
+						bytes = read(process->infile, buffer, 1);
+					} */
+				}
+
 				close_pipes(process->fd);
 				last_exit = execute_builtins(process->cmd, env, last_exit,
 						functions);
@@ -266,8 +285,10 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
 	int	og_stdout;
+	int og_stdin;
 
 	og_stdout = -1;
+	og_stdin = -1;
 	/*
 	TEM QUE REFAZER ESSA PARTE ABAIXO...
 	QUANDO CRIEI EU ESPERAVA QUE SÓ IA EXISTIR UM OUTPUT...
@@ -280,12 +301,22 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 			og_stdout = dup(STDOUT_FILENO);
 			dup2(process->outfile, STDOUT_FILENO);
 		}
+		if (process->infile != STDIN_FILENO)
+		{
+			og_stdin = dup(STDIN_FILENO);
+			dup2(process->infile, STDIN_FILENO);
+		}
 		last_exit = execute_single_cmd(process->cmd, envp, last_exit,
 				functions);
 		if (og_stdout >= 0)
 		{
 			close(process->outfile);
 			dup2(og_stdout, STDOUT_FILENO);
+		}
+		if (og_stdin >= 0)
+		{
+			close(process->infile);
+			dup2(og_stdin, STDIN_FILENO);
 		}
 		return (last_exit);
 	}
