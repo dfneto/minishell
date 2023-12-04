@@ -129,23 +129,26 @@ int	get_infile(t_redirect *redirect)
 
 void	set_redirects(t_process **process)
 {
+	t_redirect	*redirect_cpy;
+	
 	if (*process == NULL)
 		return ;
-	while ((*process)->redirect)
+	redirect_cpy = (*process)->redirect;
+	while (redirect_cpy)
 	{
-		if ((*process)->redirect->type == APPEND || (*process)->redirect->type == OUTPUT_REDIRECTION)
+		if (redirect_cpy->type == APPEND || redirect_cpy->type == OUTPUT_REDIRECTION)
 		{
 			if ((*process)->outfile != STDOUT_FILENO)
 				close((*process)->outfile);
-			(*process)->outfile = get_outfile((*process)->redirect);
+			(*process)->outfile = get_outfile(redirect_cpy);
 		}
-		else if ((*process)->redirect->type == INPUT_REDIRECTION)
+		else if (redirect_cpy->type == INPUT_REDIRECTION)
 		{
 			if ((*process)->infile != STDIN_FILENO)
 				close((*process)->infile);
-			(*process)->infile = get_infile((*process)->redirect);
+			(*process)->infile = get_infile(redirect_cpy);
 		}
-		(*process)->redirect = (*process)->redirect->next;
+		redirect_cpy = redirect_cpy->next;
 	}
 }
 
