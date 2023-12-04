@@ -215,7 +215,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 					dup2(process->prev->fd[0], STDIN_FILENO);
 					close_pipes(process->prev->fd);
 				}
-				if (i != num_proc - 1)
+				if (process->outfile == STDOUT_FILENO && process->next)
 				{
 					dup2(process->fd[1], STDOUT_FILENO);
 				}
@@ -283,7 +283,10 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		last_exit = execute_single_cmd(process->cmd, envp, last_exit,
 				functions);
 		if (og_stdout >= 0)
+		{
+			close(process->outfile);
 			dup2(og_stdout, STDOUT_FILENO);
+		}
 		return (last_exit);
 	}
 	else

@@ -89,6 +89,44 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 	return (process);
 }
 
+int	get_outfile(t_redirect *redirect)
+{
+	int	fd;
+	
+	fd = STDOUT_FILENO;
+	if (redirect->type == APPEND)
+		fd = open(redirect->name, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if (redirect->type == OUTPUT_REDIRECTION)
+		fd = open(redirect->name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd == -1)
+	{
+		print_error("error opening file ");
+		print_error(redirect->name);
+		print_error("\n");
+		//mudar para nao imprimir nada se falha. atualmente se falha mantem no stdout
+		fd = STDOUT_FILENO;
+	}
+	return (fd);
+}
+
+void	set_redirects(t_process **process)
+{
+	if (*process == NULL)
+		return ;
+	while ((*process)->redirect)
+	{
+		if ((*process)->redirect->type != APPEND || (*process)->redirect->type == OUTPUT_REDIRECTION)
+		{
+			if ((*process)->outfile != STDOUT_FILENO)
+				close((*process)->outfile);
+			(*process)->outfile = get_outfile((*process)->redirect);
+		}
+/* 		else if ((*process)->redirect->type == INPUT_REDIRECTION)
+			(*process)->outfile = get_infile((*process)->redirect); */
+		(*process)->redirect = (*process)->redirect->next;
+	}
+}
+
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
 //echo hola > f1 - ok
 //echo hola > f1 > f2 - ok
@@ -121,8 +159,6 @@ t_process	*create_process(t_token *token, int num_token_str)
 	}
 	process->next = NULL;
 	process->redirect = NULL;
-	process->infile = STDIN_FILENO;
-	process->outfile = STDOUT_FILENO;
 	process->cmd = NULL;
 	if (num_token_str > 0)
 	{ 
@@ -168,6 +204,13 @@ t_process	*create_process(t_token *token, int num_token_str)
 		}
 	}
 	//ao termino desse metodo vou ter os comandos, infile e outfile padrão ou -1, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
+	
+	//trouxe pra ca pra deixar tudo de redirect junto e organizar meu cerbero, dps organizamos
+	process->infile = STDIN_FILENO;
+	process->outfile = STDOUT_FILENO;
+
+	//create redirects, open, close, delete all redirects used
+	set_redirects(&process);
 	return (process);
 }
 
