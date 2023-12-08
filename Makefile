@@ -1,105 +1,39 @@
 NAME = minishell
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -MMD -g
-
-lib = libft/libft.a
-
-# Folders
 SRC_DIR = src
-SRC_DIR_EXPANSION = src/expansion
-SRC_DIR_LEXICAL_ANALYSIS = src/lexical_analysis
-SRC_DIR_BUILTIN = src/builtin
-SRC_DIR_PROCESS = src/process
-SRC_DIR_UTIL = src/utils
-SRC_DIR_ENV = src/env
 OBJ_DIR = obj
-DEP_DIR = dep
-INC_DIR = inc
+LIBFT_DIR = libft
 
-# Main source files
-SRC = main.c init_minishell.c execute_cmd.c validate_tokens.c heredoc.c# init_signals.c
-	
-# Expansion source files (located in the SRC_DIR_EXPANSION directory)
-BUL_SRC = cd.c export.c echo.c pwd.c \
-	exit.c env.c export_utils.c init_builtins.c\
-	unset.c execute_builtins.c 
-EXP_SRC = init_expansion.c exp_utils.c string_expansion.c double_quotes_expansion.c exp_utils2.c
-LEX_SRC = init_lexical_analysis.c create_tokens.c lex_utils.c
-PROC_SRC = process_quotes.c process_creation.c process_utils.c process_creation_utills.c
-UTILS_SRC = print_error.c ft_perror.c printers.c ft_strtok.c
-ENV_SRC = env_create.c env_utils.c node_utils.c
+SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/builtin/*.c) $(wildcard $(SRC_DIR)/env/*.c) $(wildcard $(SRC_DIR)/expansion/*.c) $(wildcard $(SRC_DIR)/lexical_analysis/*.c) $(wildcard $(SRC_DIR)/process/*.c) $(wildcard $(SRC_DIR)/utils/*.c)
+OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-# Combine main source files and expansion source files and adjust the paths for object files
-FULL_SRC = $(addprefix $(SRC_DIR)/, $(SRC)) \
-	$(addprefix $(SRC_DIR_EXPANSION)/, $(EXP_SRC)) \
-	$(addprefix $(SRC_DIR_LEXICAL_ANALYSIS)/, $(LEX_SRC)) \
-	$(addprefix $(SRC_DIR_BUILTIN)/, $(BUL_SRC)) \
-	$(addprefix $(SRC_DIR_PROCESS)/, $(PROC_SRC)) \
-	$(addprefix $(SRC_DIR_UTIL)/, $(UTILS_SRC)) \
-	$(addprefix $(SRC_DIR_ENV)/, $(ENV_SRC))
-OBJ = $(FULL_SRC:%.c=$(OBJ_DIR)/%.o)
-DEP = $(FULL_SRC:%.c=$(DEP_DIR)/%.d)
+LIBFT = $(LIBFT_DIR)/libft.a
 
-# Compile source files and move to folders
-$(OBJ_DIR)/src/%.o: $(SRC_DIR)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline -lhistory
+INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc
 
-$(OBJ_DIR)/src/expansion/%.o: $(SRC_DIR_EXPANSION)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
+all: $(LIBFT) $(NAME)
 
-$(OBJ_DIR)/src/lexical_analysis/%.o: $(SRC_DIR_LEXICAL_ANALYSIS)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
-$(OBJ_DIR)/src/builtin/%.o: $(SRC_DIR_BUILTIN)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(OBJ_DIR)/src/process/%.o: $(SRC_DIR_PROCESS)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
-
-$(OBJ_DIR)/src/utils/%.o: $(SRC_DIR_UTIL)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
-
-$(OBJ_DIR)/src/env/%.o: $(SRC_DIR_ENV)/%.c | setup
-	$(CC) $(CFLAGS) -I$(INC_DIR) -Ilibft $(CPPFLAGS) -O3 -c $< -o $@
-	@mv $(@:.o=.d) $(DEP_DIR)/
-
-all: setup lib $(NAME) 
-
-$(NAME): $(lib) $(OBJ)
-	$(CC) $(OBJ) -L./libft -lft -lreadline -o $(NAME)
-	@echo "Minishell compiled!"
-
-setup:
-	@mkdir -p $(OBJ_DIR)/src
-	@mkdir -p $(OBJ_DIR)/src/expansion
-	@mkdir -p $(OBJ_DIR)/src/lexical_analysis
-	@mkdir -p $(OBJ_DIR)/src/builtin
-	@mkdir -p $(OBJ_DIR)/src/process
-	@mkdir -p $(OBJ_DIR)/src/utils
-	@mkdir -p $(OBJ_DIR)/src/env
-	@mkdir -p $(DEP_DIR)
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
 clean:
-	make clean -C libft
-	rm -rf $(OBJ_DIR) $(DEP_DIR)
-	rm -rf *.dSYM
+	@$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_DIR)
 
-fclean:
-	make fclean -C libft
-	rm -rf $(NAME) $(OBJ_DIR) $(DEP_DIR)
+fclean: clean
+	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
 
-lib:
-	make -C libft
+re: fclean all
 
-re:	fclean all
-
--include $(DEP)
-
-.PHONY: all re clean fclean
+.PHONY: all clean fclean re
