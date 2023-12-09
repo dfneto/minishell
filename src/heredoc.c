@@ -33,13 +33,14 @@ void    execute_heredoc(t_process *first_process)
         {
             if (redirect->type == HERE_DOC)
             {
+
                 char *input = readline(":->");
                 //executo o heredoc
-                while (ft_strncmp(input, redirect->name, ft_strlen(redirect->name)))
+                while (ft_strcmp(input, redirect->name))
                 {
                     input = readline(":->");
                 }
-                //vou ter que criar pipes e jogar a saida do heredoc pro pipe, creio
+                //jogar a saída do heredoc para o first_process->heredoc
             }
             redirect = redirect->next;
         }

@@ -122,8 +122,12 @@ Função quando só existe um comando.
 
 TO DO:
 REFACTOR
-FORK desnecessario se o comando não existe... verificar
 */
+
+/* 
+>>>> TROCAR PARA RECEBER PROCESSO E FAZER AS REDIREÇÕES AQUI...
+
+ */
 int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 		t_builtin functions[])
 {
@@ -141,11 +145,14 @@ int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
 			print_error(": command not found\n");
 			return(127);
 		}
+/* 		if (pipe(process.fd) == -1)
+			exit(EXIT_FAILURE); */
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
 		{
+			
 			execve(path, cmd, get_env_array(*env));
 			exit(EXIT_FAILURE);
 		}
@@ -254,6 +261,8 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 			}
 			else
 			{
+				if (process->heredoc)
+					write(process->fd[1], process->heredoc, ft_strlen(process->heredoc));
 				if (i != 0)
 					close_pipes(process->prev->fd);
 				if (i == num_proc - 1)
@@ -289,11 +298,7 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 
 	og_stdout = -1;
 	og_stdin = -1;
-	/*
-	TEM QUE REFAZER ESSA PARTE ABAIXO...
-	QUANDO CRIEI EU ESPERAVA QUE SÓ IA EXISTIR UM OUTPUT...
-	E REFAZER NO MULTI_CMD TB <o>
-		*/
+
 	if (!process->next)
 	{
 		if (process->outfile != STDOUT_FILENO)
@@ -306,6 +311,11 @@ int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 			og_stdin = dup(STDIN_FILENO);
 			dup2(process->infile, STDIN_FILENO);
 		}
+/* 
+--->>>>
+ENVIAR PROCESSO PARA SINGLE CMD E FAZER AS REDIRECOES LA
+<<<<---
+ */
 		last_exit = execute_single_cmd(process->cmd, envp, last_exit,
 				functions);
 		if (og_stdout >= 0)

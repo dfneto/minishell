@@ -98,6 +98,7 @@ typedef struct s_process
 {
 	int					index;
 	char				**cmd;
+	char				*heredoc;
 	int					fd[2];
 	struct s_process	*next;
 	struct s_process	*prev;
