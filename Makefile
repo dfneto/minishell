@@ -10,8 +10,8 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline -lhistory
+CFLAGS = -Wall -Wextra -Werror -g
+LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc
 
 all: $(LIBFT) $(NAME)
