@@ -230,4 +230,8 @@ int	ft_unset(char **argv, t_env *env, int last_exit);
 
 int validate_tokens(t_token *token);
 
+
+void	set_redirects(t_process **process);
+
+
 #endif

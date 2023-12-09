@@ -129,27 +129,42 @@ int	get_infile(t_redirect *redirect)
 
 void	set_redirects(t_process **process)
 {
+	t_process	*current;
 	t_redirect	*redirect_cpy;
 	
 	if (*process == NULL)
 		return ;
-	redirect_cpy = (*process)->redirect;
-	while (redirect_cpy)
+	current = *process;
+	while (current)
 	{
-		if (redirect_cpy->type == APPEND || redirect_cpy->type == OUTPUT_REDIRECTION)
+		redirect_cpy = (*process)->redirect;
+		while (redirect_cpy)
 		{
-			if ((*process)->outfile != STDOUT_FILENO)
-				close((*process)->outfile);
-			(*process)->outfile = get_outfile(redirect_cpy);
+			if (redirect_cpy->type == APPEND || redirect_cpy->type == OUTPUT_REDIRECTION)
+			{
+				if ((*process)->outfile != STDOUT_FILENO)
+					close((*process)->outfile);
+				(*process)->outfile = get_outfile(redirect_cpy);
+			}
+			else if (redirect_cpy->type == INPUT_REDIRECTION)
+			{
+				if ((*process)->infile != STDIN_FILENO)
+					close((*process)->infile);
+				(*process)->infile = get_infile(redirect_cpy);
+			}
+			else if (redirect_cpy->type == HERE_DOC)
+			{
+				if (current->infile != STDIN_FILENO)
+				{
+					close(current->infile);
+					current->infile = STDIN_FILENO;
+				}
+			}
+			redirect_cpy = redirect_cpy->next;
 		}
-		else if (redirect_cpy->type == INPUT_REDIRECTION)
-		{
-			if ((*process)->infile != STDIN_FILENO)
-				close((*process)->infile);
-			(*process)->infile = get_infile(redirect_cpy);
-		}
-		redirect_cpy = redirect_cpy->next;
+		current = current->next;
 	}
+	
 }
 
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
@@ -235,7 +250,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	process->outfile = STDOUT_FILENO;
 
 	//create redirects, open, close, delete all redirects used
-	set_redirects(&process);
+	//set_redirects(&process);
 	return (process);
 }
 

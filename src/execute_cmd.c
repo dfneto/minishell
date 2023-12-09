@@ -114,6 +114,11 @@ char	*get_path(char **cmd, t_env env)
 	return (NULL);
 }
 
+void	close_pipes(int pipe[])
+{
+	close(pipe[0]);
+	close(pipe[1]);
+}
 /*
 Função quando só existe um comando.
 1. Recebe o char **comando,
@@ -124,58 +129,87 @@ TO DO:
 REFACTOR
 */
 
-/* 
->>>> TROCAR PARA RECEBER PROCESSO E FAZER AS REDIREÇÕES AQUI...
-
- */
-int	execute_single_cmd(char **cmd, t_env *env, int last_exit,
+int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int	fork_id;
+	int	og_stdout;
+	int og_stdin;
+
+	og_stdout = -1;
+	og_stdin = -1;
+	if (process->outfile != STDOUT_FILENO)
+		{
+			og_stdout = dup(STDOUT_FILENO);
+			dup2(process->outfile, STDOUT_FILENO);
+		}
+		if (process->infile != STDIN_FILENO)
+		{
+			og_stdin = dup(STDIN_FILENO);
+			dup2(process->infile, STDIN_FILENO);
+		}
 
 	// trocar por is_builtin e executar depois?
-	last_exit = execute_builtins(cmd, env, last_exit, functions);
+	last_exit = execute_builtins(process->cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
-		char *path = get_path(cmd, *env);
+		char *path = get_path(process->cmd, *env);
 		if (path == NULL)
 		{
 			print_error("Brazilian Shell: ");
-			print_error(cmd[0]);
+			print_error(process->cmd[0]);
 			print_error(": command not found\n");
 			return(127);
 		}
-/* 		if (pipe(process.fd) == -1)
-			exit(EXIT_FAILURE); */
+		if (process->heredoc && pipe(process->fd) == -1)
+			exit(EXIT_FAILURE);
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
 		{
-			
-			execve(path, cmd, get_env_array(*env));
+			if (process->heredoc && !process->infile)
+			{
+				dup2(process->fd[0], STDIN_FILENO);
+				close_pipes(process->fd);
+			}
+			execve(path, process->cmd, get_env_array(*env));
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
+			if (process->heredoc)
+			{
+				write(process->fd[1], process->heredoc, ft_strlen(process->heredoc));
+				close_pipes(process->fd);
+			}
 			wait(&last_exit);
 			last_exit = WEXITSTATUS(last_exit);
 		}
 	}
+	if (og_stdout >= 0)
+	{
+		close(process->outfile);
+		dup2(og_stdout, STDOUT_FILENO);
+	}
+	if (og_stdin >= 0)
+	{
+		close(process->infile);
+		dup2(og_stdin, STDIN_FILENO);
+	}
 	return (last_exit);
 }
 
-void	close_pipes(int pipe[])
-{
-	close(pipe[0]);
-	close(pipe[1]);
-}
+
 
 /*
 Função que faz a execução de varios comandos, realizando os pipes e redirections
 Necessita revisão
 REFACTOR
 TOO FUCKING BIG
+
+VERIFICAR REDIRECTS E HEREDOC
+ORGANIZAR PIPES
 */
 int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
@@ -293,41 +327,18 @@ Return: O valor de saida do programa executado
 int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
-	int	og_stdout;
-	int og_stdin;
-
-	og_stdout = -1;
-	og_stdin = -1;
+	
 
 	if (!process->next)
 	{
-		if (process->outfile != STDOUT_FILENO)
-		{
-			og_stdout = dup(STDOUT_FILENO);
-			dup2(process->outfile, STDOUT_FILENO);
-		}
-		if (process->infile != STDIN_FILENO)
-		{
-			og_stdin = dup(STDIN_FILENO);
-			dup2(process->infile, STDIN_FILENO);
-		}
+
 /* 
 --->>>>
 ENVIAR PROCESSO PARA SINGLE CMD E FAZER AS REDIRECOES LA
 <<<<---
  */
-		last_exit = execute_single_cmd(process->cmd, envp, last_exit,
+		last_exit = execute_single_cmd(process, envp, last_exit,
 				functions);
-		if (og_stdout >= 0)
-		{
-			close(process->outfile);
-			dup2(og_stdout, STDOUT_FILENO);
-		}
-		if (og_stdin >= 0)
-		{
-			close(process->infile);
-			dup2(og_stdin, STDIN_FILENO);
-		}
 		return (last_exit);
 	}
 	else

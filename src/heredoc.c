@@ -41,8 +41,8 @@ void    execute_heredoc(t_process *first_process)
                 input = readline(":->");
                 while (ft_strcmp(input, redirect->name))
                 {
-                    total_input = ft_strjoin(total_input, "\n");
                     total_input = ft_strjoin(total_input, input);
+                    total_input = ft_strjoin(total_input, "\n");
                     input = readline(":->");
                 }
                 first_process->heredoc = ft_strdup(total_input);
