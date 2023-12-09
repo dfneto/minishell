@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:51:32 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/09 19:11:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	init_minishell(t_env *envp)
 				{
 					//wip: executar o heredoc
 					execute_heredoc(first_process);
+					//TODO: cat << h1 > test > test2 < no << h2
 					//print_process_list(first_process);
 					last_exit = execute_cmd(first_process, envp, last_exit, functions);
 				}
