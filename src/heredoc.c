@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:41:52 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/09 19:07:24 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/09 19:19:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void    execute_heredoc(t_process *first_process)
         {
             if (redirect->type == HERE_DOC)
             {
-                printf("Here doc: %s, valor:\n", redirect->name);
+                // printf("Here doc: %s, valor:\n", redirect->name);
                 input = readline(":->");
                 while (ft_strcmp(input, redirect->name))
                 {
@@ -46,7 +46,7 @@ void    execute_heredoc(t_process *first_process)
                     input = readline(":->");
                 }
                 first_process->heredoc = ft_strdup(total_input);
-                printf("%s\n", first_process->heredoc);
+                // printf("%s\n", first_process->heredoc);
             }
             redirect = redirect->next;
             total_input = "";
