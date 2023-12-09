@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:41:52 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:49:12 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/09 19:07:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@
 //casos guia: 
 // cat << h1 >t1 | cat << h2 > t2
 //casos execeção:
-// cat << h1 > test > test2 < no << h2
+//TODO: cat << h1 > test > test2 < no << h2 (testar)
 void    execute_heredoc(t_process *first_process)
 {
     t_redirect  *redirect;
+    char        *input;
+    char        *total_input;
 
+    input = NULL;
+    total_input = "";
     while (first_process)
     {
         redirect = first_process->redirect;
@@ -33,16 +37,19 @@ void    execute_heredoc(t_process *first_process)
         {
             if (redirect->type == HERE_DOC)
             {
-
-                char *input = readline(":->");
-                //executo o heredoc
+                printf("Here doc: %s, valor:\n", redirect->name);
+                input = readline(":->");
                 while (ft_strcmp(input, redirect->name))
                 {
+                    total_input = ft_strjoin(total_input, "\n");
+                    total_input = ft_strjoin(total_input, input);
                     input = readline(":->");
                 }
-                //jogar a saída do heredoc para o first_process->heredoc
+                first_process->heredoc = ft_strdup(total_input);
+                printf("%s\n", first_process->heredoc);
             }
             redirect = redirect->next;
+            total_input = "";
         }
         first_process = first_process->next; 
     }
