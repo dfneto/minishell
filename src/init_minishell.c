@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/10 20:09:33 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/10 22:13:55 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,22 @@ void 	clean_tokens(t_token *first)
 	}
 }
 
+
 // void	handle_sigint()
 // {
-// 	printf("control + c\n%s", PROMPT);
+// 	write(1, "\n", 1);
+// 	// write(1, PROMPT, ft_strlen(PROMPT));
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// 	//last_error = 1;
 // }
 
 
 void	init_minishell(t_env *envp)
 {
 	char		*input;
+
 	static int	last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
@@ -89,15 +96,16 @@ void	init_minishell(t_env *envp)
 	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
-
-	//control + /
-	// struct sigaction	si;
-	// si.sa_handler = &handle_sigint;
-	// si.sa_flags = SA_RESTART;
-	// sigaction(SIGINT, &si, NULL);
-
+	input = NULL;
+	
 	while (42)
-	{
+	{	
+		//control + c
+		// struct sigaction	si;
+		// si.sa_handler = &handle_sigint;
+		// si.sa_flags = SA_RESTART;
+		// sigaction(SIGINT, &si, NULL);
+	
 		input = get_input(last_exit);
 /* 		if (!ft_strcmp(input, "exit"))
 		{
