@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 22:41:52 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/09 19:19:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:05:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ void    execute_heredoc(t_process *first_process)
 {
     t_redirect  *redirect;
     char        *input;
-    char        *total_input;
+    int         pipefd[2];
 
     input = NULL;
-    total_input = "";
     while (first_process)
     {
         redirect = first_process->redirect;
@@ -37,19 +36,22 @@ void    execute_heredoc(t_process *first_process)
         {
             if (redirect->type == HERE_DOC)
             {
-                // printf("Here doc: %s, valor:\n", redirect->name);
+                if (pipe(pipefd) == -1)
+                {
+                    perror("pipe");
+		            exit(EXIT_FAILURE);
+                }
                 input = readline(":->");
                 while (ft_strcmp(input, redirect->name))
                 {
-                    total_input = ft_strjoin(total_input, input);
-                    total_input = ft_strjoin(total_input, "\n");
+                    write(pipefd[1], input, ft_strlen(input));
+                    write(pipefd[1], "\n", 1);
                     input = readline(":->");
                 }
-                first_process->heredoc = ft_strdup(total_input);
-                // printf("%s\n", first_process->heredoc);
+                close(pipefd[1]);
+                first_process->infile = pipefd[0];
             }
             redirect = redirect->next;
-            total_input = "";
         }
         first_process = first_process->next; 
     }

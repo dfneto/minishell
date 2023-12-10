@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/09 19:11:52 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:07:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,12 @@ void	init_minishell(t_env *envp)
 				//print_process_list(first_process);
 				if (first_process)
 				{
-					//wip: executar o heredoc
 					execute_heredoc(first_process);
+					//PARA TESTAR O HEREDOC
+					// char buf;
+					// while (read(first_process->infile, &buf, 1) > 0)
+                   	// 	write(STDOUT_FILENO, &buf, 1);
+					// close(first_process->infile);
 					set_redirects(&first_process);
 
 					//TODO: cat << h1 > test > test2 < no << h2
