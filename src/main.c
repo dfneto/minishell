@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:15:09 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/09 21:49:18 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:10:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,14 @@
 // 	printf("control + /\n"); //nao deve printar nada, nem a barra
 // }
 
-// void	handle_sigint()
-// {
-// 	printf("control + c\n");
-// }
-
-//o control d tem funcionamento diferente se ta no meio do texto ou no inicio no caso do bash
 
 int	main(int argc, char **argv, char **envp)
 {
-
+	// control + /
 	// struct sigaction	sq;
 	// sq.sa_handler = &handle_sigquit;
 	// sq.sa_flags = SA_RESTART;
 	// sigaction(SIGQUIT, &sq, NULL);
-
-	// struct sigaction	si;
-	// si.sa_handler = &handle_sigint;
-	// si.sa_flags = SA_RESTART;
-	// sigaction(SIGINT, &si, NULL);
 
 	t_env	env;
 	

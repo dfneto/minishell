@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/10 19:14:54 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:09:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ void 	clean_tokens(t_token *first)
 	}
 }
 
+// void	handle_sigint()
+// {
+// 	printf("control + c\n%s", PROMPT);
+// }
+
+
 void	init_minishell(t_env *envp)
 {
 	char		*input;
@@ -83,6 +89,13 @@ void	init_minishell(t_env *envp)
 	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
+
+	//control + /
+	// struct sigaction	si;
+	// si.sa_handler = &handle_sigint;
+	// si.sa_flags = SA_RESTART;
+	// sigaction(SIGINT, &si, NULL);
+
 	while (42)
 	{
 		input = get_input(last_exit);
