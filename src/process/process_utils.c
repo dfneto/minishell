@@ -33,6 +33,10 @@ void	clean_process(t_process **process)
 			}
 			free((*process)->cmd);
 		}
+		if ((*process)->infile != STDIN_FILENO)
+			close((*process)->infile);
+		if ((*process)->outfile != STDOUT_FILENO)
+			close((*process)->outfile);
 		free(*process);
 		*process = tmp;
 	}

@@ -97,12 +97,12 @@ typedef struct s_redirect
 typedef struct s_process
 {
 	char				**cmd;
-	char				*heredoc;
 	int					fd[2];
 	struct s_process	*next;
 	struct s_process	*prev;
 	int					infile;
 	int					outfile;
+	int					heredoc;
 	struct s_redirect	*redirect;
 }	t_process;
 

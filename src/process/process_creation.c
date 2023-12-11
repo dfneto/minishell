@@ -129,10 +129,10 @@ int	set_redirects(t_process **process)
 			{
 				if (current->infile != STDIN_FILENO)
 					close(current->infile);
-				current->infile = open(current->redirect->name, O_RDONLY);
+				current->infile = open(redirect_cpy->name, O_RDONLY);
 				if (current->infile == -1)
 				{
-					ft_perror(current->redirect->name);
+					ft_perror(redirect_cpy->name);
 					return (EXIT_FAILURE);
 				}
 			}
@@ -145,6 +145,11 @@ int	set_redirects(t_process **process)
 				}
 			}
 			redirect_cpy = redirect_cpy->next;
+		}
+		if (current->heredoc && current->infile == STDIN_FILENO)
+		{
+			current->infile = dup(current->heredoc);
+			close(current->heredoc);
 		}
 		current = current->next;
 	}

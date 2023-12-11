@@ -157,41 +157,27 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 			print_error(": command not found\n");
 			return(127);
 		}
-		if (process->heredoc && pipe(process->fd) == -1)
-			exit(EXIT_FAILURE);
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
 		if (fork_id == CHILD)
 		{
-			if (process->heredoc && !process->infile)
-			{
-				dup2(process->fd[0], STDIN_FILENO);
-				close_pipes(process->fd);
-			}
 			execve(path, process->cmd, get_env_array(*env));
 			exit(EXIT_FAILURE);
 		}
 		else
-		{
-			if (process->heredoc)
-			{
-				write(process->fd[1], process->heredoc, ft_strlen(process->heredoc));
-				close_pipes(process->fd);
-			}
+		{	
 			wait(&last_exit);
 			last_exit = WEXITSTATUS(last_exit);
 		}
 	}
 	if (process->outfile != STDOUT_FILENO)
 	{
-		close(process->outfile);
 		dup2(og_stdout, STDOUT_FILENO);
 		close(og_stdout);
 	}
 	if (process->infile != STDIN_FILENO)
 	{
-		close(process->infile);
 		dup2(og_stdin, STDIN_FILENO);
 		close(og_stdin);
 	}
@@ -225,7 +211,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		current = current->next;
 	}
 	i = 0;
-	while (i < num_proc)
+	while (process)
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
@@ -243,21 +229,15 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		}
 		else
 		{
-			
 			check = fork();
 			if (check == -1)
 				exit(EXIT_FAILURE);
 			if (check == CHILD)
 			{
-				//printf("Process: %s - in: %d, out: %d, here: %s\n", process->cmd[0],process->infile, process->outfile, process->heredoc);
 				if (process->outfile == STDOUT_FILENO && process->next)
-				{
 					dup2(process->fd[1], STDOUT_FILENO);
-				}
 				else
-				{
 					dup2(process->outfile, STDOUT_FILENO);
-				}
 				if (process->prev && process->infile == STDIN_FILENO)
 				{
 					dup2(process->prev->fd[0], STDIN_FILENO);
@@ -281,8 +261,6 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 			}
 			else
 			{
-				if (process->heredoc)
-					write(process->fd[1], process->heredoc, ft_strlen(process->heredoc));
 				if (i != 0)
 					close_pipes(process->prev->fd);
 				if (i == num_proc - 1)
@@ -313,20 +291,9 @@ Return: O valor de saida do programa executado
 int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
-	
-
 	if (!process->next)
-	{
-
-/* 
---->>>>
-ENVIAR PROCESSO PARA SINGLE CMD E FAZER AS REDIRECOES LA
-<<<<---
- */
-		last_exit = execute_single_cmd(process, envp, last_exit,
-				functions);
-		return (last_exit);
-	}
+		return (execute_single_cmd(process, envp, last_exit,
+				functions));
 	else
 		return (execute_multi_cmd(process, envp, last_exit, functions));
 }
