@@ -93,47 +93,21 @@ int	get_outfile(t_redirect *redirect)
 {
 	int	fd;
 	
-	fd = STDOUT_FILENO;
 	if (redirect->type == APPEND)
 		fd = open(redirect->name, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (redirect->type == OUTPUT_REDIRECTION)
+	else if (redirect->type == OUTPUT_REDIRECTION)
 		fd = open(redirect->name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd == -1)
-	{
-		print_error("error opening file ");
-		print_error(redirect->name);
-		print_error("\n");
-		//mudar para nao imprimir nada se falha. atualmente se falha mantem no stdout
-		fd = STDOUT_FILENO;
-	}
 	return (fd);
 }
 
-int	get_infile(t_redirect *redirect)
-{
-	int	fd;
-	
-	fd = STDOUT_FILENO;
-	if (redirect->type == INPUT_REDIRECTION)
-		fd = open(redirect->name, O_RDONLY);
-	if (fd == -1)
-	{
-		print_error("error opening file ");
-		print_error(redirect->name);
-		print_error("\n");
-		//mudar para nao imprimir nada se falha. atualmente se falha mantem no stdin
-		fd = STDIN_FILENO;
-	}
-	return (fd);
-}
-
-void	set_redirects(t_process **process)
+int	set_redirects(t_process **process)
 {
 	t_process	*current;
 	t_redirect	*redirect_cpy;
 	
+	//Remover esse check?
 	if (*process == NULL)
-		return ;
+		return (EXIT_SUCCESS);
 	current = *process;
 	while (current)
 	{
@@ -145,12 +119,22 @@ void	set_redirects(t_process **process)
 				if (current->outfile != STDOUT_FILENO)
 					close(current->outfile);
 				current->outfile = get_outfile(redirect_cpy);
+				if (current->outfile == -1)
+				{
+					perror(current->redirect->name);
+					return (EXIT_FAILURE);
+				}
 			}
 			else if (redirect_cpy->type == INPUT_REDIRECTION)
 			{
 				if (current->infile != STDIN_FILENO)
 					close(current->infile);
-				current->infile = get_infile(redirect_cpy);
+				current->infile = open(current->redirect->name, O_RDONLY);
+				if (current->infile == -1)
+				{
+					perror(current->redirect->name);
+					return (EXIT_FAILURE);
+				}
 			}
 			else if (redirect_cpy->type == HERE_DOC)
 			{
@@ -164,6 +148,7 @@ void	set_redirects(t_process **process)
 		}
 		current = current->next;
 	}
+	return (EXIT_SUCCESS);
 }
 
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro

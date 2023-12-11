@@ -71,7 +71,7 @@ typedef enum token_type
 	INPUT_REDIRECTION = 6,
 	HERE_DOC = 7,
 	PIPE = 8,
-	NL = 9 //usamos isso, luki?
+	NL = 9
 }	t_type;
 
 /*
@@ -96,7 +96,6 @@ typedef struct s_redirect
 
 typedef struct s_process
 {
-	int					index;
 	char				**cmd;
 	char				*heredoc;
 	int					fd[2];
@@ -231,7 +230,7 @@ int	ft_unset(char **argv, t_env *env, int last_exit);
 int validate_tokens(t_token *token);
 
 
-void	set_redirects(t_process **process);
+int	set_redirects(t_process **process);
 
 
 #endif
