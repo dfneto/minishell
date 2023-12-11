@@ -11,8 +11,15 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
+# Lucas readline:
 LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc
+# David readline
+# LDFLAGS = -L$(LIBFT_DIR) -lft -L/Users/davifern/.brew/opt/readline/lib -lreadline
+# INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc -I/Users/davifern/.brew/opt/readline/include
+# For compilers to find readline you may need to set:
+# export LDFLAGS="-L/Users/davifern/.brew/opt/readline/lib"
+# export CPPFLAGS="-I/Users/davifern/.brew/opt/readline/include"
 
 all: $(LIBFT) $(NAME)
 
