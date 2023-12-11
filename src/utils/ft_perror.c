@@ -17,18 +17,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	ft_perror(int err, char *msg)
+void	ft_perror(char *msg)
 {
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	if (err)
-		errno = err;
+	print_error("Brazilian Shell: ");
 	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_error(int err, char *msg, void (*clean_func)(void *), void *data)
-{
-	if (clean_func != NULL && data != NULL)
-		clean_func(data);
-	ft_perror(err, msg);
 }

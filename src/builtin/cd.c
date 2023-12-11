@@ -20,30 +20,7 @@ int	ft_chdir(char *str, t_env *env)
 {
 	if (chdir(str))
 	{
-		if (errno == EACCES)
-		{
-			print_error("Brazilian Shell: cd: ");
-			print_error(str);
-			print_error(": Permission denied\n");
-		}
-		else if (errno == ENAMETOOLONG)
-		{
-			print_error("Brazilian Shell: cd: ");
-			print_error(str);
-			print_error(": File name too long\n");
-		}
-		else if (errno == ENOTDIR)
-		{
-			print_error("Brazilian Shell: cd: ");
-			print_error(str);
-			print_error(": Not a directory\n");
-		}
-		else
-		{
-			print_error("Brazilian Shell: cd: ");
-			print_error(str);
-			print_error(": No such file or directory\n");
-		}
+		ft_perror(str);
 		return (1);
 	}
 	else

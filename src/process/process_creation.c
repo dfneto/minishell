@@ -121,7 +121,7 @@ int	set_redirects(t_process **process)
 				current->outfile = get_outfile(redirect_cpy);
 				if (current->outfile == -1)
 				{
-					perror(current->redirect->name);
+					ft_perror(current->redirect->name);
 					return (EXIT_FAILURE);
 				}
 			}
@@ -132,7 +132,7 @@ int	set_redirects(t_process **process)
 				current->infile = open(current->redirect->name, O_RDONLY);
 				if (current->infile == -1)
 				{
-					perror(current->redirect->name);
+					ft_perror(current->redirect->name);
 					return (EXIT_FAILURE);
 				}
 			}
