@@ -133,23 +133,19 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int	fork_id;
-	int	og_stdout;
-	int og_stdin;
+	int og_stdout;
+    int og_stdin;
 
-	og_stdout = -1;
-	og_stdin = -1;
 	if (process->outfile != STDOUT_FILENO)
-		{
-			og_stdout = dup(STDOUT_FILENO);
-			dup2(process->outfile, STDOUT_FILENO);
-		}
-		if (process->infile != STDIN_FILENO)
-		{
-			og_stdin = dup(STDIN_FILENO);
-			dup2(process->infile, STDIN_FILENO);
-		}
-
-	// trocar por is_builtin e executar depois?
+	{
+    	og_stdout = dup(STDOUT_FILENO);
+		dup2(process->outfile, STDOUT_FILENO);
+	}
+	if (process->infile != STDIN_FILENO)
+	{
+		og_stdin = dup(STDIN_FILENO);
+		dup2(process->infile, STDIN_FILENO);
+	}
 	last_exit = execute_builtins(process->cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
@@ -187,15 +183,17 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 			last_exit = WEXITSTATUS(last_exit);
 		}
 	}
-	if (og_stdout >= 0)
+	if (process->outfile != STDOUT_FILENO)
 	{
 		close(process->outfile);
 		dup2(og_stdout, STDOUT_FILENO);
+		close(og_stdout);
 	}
-	if (og_stdin >= 0)
+	if (process->infile != STDIN_FILENO)
 	{
 		close(process->infile);
 		dup2(og_stdin, STDIN_FILENO);
+		close(og_stdin);
 	}
 	return (last_exit);
 }
