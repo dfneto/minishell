@@ -251,6 +251,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 				exit(EXIT_FAILURE);
 			if (check == CHILD)
 			{
+				//printf("Process: %s - in: %d, out: %d, here: %s\n", process->cmd[0],process->infile, process->outfile, process->heredoc);
 				if (process->outfile == STDOUT_FILENO && process->next)
 				{
 					dup2(process->fd[1], STDOUT_FILENO);
@@ -269,20 +270,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 					dup2(process->infile, STDIN_FILENO);
 					if (process->prev)
 						close_pipes(process->prev->fd);
-	/* 				char buffer[1];
-					int  bytes;
-					bytes = read(process->infile, buffer, 1);
-					while (bytes > 0)
-					{
-						if (write(process->outfile, buffer, 1) != bytes)
-						{
-							//falha no write, ver erros e o que fazer...
-							break ;
-						}
-						bytes = read(process->infile, buffer, 1);
-					} */
 				}
-
 				close_pipes(process->fd);
 				last_exit = execute_builtins(process->cmd, env, last_exit,
 						functions);

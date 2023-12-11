@@ -137,20 +137,20 @@ void	set_redirects(t_process **process)
 	current = *process;
 	while (current)
 	{
-		redirect_cpy = (*process)->redirect;
+		redirect_cpy = current->redirect;
 		while (redirect_cpy)
 		{
 			if (redirect_cpy->type == APPEND || redirect_cpy->type == OUTPUT_REDIRECTION)
 			{
-				if ((*process)->outfile != STDOUT_FILENO)
-					close((*process)->outfile);
-				(*process)->outfile = get_outfile(redirect_cpy);
+				if (current->outfile != STDOUT_FILENO)
+					close(current->outfile);
+				current->outfile = get_outfile(redirect_cpy);
 			}
 			else if (redirect_cpy->type == INPUT_REDIRECTION)
 			{
-				if ((*process)->infile != STDIN_FILENO)
-					close((*process)->infile);
-				(*process)->infile = get_infile(redirect_cpy);
+				if (current->infile != STDIN_FILENO)
+					close(current->infile);
+				current->infile = get_infile(redirect_cpy);
 			}
 			else if (redirect_cpy->type == HERE_DOC)
 			{
@@ -164,7 +164,6 @@ void	set_redirects(t_process **process)
 		}
 		current = current->next;
 	}
-	
 }
 
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
