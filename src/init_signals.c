@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:53:27 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/09 18:14:43 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/11 21:02:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,14 @@
 #include <signal.h>
 #include <stdio.h>
 
-// static void	handler(int signal)
-// {
-// 	if (signal == SIGINT)
-// 	{
-// 		printf("\n");
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
-// 	else if (signal == SIGQUIT)
-// 	{
-// 	}
-// }
+void	handle_control_c()
+{
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	last_exit = 1;
+}
 
 // void	init_signals(void)
 // {

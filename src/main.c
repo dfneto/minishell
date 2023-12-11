@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:15:09 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/10 20:10:14 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/11 21:09:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include <libft.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-
-// void	handle_sigquit()
-// {
-// 	printf("control + /\n"); //nao deve printar nada, nem a barra
-// }
 
 
 int	main(int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 19:51:19 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/11 21:41:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_process	*create_process_L(t_token *token, int num_cmd)
 
 int	get_outfile(t_redirect *redirect)
 {
-	int	fd;
+	int	fd = 0; //inicializei porque tava dando erro no make
 	
 	if (redirect->type == APPEND)
 		fd = open(redirect->name, O_WRONLY | O_APPEND | O_CREAT, 0644);

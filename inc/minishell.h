@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/02 15:42:49 by davifern         ###   ########.fr       */
+/*   Updated: 2023/12/11 21:08:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
 
 # define L_MAX "9223372036854775807"
 # define L_MIN "9223372036854775808"
+
+
+static int	last_exit; //global variable (must be static? why?)
 
 // typedef enum char //usar isso ou os defines?
 // {
@@ -226,6 +229,8 @@ int	ft_cd(char **argv, t_env *env, int last_exit);
 int	ft_export(char **argv, t_env *env, int last_exit);
 int	ft_unset(char **argv, t_env *env, int last_exit);
 
+// Signals
+void	handle_control_c();
 
 int validate_tokens(t_token *token);
 
