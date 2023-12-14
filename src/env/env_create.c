@@ -46,6 +46,7 @@ int	add_node_to_env(t_env *env, t_node *node)
 	return (0);
 }
 
+/* REFACTOR AND REMOVE T_ENV ??? */
 int	create_env(t_env *env, char **envp)
 {
 	int		i;
