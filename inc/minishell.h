@@ -43,8 +43,6 @@
 # define L_MIN "9223372036854775808"
 
 
-static int	last_exit; //global variable (must be static? why?)
-
 // typedef enum char //usar isso ou os defines?
 // {
 // 	,

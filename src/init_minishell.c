@@ -75,7 +75,7 @@ void 	clean_tokens(t_token *first)
 void	init_minishell(t_env *envp)
 {
 	char		*input;
-
+	int			last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
 	t_builtin	functions[BUILTINS_NUM];
@@ -85,6 +85,7 @@ void	init_minishell(t_env *envp)
 	first_token = NULL;
 	first_process = NULL;
 	input = NULL;
+	last_exit = 0;
 	
 	while (42)
 	{	

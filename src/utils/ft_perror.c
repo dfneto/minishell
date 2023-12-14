@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/* Trocar para int e retornar ele em caso de falha,
+Receber esse int por variavel? */
 void	ft_perror(char *msg)
 {
 	print_error("Brazilian Shell: ");

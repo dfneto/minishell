@@ -22,7 +22,7 @@ void	handle_control_c()
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	last_exit = 1;
+	//last_exit = 1;
 }
 
 // void	init_signals(void)

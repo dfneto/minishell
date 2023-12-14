@@ -12,17 +12,27 @@
 
 #include <libft.h>
 #include <limits.h>
+#include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <minishell.h>
 
 int	ft_pwd(char **argv, t_env *env, int last_exit)
 {
-	char	*current_dir;
+	char	*directory;
 
 	(void)argv;
 	(void)last_exit;
-	current_dir = ft_getenv("PWD", *env);
-	printf("%s\n", current_dir);
-	return (0);
+	(void)env;
+	directory = getcwd(NULL, PATH_MAX);
+	if (directory)
+	{
+		printf("%s\n", directory);
+		free(directory);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		ft_perror("pwd");
+		return (EXIT_FAILURE);
+	}
 }
