@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:59:31 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/15 20:13:13 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/12/15 20:25:39 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	get_outfile(t_redirect *redirect, t_process **current)
 {
 	int	fd;
-	
+
 	if ((*current)->outfile != STDOUT_FILENO)
 		close((*current)->outfile);
 	if (redirect->type == APPEND)
@@ -30,7 +30,7 @@ int	get_outfile(t_redirect *redirect, t_process **current)
 int	get_infile(t_redirect *redirect, t_process **current)
 {
 	int	fd;
-	
+
 	if ((*current)->infile != STDOUT_FILENO)
 		close((*current)->infile);
 	fd = open(redirect->name, O_RDONLY);
@@ -48,12 +48,11 @@ void	get_heredoc(t_process **current)
 	}
 }
 
-
 int	set_redirects(t_process **process)
 {
 	t_process	*current;
 	t_redirect	*redirect_cpy;
-	
+
 	current = *process;
 	while (current)
 	{
