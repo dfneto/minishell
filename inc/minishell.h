@@ -207,7 +207,7 @@ int	add_env(char *str, t_env *env);
 char    *expand_env(char *name, char **env, int last_exit);
 t_node   *create_ordered_env(t_env env);
 
-void	ft_perror(char *msg);
+void	ft_perror(char *msg, char *func_name);
 
 //Init builtins
 void	init_builtins(t_builtin array[]);
