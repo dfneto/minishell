@@ -22,7 +22,7 @@ int	ft_env(char **argv, t_env *env, int last_exit)
 
 	(void)argv;
 	(void)last_exit;
-	tmp = env.head;
+	tmp = env->head;
 	while (tmp)
 	{
 		if (tmp->value)
