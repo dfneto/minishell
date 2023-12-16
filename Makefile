@@ -4,7 +4,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 LIBFT_DIR = libft
 
-SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/builtin/*.c) $(wildcard $(SRC_DIR)/env/*.c) $(wildcard $(SRC_DIR)/expansion/*.c) $(wildcard $(SRC_DIR)/lexical_analysis/*.c) $(wildcard $(SRC_DIR)/process/*.c) $(wildcard $(SRC_DIR)/utils/*.c)
+SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/builtin/*.c) $(wildcard $(SRC_DIR)/env/*.c) $(wildcard $(SRC_DIR)/expansion/*.c) $(wildcard $(SRC_DIR)/lexical_analysis/*.c) $(wildcard $(SRC_DIR)/process/*.c) $(wildcard $(SRC_DIR)/utils/*.c) $(wildcard $(SRC_DIR)/execution/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 LIBFT = $(LIBFT_DIR)/libft.a

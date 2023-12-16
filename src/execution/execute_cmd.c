@@ -20,106 +20,6 @@
 #include <unistd.h>
 
 /*
-Verificar se ainda esta sendo utilizada
-Se nao, delete
-*/
-void	clean_array(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (arr)
-	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			i++;
-		}
-		free(arr);
-		arr = NULL;
-	}
-}
-
-/*
-DEBUG FUNCTION
-DELETAR
-*/
-void	print_path(char *path)
-{
-	int	return_val;
-
-	errno = 0;
-	return_val = access(path, F_OK);
-	printf("PATH: %s - F_OK: %d - errno: %d\n", path, return_val, errno);
-	return_val = access(path, X_OK);
-	printf("PATH: %s - X_OK: %d - errno: %d\n", path, return_val, errno);
-}
-
-int	is_cmd_executable(char *cmd)
-{
-	while (*cmd)
-	{
-		if (*cmd == '/')
-			return (1);
-		cmd++;
-	}
-	return (0);
-}
-
-void	get_abs_path(char **abs_path, char *path, char *cmd)
-{
-	ft_bzero(*abs_path, PATH_MAX);
-	ft_strlcpy(*abs_path, path, ft_strlen(path) + 1);
-	ft_strlcat(*abs_path, "/", PATH_MAX);
-	ft_strlcat(*abs_path, cmd, PATH_MAX);
-}
-
-/*
-No refactor do single_cmd ela vai ter que ser chamada fora do fork,
-	no processo principal.
-Se ela for feita essa mudança, adicionar ft_strdup no ft_getenv
-*/
-char	*get_path(char **cmd, t_env env)
-{
-	char	*abs_path;
-	char	*paths;
-	char	*path;
-
-	if (cmd[0][0] == '\0')
-		return (NULL);
-	if (is_cmd_executable(cmd[0]) && !access(cmd[0], X_OK))
-		return (cmd[0]);
-	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
-	if (!abs_path)
-		return (NULL);
-	paths = ft_strdup(ft_getenv("PATH", env));
-	if (!paths)
-	{
-		free(abs_path);
-		return (NULL);
-	}
-	path = ft_strtok(paths, ":");
-	while (path)
-	{
-		get_abs_path(&abs_path, path, cmd[0]);
-		// print_path(abs_path);
-		if (!access(abs_path, X_OK))
-		{
-			free(paths);
-			return (abs_path);
-		}
-		path = ft_strtok(NULL, ":");
-	}
-	free(abs_path);
-	return (NULL);
-}
-
-void	close_pipes(int pipe[])
-{
-	close(pipe[0]);
-	close(pipe[1]);
-}
-/*
 Função quando só existe um comando.
 1. Recebe o char **comando,
 2. Verifica se ele é builtin e executa se é,
@@ -129,7 +29,15 @@ TO DO:
 REFACTOR
 */
 
-int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
+static int	print_cmd_not_found(char *cmd)
+{
+	print_error("Brazilian Shell: ");
+	print_error(cmd);
+	print_error(": command not found\n");
+	return (127);
+}
+
+static int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int		fork_id;
@@ -154,12 +62,7 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		path = get_path(process->cmd, *env);
 		if (path == NULL)
-		{
-			print_error("Brazilian Shell: ");
-			print_error(process->cmd[0]);
-			print_error(": command not found\n");
-			return (127);
-		}
+			return (print_cmd_not_found(process->cmd[0]));
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
@@ -196,7 +99,7 @@ TOO FUCKING BIG
 VERIFICAR REDIRECTS E HEREDOC
 ORGANIZAR PIPES
 */
-int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
+static int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int			check;
@@ -226,12 +129,9 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 			{
 				if (process->prev)
 					close_pipes(process->prev->fd);
-				print_error("Brazilian Shell: ");
-				print_error(process->cmd[0]);
-				print_error(": command not found\n");
-	/* 			if (!process->next)
-					return (127); */
-				last_exit = 127;
+				last_exit = print_cmd_not_found(process->cmd[0]);
+	 			if (!process->next)
+					return (last_exit);
 			}
 			else
 			{

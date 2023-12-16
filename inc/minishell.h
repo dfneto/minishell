@@ -176,7 +176,11 @@ t_redirect  *create_redirect(char *name, t_type type);
 
 void    init_signals(void);
 void    init_minishell(t_env *envp);
+// Execution Functions
 int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
+char	*get_path(char **cmd, t_env env);
+void	close_pipes(int pipe[]);
+
 
 // Process utils
 //t_process   *create_process(char *input, int in, int out);

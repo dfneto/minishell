@@ -36,59 +36,6 @@ static void	add_process(t_process **first, t_process *new)
 	}
 }
 
-t_process	*create_process_L(t_token *token, int num_cmd)
-{
-	t_process	*process;
-	int			i;
-
-	i = 0;
-	process = (t_process *)ft_calloc(1, sizeof(t_process));
-	if (process == NULL)
-	{
-		perror("malloc process");
-		exit(EXIT_FAILURE);
-	}
-	process->cmd = (char **)ft_calloc(num_cmd + 1, sizeof(char *));
-	if (process->cmd == NULL)
-	{
-		perror("malloc cmd");
-		exit(EXIT_FAILURE);
-	}
-	while (token)
-	{
-		if (i == num_cmd + 1) //TODO: em que momento isso acontecerá?
-		{
-			perror("i == num");
-			exit(EXIT_FAILURE);
-		}
-		if (token->str)
-		{
-			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
-			if (process->cmd[i] == NULL)
-			{
-				perror("ft_strjoin");
-				exit(EXIT_FAILURE);
-			}
-		}
-		else if (token->type == PIPE)
-			break ;
-		else if (token->type != SPC)
-		{
-			token = token->next;
-			while (token && !token->str)
-				token = token->next;
-		}
-		else if (process->cmd[i] && token->type == SPC)
-			i++;
-		if (token)
-			token = token->next;
-	}
-	//print_process(process);
-	process->infile = STDIN_FILENO;
-	process->outfile = STDOUT_FILENO;
-	return (process);
-}
-
 //aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
 //echo hola > f1 - ok
 //echo hola > f1 > f2 - ok
@@ -114,6 +61,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	ao invés de passar com sujeira
 	*/
 	process = (t_process *)ft_calloc(1, sizeof(t_process));
+
 	if (process == NULL)
 	{
 		perror("malloc process");
@@ -122,6 +70,8 @@ t_process	*create_process(t_token *token, int num_token_str)
 	process->next = NULL;
 	process->redirect = NULL;
 	process->cmd = NULL;
+	process->infile = STDIN_FILENO;
+	process->outfile = STDOUT_FILENO;
 	if (num_token_str > 0)
 	{ 
 		process->cmd = (char **)ft_calloc((num_token_str + 1), sizeof(char *));
@@ -165,14 +115,8 @@ t_process	*create_process(t_token *token, int num_token_str)
 			token = token->next;
 		}
 	}
-	//ao termino desse metodo vou ter os comandos, infile e outfile padrão ou -1, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
+	//ao termino desse metodo vou ter os comandos, infile e outfile padrão, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
 	
-	//trouxe pra ca pra deixar tudo de redirect junto e organizar meu cerbero, dps organizamos
-	process->infile = STDIN_FILENO;
-	process->outfile = STDOUT_FILENO;
-
-	//create redirects, open, close, delete all redirects used
-	//set_redirects(&process);
 	return (process);
 }
 

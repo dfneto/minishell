@@ -67,7 +67,5 @@ int	ft_cd(char **argv, t_env *env, int last_exit)
 	}
 	else
 		return (ft_chdir(ft_getenv("HOME", *env), env));
-	if (result && argv[2])
-		print_error("Brazilian Shell: cd: too many arguments\n");
 	return (result);
 }
