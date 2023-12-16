@@ -18,6 +18,8 @@
 
 int	ft_chdir(char *str, t_env *env)
 {
+	char	*path;
+
 	if (chdir(str))
 	{
 		ft_perror(str);
@@ -25,8 +27,7 @@ int	ft_chdir(char *str, t_env *env)
 	}
 	else
 	{
-		char *path = (char *) ft_calloc(PATH_MAX, sizeof(char));
-		path = getcwd(path, PATH_MAX);
+		path = getcwd(NULL, PATH_MAX);
 		char *pwd = ft_getenv("PWD", *env);
 		if (pwd == NULL)
 			ft_setenv(env, "OLDPWD",  NULL, 1);
