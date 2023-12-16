@@ -22,6 +22,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+void print_open_fds() {
+    int fd;
+    for (fd = 0; fd < 10; fd++) {
+        int flags = fcntl(fd, F_GETFD);
+        if (flags != -1) {
+            printf("File descriptor %d is open\n", fd);
+            // You can add more information or actions here if needed
+        }
+    }
+}
+
 char	*get_input(int last_exit)
 {
 	char	*input;
@@ -93,12 +104,8 @@ void	init_minishell(t_env *envp)
 		// si.sa_handler = &handle_control_c;
 		// si.sa_flags = SA_RESTART;
 		// sigaction(SIGINT, &si, NULL);
+		//print_open_fds();
 		input = get_input(last_exit);
-		/* 		if (!ft_strcmp(input, "exit"))
-				{
-					printf("EXITING...\n");
-					exit(EXIT_SUCCESS);
-				} */
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0')
