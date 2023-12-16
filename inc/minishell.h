@@ -233,7 +233,7 @@ void	handle_control_c();
 int validate_tokens(t_token *token);
 
 
-int	set_redirects(t_process **process);
+int	set_redirects(t_process *process);
 
 
 #endif

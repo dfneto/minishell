@@ -122,7 +122,7 @@ void	init_minishell(t_env *envp)
 				{
 					execute_heredoc(first_process);
 					// print_process_list(first_process);
-					if (set_redirects(&first_process))
+					if (set_redirects(first_process))
 						last_exit = 1;
 					// TODO: cat << h1 > test > test2 < no << h2
 					else if (first_process->cmd && first_process->cmd[0])

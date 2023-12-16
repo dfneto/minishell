@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:59:31 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/15 20:25:39 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/12/16 11:11:54 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	get_outfile(t_redirect *redirect, t_process **current)
 	return (fd);
 }
 
-int	get_infile(t_redirect *redirect, t_process **current)	
+int	get_infile(t_redirect *redirect, t_process **current)
 {
 	int	fd;
 
@@ -48,33 +48,28 @@ void	get_heredoc(t_process **current)
 	}
 }
 
-int	set_redirects(t_process **process)
+int	set_redirects(t_process *current)
 {
-	t_process	*current;
-	t_redirect	*redirect_cpy;
+	t_redirect	*redirect;
 
-	current = *process;
 	while (current)
 	{
-		redirect_cpy = current->redirect;
-		while (redirect_cpy)
+		redirect = current->redirect;
+		while (redirect)
 		{
-			if (redirect_cpy->type == APPEND
-				|| redirect_cpy->type == OUTPUT_REDIRECTION)
-				current->outfile = get_outfile(redirect_cpy, &current);
-			else if (redirect_cpy->type == INPUT_REDIRECTION)
-				current->infile = get_infile(redirect_cpy, &current);
-			else if (redirect_cpy->type == HERE_DOC)
+			if (redirect->type == APPEND
+				|| redirect->type == OUTPUT_REDIRECTION)
+				current->outfile = get_outfile(redirect, &current);
+			else if (redirect->type == INPUT_REDIRECTION)
+				current->infile = get_infile(redirect, &current);
+			else if (redirect->type == HERE_DOC)
 				get_heredoc(&current);
 			if (current->outfile == -1 || current->infile == -1)
-				exit(EXIT_FAILURE);	// MUDAR AQUI> TEM QUE FALHAR O PROCESSO ATUAL MAS SEGUIR FAZENDO OS PROXIMOS...
-			redirect_cpy = redirect_cpy->next;
+				break ;
+			redirect = redirect->next;
 		}
 		if (current->heredoc && current->infile == STDIN_FILENO)
-		{
-			current->infile = dup(current->heredoc);
-			close(current->heredoc);
-		}
+			current->infile = current->heredoc;
 		current = current->next;
 	}
 	return (EXIT_SUCCESS);

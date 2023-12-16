@@ -137,6 +137,8 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	int		og_stdin;
 	char	*path;
 
+	if (process->outfile == -1 || process->infile == -1)
+		return (1);
 	if (process->outfile != STDOUT_FILENO)
 	{
 		og_stdout = dup(STDOUT_FILENO);
@@ -215,57 +217,62 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
-		path = get_path(process->cmd, *env);
-		if (!is_builtins(process->cmd, functions) && !path)
-		{
-			if (process->prev)
-				close_pipes(process->prev->fd);
-			print_error("Brazilian Shell: ");
-			print_error(process->cmd[0]);
-			print_error(": command not found\n");
-			if (!process->next)
-				return (127);
-			last_exit = 127;
-		}
+		if (process->outfile == -1 || process->infile == -1)
+			last_exit = 1;
 		else
 		{
-			check = fork();
-			if (check == -1)
-				exit(EXIT_FAILURE);
-			if (check == CHILD)
+			path = get_path(process->cmd, *env);
+			if (!is_builtins(process->cmd, functions) && !path)
 			{
-				if (process->outfile == STDOUT_FILENO && process->next)
-					dup2(process->fd[1], STDOUT_FILENO);
-				else
-					dup2(process->outfile, STDOUT_FILENO);
-				if (process->prev && process->infile == STDIN_FILENO)
-				{
-					dup2(process->prev->fd[0], STDIN_FILENO);
+				if (process->prev)
 					close_pipes(process->prev->fd);
-				}
-				else
-				{
-					dup2(process->infile, STDIN_FILENO);
-					if (process->prev)
-						close_pipes(process->prev->fd);
-				}
-				close_pipes(process->fd);
-				last_exit = execute_builtins(process->cmd, env, last_exit,
-						functions);
-				if (last_exit == -1)
-				{
-					execve(get_path(process->cmd, *env), process->cmd,
-						get_env_array(*env));
-					exit(EXIT_FAILURE);
-				}
-				exit(last_exit);
+				print_error("Brazilian Shell: ");
+				print_error(process->cmd[0]);
+				print_error(": command not found\n");
+	/* 			if (!process->next)
+					return (127); */
+				last_exit = 127;
 			}
 			else
 			{
-				if (i != 0)
-					close_pipes(process->prev->fd);
-				if (i == num_proc - 1)
+				check = fork();
+				if (check == -1)
+					exit(EXIT_FAILURE);
+				if (check == CHILD)
+				{
+					if (process->outfile == STDOUT_FILENO && process->next)
+						dup2(process->fd[1], STDOUT_FILENO);
+					else
+						dup2(process->outfile, STDOUT_FILENO);
+					if (process->prev && process->infile == STDIN_FILENO)
+					{
+						dup2(process->prev->fd[0], STDIN_FILENO);
+						close_pipes(process->prev->fd);
+					}
+					else
+					{
+						dup2(process->infile, STDIN_FILENO);
+						if (process->prev)
+							close_pipes(process->prev->fd);
+					}
 					close_pipes(process->fd);
+					last_exit = execute_builtins(process->cmd, env, last_exit,
+							functions);
+					if (last_exit == -1)
+					{
+						execve(get_path(process->cmd, *env), process->cmd,
+							get_env_array(*env));
+						exit(EXIT_FAILURE);
+					}
+					exit(last_exit);
+				}
+				else
+				{
+					if (i != 0)
+						close_pipes(process->prev->fd);
+					if (i == num_proc - 1)
+						close_pipes(process->fd);
+				}
 			}
 		}
 		process = process->next;
