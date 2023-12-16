@@ -121,7 +121,7 @@ void	init_minishell(t_env *envp)
 						last_exit = 1;
 					//TODO: cat << h1 > test > test2 < no << h2
 					
-					else
+					else if (first_process->cmd && first_process->cmd[0])
 					{
 						//print_process_list(first_process);
 						last_exit = execute_cmd(first_process, envp, last_exit, functions);

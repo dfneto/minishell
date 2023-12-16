@@ -218,8 +218,8 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		char *path = get_path(process->cmd, *env);
 		if (!is_builtins(process->cmd, functions) && !path)
 		{
-			close_pipes(process->prev->fd);
-			close_pipes(process->fd);
+			if (process->prev)
+				close_pipes(process->prev->fd);
 			print_error("Brazilian Shell: ");
 			print_error(process->cmd[0]);
 			print_error(": command not found\n");
@@ -238,6 +238,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 					dup2(process->fd[1], STDOUT_FILENO);
 				else
 					dup2(process->outfile, STDOUT_FILENO);
+				
 				if (process->prev && process->infile == STDIN_FILENO)
 				{
 					dup2(process->prev->fd[0], STDIN_FILENO);
@@ -291,7 +292,7 @@ Return: O valor de saida do programa executado
 int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
-	if (!process->next)
+if (!process->next)
 		return (execute_single_cmd(process, envp, last_exit,
 				functions));
 	else

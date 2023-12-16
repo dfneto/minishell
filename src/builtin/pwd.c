@@ -32,7 +32,7 @@ int	ft_pwd(char **argv, t_env *env, int last_exit)
 	}
 	else
 	{
-		ft_perror("pwd");
+		ft_perror("pwd", NULL);
 		return (EXIT_FAILURE);
 	}
 }

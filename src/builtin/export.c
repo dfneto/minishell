@@ -80,12 +80,13 @@ static void	print_ordered(t_env env)
 
 static int	is_valid_env(char *str)
 {
+	//printf("%s", str);
 	if (!(ft_isalpha(*str) || *str == '_'))
 		return (-1);
 	str++;
 	while (*str && *str != '=' && *str != '+')
 	{
-		if (!ft_isalnum(*str))
+		if (!(ft_isalnum(*str) || *str == '_'))
 			return (-1);
 		str++;
 	}

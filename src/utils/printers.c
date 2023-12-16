@@ -115,6 +115,8 @@ void	print_process_list(t_process *root)
 		printf("Lista de processos nula ...\n");
 	while (root)
 	{
+		i = 0;
+		
 		printf("processo: ");
 		while (root->cmd[i])
 		{

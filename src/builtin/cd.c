@@ -22,7 +22,7 @@ int	ft_chdir(char *str, t_env *env)
 
 	if (chdir(str))
 	{
-		ft_perror(str);
+		ft_perror(str, "cd: ");
 		return (1);
 	}
 	else
