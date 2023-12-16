@@ -132,13 +132,14 @@ REFACTOR
 int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
-	int	fork_id;
-	int og_stdout;
-    int og_stdin;
+	int		fork_id;
+	int		og_stdout;
+	int		og_stdin;
+	char	*path;
 
 	if (process->outfile != STDOUT_FILENO)
 	{
-    	og_stdout = dup(STDOUT_FILENO);
+		og_stdout = dup(STDOUT_FILENO);
 		dup2(process->outfile, STDOUT_FILENO);
 	}
 	if (process->infile != STDIN_FILENO)
@@ -149,13 +150,13 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	last_exit = execute_builtins(process->cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
-		char *path = get_path(process->cmd, *env);
+		path = get_path(process->cmd, *env);
 		if (path == NULL)
 		{
 			print_error("Brazilian Shell: ");
 			print_error(process->cmd[0]);
 			print_error(": command not found\n");
-			return(127);
+			return (127);
 		}
 		fork_id = fork();
 		if (fork_id < 0)
@@ -166,7 +167,7 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 			exit(EXIT_FAILURE);
 		}
 		else
-		{	
+		{
 			wait(&last_exit);
 			last_exit = WEXITSTATUS(last_exit);
 		}
@@ -184,8 +185,6 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	return (last_exit);
 }
 
-
-
 /*
 Função que faz a execução de varios comandos, realizando os pipes e redirections
 Necessita revisão
@@ -202,6 +201,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	int			num_proc;
 	int			i;
 	t_process	*current;
+	char		*path;
 
 	current = process;
 	num_proc = 0;
@@ -215,7 +215,7 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
-		char *path = get_path(process->cmd, *env);
+		path = get_path(process->cmd, *env);
 		if (!is_builtins(process->cmd, functions) && !path)
 		{
 			if (process->prev)
@@ -238,7 +238,6 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 					dup2(process->fd[1], STDOUT_FILENO);
 				else
 					dup2(process->outfile, STDOUT_FILENO);
-				
 				if (process->prev && process->infile == STDIN_FILENO)
 				{
 					dup2(process->prev->fd[0], STDIN_FILENO);
@@ -255,8 +254,9 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 						functions);
 				if (last_exit == -1)
 				{
-					execve(get_path(process->cmd, *env), process->cmd, get_env_array(*env));
-					exit(EXIT_FAILURE); 
+					execve(get_path(process->cmd, *env), process->cmd,
+						get_env_array(*env));
+					exit(EXIT_FAILURE);
 				}
 				exit(last_exit);
 			}
@@ -292,9 +292,8 @@ Return: O valor de saida do programa executado
 int	execute_cmd(t_process *process, t_env *envp, int last_exit,
 		t_builtin functions[])
 {
-if (!process->next)
-		return (execute_single_cmd(process, envp, last_exit,
-				functions));
+	if (!process->next)
+		return (execute_single_cmd(process, envp, last_exit, functions));
 	else
 		return (execute_multi_cmd(process, envp, last_exit, functions));
 }

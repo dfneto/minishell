@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-char	*get_word_expanded(t_token *token, int *i, int dolar_position, t_env env)
+char	*get_word_expanded(t_token *token, int *i, int dolar_position,
+		t_env env)
 {
 	char	*word_to_expand;
 

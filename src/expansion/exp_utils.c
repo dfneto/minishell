@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 t_token	*create_token_split(char *str, t_token *next_token)
 {
@@ -49,7 +49,7 @@ int	get_dolar_position(char *str, int i)
 	return (i - 1);
 }
 
-/* 
+/*
 Modifiquei aqui pq dava um erro quando passava o valgrind.
 Em casos sem expansão o i retornava fora do tamanho da str
 EX: ls retornava um i = 3 e dai quando ia pro if tava fora e podia dar seg fault (nao sei pq nao dava...)
@@ -80,9 +80,9 @@ int	is_dollarquestion_mark(char *str)
 }
 
 /*
-* Jump the spaces in a string starting in the i position of the string
-* Return: the indice of the first not space char
-*/
+ * Jump the spaces in a string starting in the i position of the string
+ * Return: the indice of the first not space char
+ */
 int	ignore_spaces(char *str, int i)
 {
 	while (str[i] && str[i] != ' ')

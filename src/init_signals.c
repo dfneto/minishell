@@ -16,13 +16,13 @@
 #include <signal.h>
 #include <stdio.h>
 
-void	handle_control_c()
+void	handle_control_c(void)
 {
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	//last_exit = 1;
+	// last_exit = 1;
 }
 
 // void	init_signals(void)

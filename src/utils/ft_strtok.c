@@ -1,40 +1,40 @@
+#include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <libft.h>
 
-static int  is_delim(char c, const char *delim)
+static int	is_delim(char c, const char *delim)
 {
-     if (!c)
-        return (1);
-     while (*delim)
-     {
-        if (c == *delim)
-            return (1);
-        delim++;
-     } 
-     return (0);
+	if (!c)
+		return (1);
+	while (*delim)
+	{
+		if (c == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
 }
 
-char    *ft_strtok(char *input, const char *delim)
+char	*ft_strtok(char *input, const char *delim)
 {
-    static char *str;
-    static int  i;
-    static int  size;
-    int         start;
+	static char *str;
+	static int i;
+	static int size;
+	int start;
 
-    if (input != NULL)
-    {
-        str = input;
-        size = ft_strlen(str);
-        i = 0;
-    }
-    else if (i == size)
-        return (NULL);
-    else
-        i++;
-    start = i;
-    while (!is_delim(str[i], delim))
-        i++;
-    str[i] = '\0';
-    return (str + start);
+	if (input != NULL)
+	{
+		str = input;
+		size = ft_strlen(str);
+		i = 0;
+	}
+	else if (i == size)
+		return (NULL);
+	else
+		i++;
+	start = i;
+	while (!is_delim(str[i], delim))
+		i++;
+	str[i] = '\0';
+	return (str + start);
 }

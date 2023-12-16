@@ -15,8 +15,9 @@
 
 void	print_array(char **cmd)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	printf("cmd...\n");
 	while (cmd[i])
 	{
@@ -25,7 +26,7 @@ void	print_array(char **cmd)
 	}
 }
 
-int is_builtins(char **argv, t_builtin functions[])
+int	is_builtins(char **argv, t_builtin functions[])
 {
 	int	i;
 
@@ -49,8 +50,8 @@ int	execute_builtins(char **argv, t_env *env, int last_exit,
 	{
 		if (!ft_strcmp(functions[i].name, argv[0]))
 		{
-			//print_array(argv);
-			return (functions[i].function(argv, env, last_exit));	
+			// print_array(argv);
+			return (functions[i].function(argv, env, last_exit));
 		}
 		i++;
 	}

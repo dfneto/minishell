@@ -67,7 +67,8 @@ int	set_redirects(t_process **process)
 			else if (redirect_cpy->type == HERE_DOC)
 				get_heredoc(&current);
 			if (current->outfile == -1 || current->infile == -1)
-				exit(EXIT_FAILURE); // MUDAR AQUI> TEM QUE FALHAR O PROCESSO ATUAL MAS SEGUIR FAZENDO OS PROXIMOS...
+				exit(EXIT_FAILURE);
+					// MUDAR AQUI> TEM QUE FALHAR O PROCESSO ATUAL MAS SEGUIR FAZENDO OS PROXIMOS...
 			redirect_cpy = redirect_cpy->next;
 		}
 		if (current->heredoc && current->infile == STDIN_FILENO)

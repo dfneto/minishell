@@ -32,7 +32,8 @@ t_token	*create_token(char *input, int start, int end, int type)
 {
 	t_token	*tok;
 
-	tok = (t_token *)malloc(sizeof(t_token)); //todo: tenho que criar com duas posiçoes e colocar null na ultima?
+	tok = (t_token *)malloc(sizeof(t_token));
+		// todo: tenho que criar com duas posiçoes e colocar null na ultima?
 	if (!tok)
 		return (NULL);
 	tok->str = NULL;
@@ -45,8 +46,9 @@ t_token	*create_token(char *input, int start, int end, int type)
 	return (tok);
 }
 
-//TODO: juntar esse metodo com o original acima e colocar o next token como opcional ou se possível como obrigatorio
-t_token	*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand)
+// TODO: juntar esse metodo com o original acima e colocar o next token como opcional ou se possível como obrigatorio
+t_token	*create_token_with_next(char *input, int start, int end, int type,
+		t_token *next_tok_after_expand)
 {
 	t_token	*tok;
 
@@ -60,7 +62,6 @@ t_token	*create_token_with_next(char *input, int start, int end, int type, t_tok
 	tok->next = next_tok_after_expand;
 	return (tok);
 }
-
 
 t_token	*get_last_token(t_token *first)
 {

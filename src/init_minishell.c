@@ -50,27 +50,27 @@ char	*get_input(int last_exit)
 void	print_token_info(t_token *tok)
 {
 	if (tok)
-		printf("my mem: %p\ntype>%d - str: %s\nnext: %p\n\n", tok, tok->type, tok->str, tok->next);
+		printf("my mem: %p\ntype>%d - str: %s\nnext: %p\n\n", tok, tok->type,
+			tok->str, tok->next);
 }
-/* 
+/*
 REFACTOR
 E colocar em um lugar melhor s2
 */
-void 	clean_tokens(t_token *first)
+void	clean_tokens(t_token *first)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	while (first)
 	{
-		//print_token_info(first);
+		// print_token_info(first);
 		tmp = first;
 		first = first->next;
 		if (tmp->str)
 			free(tmp->str);
-		free(tmp);		
+		free(tmp);
 	}
 }
-
 
 void	init_minishell(t_env *envp)
 {
@@ -86,45 +86,43 @@ void	init_minishell(t_env *envp)
 	first_process = NULL;
 	input = NULL;
 	last_exit = 0;
-	
 	while (42)
-	{	
-		//control + c
+	{
+		// control + c
 		// struct sigaction	si;
 		// si.sa_handler = &handle_control_c;
 		// si.sa_flags = SA_RESTART;
 		// sigaction(SIGINT, &si, NULL);
-	
 		input = get_input(last_exit);
-/* 		if (!ft_strcmp(input, "exit"))
-		{
-			printf("EXITING...\n");
-			exit(EXIT_SUCCESS);
-		} */
+		/* 		if (!ft_strcmp(input, "exit"))
+				{
+					printf("EXITING...\n");
+					exit(EXIT_SUCCESS);
+				} */
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0')
 		{
 			first_token = lexical_analysis(input);
-			if(!validate_tokens(first_token))
+			if (!validate_tokens(first_token))
 			{
 				expansion(first_token, last_exit, *envp);
 				// printf("Lista de tokens finais:\n");
 				// print_list(first_token);
 				first_process = process_creation(first_token);
-				//print_process_list(first_process);
+				// print_process_list(first_process);
 				if (first_process)
 				{
 					execute_heredoc(first_process);
-					//print_process_list(first_process);
+					// print_process_list(first_process);
 					if (set_redirects(&first_process))
 						last_exit = 1;
-					//TODO: cat << h1 > test > test2 < no << h2
-					
+					// TODO: cat << h1 > test > test2 < no << h2
 					else if (first_process->cmd && first_process->cmd[0])
 					{
-						//print_process_list(first_process);
-						last_exit = execute_cmd(first_process, envp, last_exit, functions);
+						// print_process_list(first_process);
+						last_exit = execute_cmd(first_process, envp, last_exit,
+								functions);
 					}
 				}
 			}
@@ -133,8 +131,8 @@ void	init_minishell(t_env *envp)
 		}
 		clean_tokens(first_token);
 		clean_process(&first_process);
-		//limpar as redireções
-		//limpar os processos
+		// limpar as redireções
+		// limpar os processos
 		first_token = NULL;
 		clean_input(&input);
 	}

@@ -12,9 +12,9 @@
 
 #include <libft.h>
 #include <limits.h>
+#include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <minishell.h>
 
 int	ft_unset(char **argv, t_env *env, int last_exit)
 {

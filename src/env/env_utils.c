@@ -19,7 +19,7 @@
 /*
 TODO:
 1. função que transforma lista em char **
-char **create_fucking_array(t_env env)
+char	**create_fucking_array(t_env env)
 
 2. função que deleta o array (talvez não seja necessaria)
  */
@@ -29,14 +29,14 @@ char	**get_env_array(t_env env)
 	t_node	*tmp;
 	int		i;
 
-	i = 0;	
+	i = 0;
 	tmp = env.head;
 	while (tmp)
 	{
 		i++;
 		tmp = tmp->next;
 	}
-	array = (char **) ft_calloc(i + 1, sizeof(char *));
+	array = (char **)ft_calloc(i + 1, sizeof(char *));
 	if (!array)
 		return (NULL);
 	tmp = env.head;
@@ -53,7 +53,6 @@ char	**get_env_array(t_env env)
 	}
 	return (array);
 }
-
 
 int	ft_unsetenv(t_env *env, char *name)
 {
@@ -81,8 +80,7 @@ int	ft_unsetenv(t_env *env, char *name)
 	return (1);
 }
 
-
-/* 
+/*
 REFACTOR IT
 */
 int	ft_setenv(t_env *env, char *name, char *value, int ow)

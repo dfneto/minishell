@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
 #include <libft.h>
 #include <minishell.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <errno.h>
 
 int	ft_chdir(char *str, t_env *env)
 {
 	char	*path;
+	char	*pwd;
 
 	if (chdir(str))
 	{
@@ -28,9 +29,9 @@ int	ft_chdir(char *str, t_env *env)
 	else
 	{
 		path = getcwd(NULL, PATH_MAX);
-		char *pwd = ft_getenv("PWD", *env);
+		pwd = ft_getenv("PWD", *env);
 		if (pwd == NULL)
-			ft_setenv(env, "OLDPWD",  NULL, 1);
+			ft_setenv(env, "OLDPWD", NULL, 1);
 		else
 			ft_setenv(env, "OLDPWD", ft_strdup(ft_getenv("PWD", *env)), 1);
 		ft_setenv(env, "PWD", path, 1);
@@ -39,7 +40,7 @@ int	ft_chdir(char *str, t_env *env)
 }
 
 /*
-COLOCAR GETCWD AQUI... EM ALGUM LUGAR 
+COLOCAR GETCWD AQUI... EM ALGUM LUGAR
  REFACTOR TUDO
  VERIFICAR TROCA DE ENV -> PWD & OLDPWD
  */

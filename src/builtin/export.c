@@ -16,10 +16,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int add_alphabetical(t_node **head, t_node *new_node)
+int	add_alphabetical(t_node **head, t_node *new_node)
 {
 	t_node	*current;
-	
+
 	if (!new_node)
 		return (1);
 	if (*head == NULL || ft_strcmp((*head)->name, new_node->name) >= 0)
@@ -30,7 +30,8 @@ int add_alphabetical(t_node **head, t_node *new_node)
 	else
 	{
 		current = *head;
-		while (current->next != NULL && ft_strcmp(current->next->name, new_node->name) < 0)
+		while (current->next != NULL && ft_strcmp(current->next->name,
+				new_node->name) < 0)
 			current = current->next;
 		new_node->next = current->next;
 		current->next = new_node;
@@ -41,7 +42,7 @@ int add_alphabetical(t_node **head, t_node *new_node)
 t_node	*create_ordered_env(t_env env)
 {
 	t_node	*head;
-	t_node 	*tmp;
+	t_node	*tmp;
 
 	head = NULL;
 	while (env.head)
@@ -49,7 +50,8 @@ t_node	*create_ordered_env(t_env env)
 		if (!env.head->value)
 			tmp = create_node(ft_strdup(env.head->name), NULL);
 		else
-			tmp = create_node(ft_strdup(env.head->name), ft_strdup(env.head->value));
+			tmp = create_node(ft_strdup(env.head->name),
+					ft_strdup(env.head->value));
 		if (add_alphabetical(&head, tmp))
 			break ;
 		env.head = env.head->next;
@@ -80,7 +82,7 @@ static void	print_ordered(t_env env)
 
 static int	is_valid_env(char *str)
 {
-	//printf("%s", str);
+	// printf("%s", str);
 	if (!(ft_isalpha(*str) || *str == '_'))
 		return (-1);
 	str++;
@@ -111,13 +113,12 @@ TODO:
  */
 int	ft_export(char **argv, t_env *env, int last_exit)
 {
-	int	ret;
-	int mode;
+	int		ret;
+	int		mode;
 	size_t	pos;
 
 	(void)last_exit;
 	ret = 0;
-
 	argv++;
 	if (*argv == NULL)
 	{
@@ -129,17 +130,19 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 		mode = is_valid_env(*argv);
 		if (mode >= 0)
 		{
-			//printf("%s\n", *argv);
+			// printf("%s\n", *argv);
 			if (mode == 1)
 			{
 				pos = ft_strchr(*argv, '=') - *argv;
-				//printf("pos %zus\n", pos);
-				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 1), mode);
+				// printf("pos %zus\n", pos);
+				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos
+						+ 1), mode);
 			}
 			else if (mode == 0)
 			{
 				pos = ft_strchr(*argv, '+') - *argv;
-				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos + 2), mode);
+				ft_setenv(env, ft_substr(*argv, 0, pos), ft_strdup(*argv + pos
+						+ 2), mode);
 			}
 			else
 			{

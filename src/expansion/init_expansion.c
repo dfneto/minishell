@@ -36,7 +36,7 @@ t_token	*expand(t_token *token, t_env env)
 /* TO DO
 Função só funciona com o caso $? sozinho
 Refazer junto com a is_dolarquestion_mark
--->> proteger malloc (ft_itoa) 
+-->> proteger malloc (ft_itoa)
  */
 char	*get_exit_status(int last_exit)
 {
@@ -49,7 +49,7 @@ char	*get_exit_status(int last_exit)
  */
 int	check_and_expand(t_token *token, int last_exit, t_env env)
 {
-	//TODO: testar 123$? -> se resolver por aqui retiramos o last do ft_getenv
+	// TODO: testar 123$? -> se resolver por aqui retiramos o last do ft_getenv
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))

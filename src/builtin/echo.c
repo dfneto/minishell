@@ -33,8 +33,8 @@ static int	is_n_flag(char const *str)
 
 int	ft_echo(char **argv, t_env *env, int last_exit)
 {
-	int		i;
-	int		new_line;
+	int	i;
+	int	new_line;
 
 	(void)(env);
 	(void)(last_exit);

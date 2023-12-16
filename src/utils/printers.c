@@ -60,27 +60,27 @@ void	print_process(t_process *process)
 	if (process == NULL)
 	{
 		printf("Process NULL\n");
-		return;
+		return ;
 	}
 	else
 		printf("Processo nao eh nulo\n");
 	if (process->cmd == NULL)
-			printf("CMD eh nulo\n");
+		printf("CMD eh nulo\n");
 	else
 	{
 		printf("CMD NAO eh nulo\n");
 		if (process->cmd[0] == NULL)
 			printf("CMD[0] eh nulo\n");
 		else
+		{
+			printf("CMD[0] NAO eh nulo\n");
+			while (process->cmd[i])
 			{
-				printf("CMD[0] NAO eh nulo\n");
-				while (process->cmd[i])
-				{
-					printf("%s\n", process->cmd[i]);
-					i++;
-				}
+				printf("%s\n", process->cmd[i]);
+				i++;
 			}
-	}	
+		}
+	}
 	print_redirect(process->redirect);
 }
 
@@ -107,8 +107,8 @@ void	print_redirect(t_redirect *redirect)
 
 void	print_process_list(t_process *root)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	printf("Imprimindo os processos ...\n");
 	if (!root)
@@ -116,7 +116,6 @@ void	print_process_list(t_process *root)
 	while (root)
 	{
 		i = 0;
-		
 		printf("processo: ");
 		while (root->cmd[i])
 		{

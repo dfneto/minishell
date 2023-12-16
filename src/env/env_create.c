@@ -57,8 +57,8 @@ int	create_env(t_env *env, char **envp)
 	while (envp[i] != NULL)
 	{
 		pos = ft_strchr(envp[i], '=') - envp[i];
-		node = create_node(ft_substr(envp[i], 0, pos),
-				ft_strdup(envp[i] + pos + 1));
+		node = create_node(ft_substr(envp[i], 0, pos), ft_strdup(envp[i] + pos
+					+ 1));
 		if (add_node_to_env(env, node))
 			return (1);
 		i++;
