@@ -12,8 +12,17 @@
 
 #include <libft.h>
 #include <unistd.h>
+#include <minishell.h>
 
 int	print_error(char *str)
 {
 	return (write(2, str, ft_strlen(str)));
+}
+
+int	print_cmd_not_found(char *cmd)
+{
+	print_error("Brazilian Shell: ");
+	print_error(cmd);
+	print_error(": command not found\n");
+	return (127);
 }

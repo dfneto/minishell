@@ -176,8 +176,15 @@ t_redirect  *create_redirect(char *name, t_type type);
 
 void    init_signals(void);
 void    init_minishell(t_env *envp);
-// Execution Functions
+/* Execution Functions */
+// Execute CMD
 int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
+
+// Execute Single cmd
+int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
+		t_builtin functions[]);
+
+// Execute Utils
 char	*get_path(char **cmd, t_env env);
 void	close_pipes(int pipe[]);
 
@@ -220,6 +227,7 @@ int	execute_builtins(char **argv, t_env *env, int last_exit, t_builtin functions
 
 int	ft_strcmp(char *str1, char *str2);
 int print_error(char *str);
+int	print_cmd_not_found(char *cmd);
 
 
 // Built-in functions
