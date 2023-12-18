@@ -184,6 +184,10 @@ int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin fun
 int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[]);
 
+// Execute Mult cmds
+int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
+		t_builtin functions[]);
+
 // Execute Utils
 char	*get_path(char **cmd, t_env env);
 void	close_pipes(int pipe[]);
