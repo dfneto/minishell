@@ -54,7 +54,7 @@ static void	child_execution(char *path, char **argv, t_env env)
 	exit(EXIT_FAILURE);
 }
 
-static int	parent_execution(char *path)
+static int parent_execution(char *path)
 {
 	int	child_exit;
 
@@ -79,7 +79,10 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		path = get_path(process->cmd, *env);
 		if (path == NULL)
+		{
+			reset_redirects(process, &og_stdin, &og_stdout);
 			return (print_cmd_not_found(process->cmd[0]));
+		}
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);
