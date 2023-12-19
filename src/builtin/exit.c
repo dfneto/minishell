@@ -16,10 +16,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/* CRIAR FUNÇÃO PARA OS CASOS:
-MAIOR QUE LONG_MAX=+9223372036854775807
-MENOR QUE LONG_MIN=-9223372036854775808
- */
 static int	compare_pos(char *str)
 {
 	int	my_len;
@@ -76,24 +72,15 @@ static int	is_num(char *str)
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
-	{
-		free(cpy);
-		return (0);
-	}
+		return (free(cpy), 0);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
-		{
-			free(cpy);
-			return (0);
-		}
+			return (free(cpy), 0);
 		str++;
 	}
 	if (is_too_big(cpy))
-	{
-		free(cpy);
-		return (0);
-	}
+		return (free(cpy), 0);
 	free(cpy);
 	return (1);
 }

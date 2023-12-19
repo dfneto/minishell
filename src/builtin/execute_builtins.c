@@ -49,10 +49,7 @@ int	execute_builtins(char **argv, t_env *env, int last_exit,
 	while (i < BUILTINS_NUM)
 	{
 		if (!ft_strcmp(functions[i].name, argv[0]))
-		{
-			// print_array(argv);
 			return (functions[i].function(argv, env, last_exit));
-		}
 		i++;
 	}
 	return (-1);
