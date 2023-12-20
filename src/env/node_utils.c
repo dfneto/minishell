@@ -25,7 +25,6 @@ t_node	*create_node(char *name, char *value)
 {
 	t_node	*node;
 
-	printf("Creating node %s\n", name);
 	if (name == NULL)
 		return (NULL);
 	node = (t_node *)ft_calloc(1, sizeof(t_node));
