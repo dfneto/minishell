@@ -123,7 +123,6 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 	while (*argv)
 	{
 		mode = is_valid_env(*argv);
-		printf("mode: %d\n", mode);
 		if (mode >= 0)
 		{
 			// printf("%s\n", *argv);
