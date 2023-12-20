@@ -79,7 +79,6 @@ static void	print_ordered(t_env env)
 		clean_node(tmp);
 	}
 }
-
 static int	is_valid_env(char *str)
 {
 	// printf("%s", str);
@@ -105,11 +104,7 @@ static int	is_valid_env(char *str)
 }
 
 /*
-SegFault	-> TEST= ou TEST
-			-> strdup na criaçāo do node
 
-TODO:
-	-> Rever parsing do env
  */
 int	ft_export(char **argv, t_env *env, int last_exit)
 {
@@ -128,6 +123,7 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 	while (*argv)
 	{
 		mode = is_valid_env(*argv);
+		printf("mode: %d\n", mode);
 		if (mode >= 0)
 		{
 			// printf("%s\n", *argv);
@@ -146,7 +142,7 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 			}
 			else
 			{
-				ft_setenv(env, *argv, NULL, 1);
+				ft_setenv(env, *argv, NULL, 0);
 			}
 		}
 		else

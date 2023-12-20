@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node_utils.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/23 16:15:18 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/23 16:15:53 by lsulzbac         ###   ########.fr       */
+/*   Created: 2023/11/14 11:16:59 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/11/14 11:17:01 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
+#include <libft.h>
 #include <minishell.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-void	clean_node(t_node *node)
+int	ft_strcmp(char *str1, char *str2)
 {
-	if (node->name)
-		free(node->name);
-	if (node->value)
-		free(node->value);
-	free(node);
-}
-
-t_node	*create_node(char *name, char *value)
-{
-	t_node	*node;
-
-	printf("Creating node %s\n", name);
-	if (name == NULL)
-		return (NULL);
-	node = (t_node *)ft_calloc(1, sizeof(t_node));
-	if (!node)
-		return (NULL);
-	node->name = name;
-	node->value = value;
-	return (node);
+	while (*str1 && *str2 && *str1 == *str2)
+	{
+		str1++;
+		str2++;
+	}
+	return (*str1 - *str2);
 }

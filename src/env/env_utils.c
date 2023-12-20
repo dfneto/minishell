@@ -88,8 +88,6 @@ int	ft_setenv(t_env *env, char *name, char *value, int ow)
 	t_node	*tmp;
 	char	*current_env;
 
-	if (!value && !ow)
-		return (0);
 	tmp = env->head;
 	while (tmp)
 	{
