@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtok.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/14 11:31:31 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/08/14 11:31:33 by lsulzbac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -17,10 +29,10 @@ static int	is_delim(char c, const char *delim)
 
 char	*ft_strtok(char *input, const char *delim)
 {
-	static char *str;
-	static int i;
-	static int size;
-	int start;
+	static char	*str;
+	static int	i;
+	static int	size;
+	int			start;
 
 	if (input != NULL)
 	{
