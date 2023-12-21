@@ -173,10 +173,12 @@ t_process	*create_process(t_token *token, int i);
 t_redirect  *create_redirect(char *name, t_type type);
 
 // VVVVVV LUKITAS VVVVV
+/* Organizei as funções por "modulo", cada módulo corresponde ao nome do folder. Dentro de cada "módulo" separei as funções por funcionalidades.
+Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
+Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula e comentado com //
+*/
 
-void    init_signals(void);
-void    init_minishell(t_env *envp);
-/* Execution Functions */
+/* EXECUTION */
 // Execute CMD
 int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
 
@@ -193,46 +195,36 @@ char	*get_path(char **cmd, t_env env);
 void	close_pipes(int pipe[]);
 
 
-// Process utils
-//t_process   *create_process(char *input, int in, int out);
-void    clean_process(t_process **process);
-
-/* Env functions */
+/* ENV */
 // Env Creation/Cleaning Functions
-int   create_env(t_env *env, char **envp);
-void    clean_env(t_env *env);
-int	add_node_to_env(t_env *env, t_node *node);
+int		create_env(t_env *env, char **envp);
+int		add_node_to_env(t_env *env, t_node *node);
+void	clean_env(t_env *env);
 
 // Env Utils Functions
-void	print_env(t_env env);
 int		ft_setenv(t_env *env, char *name, char *value, int ow);
-char    *ft_getenv(char *name, t_env env);
 int 	ft_unsetenv(t_env *env, char *name);
+char    *ft_getenv(char *name, t_env env);
 char	**get_env_array(t_env env);
 
-/* Node functions */
-t_node	*create_node(char *name, char *value);
+// Node Functions
 void	clean_node(t_node *node);
+t_node	*create_node(char *name, char *value);
+
 
 /* UTILS */
+int		ft_strcmp(char *str1, char *str2);
+int		print_error(char *str);
+int		print_cmd_not_found(char *cmd);
 char    *ft_strtok(char *input, const char *delim);
-
-//Old stuff...
-int	add_env(char *str, t_env *env);
-char    *expand_env(char *name, char **env, int last_exit);
-t_node   *create_ordered_env(t_env env);
-
 void	ft_perror(char *msg, char *func_name);
 
+
+/* BUILTINS */
 //Init builtins
 void	init_builtins(t_builtin array[]);
 int is_builtins(char **argv, t_builtin functions[]);
 int	execute_builtins(char **argv, t_env *env, int last_exit, t_builtin functions[]);
-
-int	ft_strcmp(char *str1, char *str2);
-int print_error(char *str);
-int	print_cmd_not_found(char *cmd);
-
 
 // Built-in functions
 int ft_echo(char **argv, t_env *env, int last_exit);
@@ -243,8 +235,19 @@ int	ft_cd(char **argv, t_env *env, int last_exit);
 int	ft_export(char **argv, t_env *env, int last_exit);
 int	ft_unset(char **argv, t_env *env, int last_exit);
 
-// Signals
+// ft_export utils
+int	print_ordered(t_env env);
+
+/* SIGNALS */
 void	handle_control_c();
+
+// VVVVVVVVVVVVV Nao organizado VVVVVVV
+
+// Process utils
+//t_process   *create_process(char *input, int in, int out);
+void    clean_process(t_process **process);
+void    init_signals(void);
+void    init_minishell(t_env *envp);
 
 int validate_tokens(t_token *token);
 
