@@ -61,13 +61,8 @@ char	*get_path(char **cmd, t_env env)
 
 	if (cmd[0][0] == '\0')
 		return (NULL);
-<<<<<<< HEAD
-	if (is_cmd_executable(cmd[0]))
-		return (ft_strdup(cmd[0]));
-=======
 	if (is_cmd_executable(cmd[0]) && !access(cmd[0], X_OK))
-		return (cmd[0]);
->>>>>>> parent of 04dbf40 (seg fault - double free ok)
+		return (ft_strdup(cmd[0]));
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
 		return (NULL);
