@@ -81,6 +81,12 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		if (path == NULL)
 			return (reset_redirects(process, &og_stdin, &og_stdout),
 				print_cmd_not_found(process->cmd[0]));
+		// adicionar teste de existencia/execucao do arquivo se o path existe 
+		if (access(path, X_OK))
+		{
+			ft_perror(path, NULL);
+			return (127);
+		}
 		fork_id = fork();
 		if (fork_id < 0)
 			exit(EXIT_FAILURE);

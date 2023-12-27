@@ -78,35 +78,34 @@ static int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	char	*path;
 	int		check;
 
-	path = get_path(process->cmd, *env);
-	if (!is_builtins(process->cmd, functions) && !path)
+	if (!is_builtins(process->cmd, functions))
 	{
-		if (process->prev)
-			close_pipes(process->prev->fd);
-		num_arr[2] = print_cmd_not_found(process->cmd[0]);
-		if (!process->next)
-			return (num_arr[2]);
+		path = get_path(process->cmd, *env);
+		if (!path || access(path, X_OK))
+		{
+			if (process->prev)
+				close_pipes(process->prev->fd);
+			if (!path)
+				print_cmd_not_found(process->cmd[0]);
+			else
+				ft_perror(path, NULL);
+			if (!process->next)
+				return (127);
+		}
 	}
+	check = fork();
+	if (check == -1)
+		exit(EXIT_FAILURE);
+	if (check == CHILD)
+		child_execution(process, num_arr[2], env, functions);
 	else
-	{
-		check = fork();
-		if (check == -1)
-			exit(EXIT_FAILURE);
-		if (check == CHILD)
-			child_execution(process, num_arr[2], env, functions);
-		else
-			parent_execution(process, num_arr[1], num_arr[0], path);
-	}
+		parent_execution(process, num_arr[1], num_arr[0], path);
 	return (0);
 }
 /*
-Função que faz a execução de varios comandos, realizando os pipes e redirections
-Necessita revisão
-REFACTOR
-TOO FUCKING BIG
-
-VERIFICAR REDIRECTS E HEREDOC
-ORGANIZAR PIPES
+REVER COMO APLICAR MUDANÇA DO SINGLE COMMAND AQUI.
+-> trocar cmd not found por file not found
+caso: /notexist/this/file
 */
 
 int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
