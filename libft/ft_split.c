@@ -75,7 +75,7 @@ char	**ft_split(char const *s, char c)
 	char	**r;
 	size_t	words;
 
-	if(s)
+	if (s)
 	{
 		words = count_words(s, c);
 		r = (char **) malloc (sizeof(char *) * (words + 1));

@@ -13,18 +13,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
 # include "libft.h"
-# include <stdlib.h>
-# include <readline/readline.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <signal.h>
-# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <errno.h>
-# include <limits.h>
-# include <fcntl.h>
+# include <unistd.h>
 
 # define PROMPT "\033[38;5;143mbr.sh$ \033[0;39m"
 # define QUOTE_OPENED "You have to close your quotes"
@@ -41,7 +41,6 @@
 
 # define L_MAX "9223372036854775807"
 # define L_MIN "9223372036854775808"
-
 
 // typedef enum char //usar isso ou os defines?
 // {
@@ -73,27 +72,27 @@ typedef enum token_type
 	HERE_DOC = 7,
 	PIPE = 8,
 	NL = 9
-}	t_type;
+}						t_type;
 
 /*
-* type: 	0 " "	1 ' '	2 str	3 spc	
-* 			4 >		5 >>	6 <		7 <<	
-* 			8 |	
-* str: not null when type is 0, 1 or 2
-*/
+ * type: 	0 " "	1 ' '	2 str	3 spc
+ * 			4 >		5 >>	6 <		7 <<
+ * 			8 |
+ * str: not null when type is 0, 1 or 2
+ */
 typedef struct s_token
 {
-	int				type; //creio que deveria ter o tipo token_type
-	char			*str;
-	struct s_token	*next;
-}	t_token;
+	int type; // creio que deveria ter o tipo token_type
+	char				*str;
+	struct s_token		*next;
+}						t_token;
 
 typedef struct s_redirect
 {
 	t_type				type;
 	char				*name;
 	struct s_redirect	*next;
-}t_redirect;
+}						t_redirect;
 
 typedef struct s_process
 {
@@ -105,166 +104,176 @@ typedef struct s_process
 	int					outfile;
 	int					heredoc;
 	struct s_redirect	*redirect;
-}	t_process;
-
-
+}						t_process;
 
 typedef struct s_node
 {
-	char			*name;
-	char			*value;
-	struct s_node	*next;
-}	t_node;
+	char				*name;
+	char				*value;
+	struct s_node		*next;
+}						t_node;
 
 typedef struct s_env
 {
-	t_node	*head;
-	t_node	*tail;
-}	t_env;
+	t_node				*head;
+	t_node				*tail;
+}						t_env;
 
 typedef struct s_builtin
 {
-    char    *name;
-    int     (*function)(char **, t_env *, int);
-}   t_builtin;
+	char				*name;
+	int					(*function)(char **, t_env *, int);
+}						t_builtin;
 
-int			check_open_quotes(char *input);
-int			ignore_spaces(char *str, int i);
-int			clean_input(char **input);
-int			is_exit(char *input);
-int			expansion(t_token *first_token, int last_exit, t_env env);
-int			is_expansible(char *str);
-int			get_dolar_position(char *str, int i);
-int			is_expansible(char *str);
-int			is_alnum_or_slash(char c);
-int			is_dollarquestion_mark(char *str);
-void		add_token(t_token **first, t_token *new);
-void		add_redirect(t_redirect **first, t_redirect *new);
-void		print_token(t_token *token);
-void		print_list(t_token *root); //mudar o nome para print_list_token
-void		print_redirect(t_redirect *redirect); //mudar o nome para print_list_redirect
-void		print_process(t_process *process); ////mudar o nome para print_list_process
-void		print_process_list(t_process *root);
-void		remove_spaces(char **str);
-void	    execute_heredoc(t_process *first_process);
-char		*remove_pre_dolar_text(char *str, int start);
-void		add_token_after(t_token **token, t_token *new_token);
-char		*get_token_without_dolar(t_token *token);
-char		*get_pre_dolar_text(char *str, int *dolar_position, int i);
-char		*deals_with_the_first_word(char *token_str, int i, int start, char *pre_dolar);
-t_token 	*set_token_str(t_token *token, char *value);
-t_token		*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *next_tok_after_expand, t_token *token);
-t_token		*create_token_with_next(char *input, int start, int end, int type, t_token *next_tok_after_expand);
-t_token		*create_token_split(char *str, t_token *next_token);
-t_token		*expand_token_int_n_tokens(t_token *token, t_env env);
-t_token		*expand_double_quote_token(t_token *token, t_env env);
-t_token		*lexical_analysis(char *input);
-t_token		*create_token(char *input, int start, int end, int type);
-t_token		*get_last_token(t_token *first);
-t_token		*create_tokens(char *input);
-t_token		*create_token(char *input, int beginning, int end, int type);
-t_token		*create_space_token(char *input, int *i);
-t_token		*create_pipe_token(char *input, int *i);
-t_token		*create_quote_token(char *input, int *i, int type, int quote_char);
-t_token		*create_redirec_tok(char *input, int *i, int type, int quote_char);
-t_token		*create_string_token(char *input, int *i);
-t_process	*process_creation(t_token *first_token);
-t_process	*create_process(t_token *token, int i);
-t_redirect  *create_redirect(char *name, t_type type);
+int						check_open_quotes(char *input);
+int						ignore_spaces(char *str, int i);
+int						clean_input(char **input);
+int						is_exit(char *input);
+int						expansion(t_token *first_token, int last_exit,
+							t_env env);
+int						is_expansible(char *str);
+int						get_dolar_position(char *str, int i);
+int						is_expansible(char *str);
+int						is_alnum_or_slash(char c);
+int						is_dollarquestion_mark(char *str);
+void					add_token(t_token **first, t_token *new);
+void					add_redirect(t_redirect **first, t_redirect *new);
+void					print_token(t_token *token);
+void	print_list(t_token *root);           
+			// mudar o nome para print_list_token
+void	print_redirect(t_redirect *redirect);
+			// mudar o nome para print_list_redirect
+void	print_process(t_process *process);   
+			////mudar o nome para print_list_process
+void					print_process_list(t_process *root);
+void					remove_spaces(char **str);
+void					execute_heredoc(t_process *first_process);
+char					*remove_pre_dolar_text(char *str, int start);
+void					add_token_after(t_token **token, t_token *new_token);
+char					*get_token_without_dolar(t_token *token);
+char					*get_pre_dolar_text(char *str, int *dolar_position,
+							int i);
+char					*deals_with_the_first_word(char *token_str, int i,
+							int start, char *pre_dolar);
+t_token					*set_token_str(t_token *token, char *value);
+t_token					*create_tok_per_word_in(char *expanded_str,
+							char *pre_dolar, t_token *next_tok_after_expand,
+							t_token *token);
+t_token					*create_token_with_next(char *input, int start, int end,
+							int type, t_token *next_tok_after_expand);
+t_token					*create_token_split(char *str, t_token *next_token);
+t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
+t_token					*expand_double_quote_token(t_token *token, t_env env);
+t_token					*lexical_analysis(char *input);
+t_token					*create_token(char *input, int start, int end,
+							int type);
+t_token					*get_last_token(t_token *first);
+t_token					*create_tokens(char *input);
+t_token					*create_token(char *input, int beginning, int end,
+							int type);
+t_token					*create_space_token(char *input, int *i);
+t_token					*create_pipe_token(char *input, int *i);
+t_token					*create_quote_token(char *input, int *i, int type,
+							int quote_char);
+t_token					*create_redirec_tok(char *input, int *i, int type,
+							int quote_char);
+t_token					*create_string_token(char *input, int *i);
+t_process				*process_creation(t_token *first_token);
+t_process				*create_process(t_token *token, int i);
+t_redirect				*create_redirect(char *name, t_type type);
 
 // VVVVVV LUKITAS VVVVV
-/* Organizei as funções por "modulo", cada módulo corresponde ao nome do folder. Dentro de cada "módulo" separei as funções por funcionalidades.
+/* Organizei as funções por "modulo",
+	cada módulo corresponde ao nome do folder. Dentro de cada "módulo" separei as funções por funcionalidades.
 Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
-Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula e comentado com //
+Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula e comentado com
+	//
 */
 
 /* EXECUTION */
 // Execute CMD
-int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
+int						execute_cmd(t_process *process, t_env *envp,
+							int last_exit, t_builtin funcitons[]);
 
 // Single cmd
-int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
-		t_builtin functions[]);
+int						execute_single_cmd(t_process *process, t_env *env,
+							int last_exit, t_builtin functions[]);
 
 // Single cmd utils
-int	do_single_fork(char *path, char **cmd, t_env env);
-void	set_single_redirects(t_process *process, int *og_stdin, int *og_stdout);
-void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout);
-
-
+int						do_single_fork(char *path, char **cmd, t_env env);
+void					set_single_redirects(t_process *process, int *og_stdin,
+							int *og_stdout);
+void					reset_redirects(t_process *process, int *og_stdin,
+							int *og_stdout);
 
 // Mult cmds
-int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
-		t_builtin functions[]);
+int						execute_multi_cmd(t_process *process, t_env *env,
+							int last_exit, t_builtin functions[]);
 
 // Mult cmds utils
-int	main_execution(t_process *process, t_env *env, int num_arr[3],
-		t_builtin functions[]);
-int	count_processes(t_process *process);
+int						main_execution(t_process *process, t_env *env,
+							int num_arr[3], t_builtin functions[]);
+int						count_processes(t_process *process);
 
 // Execute Utils
-char	*get_path(char **cmd, t_env env);
-void	close_pipes(int pipe[]);
-
+char					*get_path(char **cmd, t_env env);
+void					close_pipes(int pipe[]);
 
 /* ENV */
 // Env Creation/Cleaning Functions
-int		create_env(t_env *env, char **envp);
-int		add_node_to_env(t_env *env, t_node *node);
-void	clean_env(t_env *env);
+int						create_env(t_env *env, char **envp);
+int						add_node_to_env(t_env *env, t_node *node);
+void					clean_env(t_env *env);
 
 // Env Utils Functions
-int		ft_setenv(t_env *env, char *name, char *value, int ow);
-int 	ft_unsetenv(t_env *env, char *name);
-char    *ft_getenv(char *name, t_env env);
-char	**get_env_array(t_env env);
+int						ft_setenv(t_env *env, char *name, char *value, int ow);
+int						ft_unsetenv(t_env *env, char *name);
+char					*ft_getenv(char *name, t_env env);
+char					**get_env_array(t_env env);
 
 // Node Functions
-void	clean_node(t_node *node);
-t_node	*create_node(char *name, char *value);
-
+void					clean_node(t_node *node);
+t_node					*create_node(char *name, char *value);
 
 /* UTILS */
-int		ft_strcmp(char *str1, char *str2);
-int		print_error(char *str);
-int		print_cmd_not_found(char *cmd);
-char    *ft_strtok(char *input, const char *delim);
-int	ft_perror(char *msg, char *func_name, int exit_status);
-
+int						ft_strcmp(char *str1, char *str2);
+int						print_error(char *str);
+int						print_cmd_not_found(char *cmd);
+char					*ft_strtok(char *input, const char *delim);
+int						ft_perror(char *msg, char *func_name, int exit_status);
 
 /* BUILTINS */
-//Init builtins
-void	init_builtins(t_builtin array[]);
-int is_builtins(char **argv, t_builtin functions[]);
-int	execute_builtins(char **argv, t_env *env, int last_exit, t_builtin functions[]);
+// Init builtins
+void					init_builtins(t_builtin array[]);
+int						is_builtins(char **argv, t_builtin functions[]);
+int						execute_builtins(char **argv, t_env *env, int last_exit,
+							t_builtin functions[]);
 
 // Built-in functions
-int ft_echo(char **argv, t_env *env, int last_exit);
-int ft_pwd(char **argv, t_env *env, int last_exit);
-int ft_exit(char **argv, t_env *env, int last_exit);
-int	ft_env(char **argv, t_env *env, int last_exit);
-int	ft_cd(char **argv, t_env *env, int last_exit);
-int	ft_export(char **argv, t_env *env, int last_exit);
-int	ft_unset(char **argv, t_env *env, int last_exit);
+int						ft_echo(char **argv, t_env *env, int last_exit);
+int						ft_pwd(char **argv, t_env *env, int last_exit);
+int						ft_exit(char **argv, t_env *env, int last_exit);
+int						ft_env(char **argv, t_env *env, int last_exit);
+int						ft_cd(char **argv, t_env *env, int last_exit);
+int						ft_export(char **argv, t_env *env, int last_exit);
+int						ft_unset(char **argv, t_env *env, int last_exit);
 
 // ft_export utils
-int	print_ordered(t_env env);
+int						print_ordered(t_env env);
 
 /* SIGNALS */
-void	handle_control_c();
+void					handle_control_c(void);
 
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 
 // Process utils
-//t_process   *create_process(char *input, int in, int out);
-void    clean_process(t_process **process);
-void    init_signals(void);
-void    init_minishell(t_env *envp);
+// t_process   *create_process(char *input, int in, int out);
+void					clean_process(t_process **process);
+void					init_signals(void);
+void					init_minishell(t_env *envp);
 
-int validate_tokens(t_token *token);
+int						validate_tokens(t_token *token);
 
-
-int	set_redirects(t_process *process);
-
+int						set_redirects(t_process *process);
 
 #endif
