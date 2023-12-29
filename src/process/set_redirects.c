@@ -23,7 +23,7 @@ int	get_outfile(t_redirect *redirect, t_process **current)
 	else
 		fd = open(redirect->name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		ft_perror((*current)->redirect->name, NULL);
+		ft_perror((*current)->redirect->name, NULL, 1);
 	return (fd);
 }
 
@@ -35,7 +35,7 @@ int	get_infile(t_redirect *redirect, t_process **current)
 		close((*current)->infile);
 	fd = open(redirect->name, O_RDONLY);
 	if (fd == -1)
-		ft_perror((*current)->redirect->name, NULL);
+		ft_perror((*current)->redirect->name, NULL, 1);
 	return (fd);
 }
 

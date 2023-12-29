@@ -22,10 +22,7 @@ int	ft_chdir(char *str, t_env *env)
 	char	*pwd;
 
 	if (chdir(str))
-	{
-		ft_perror(str, "cd: ");
-		return (1);
-	}
+		return(ft_perror(str, "cd: ", 1));
 	else
 	{
 		path = getcwd(NULL, PATH_MAX);

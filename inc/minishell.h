@@ -182,13 +182,25 @@ Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula e com
 // Execute CMD
 int    execute_cmd(t_process *process, t_env *envp, int last_exit, t_builtin funcitons[]);
 
-// Execute Single cmd
+// Single cmd
 int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[]);
 
-// Execute Mult cmds
+// Single cmd utils
+int	do_single_fork(char *path, char **cmd, t_env env);
+void	set_single_redirects(t_process *process, int *og_stdin, int *og_stdout);
+void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout);
+
+
+
+// Mult cmds
 int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[]);
+
+// Mult cmds utils
+int	main_execution(t_process *process, t_env *env, int num_arr[3],
+		t_builtin functions[]);
+int	count_processes(t_process *process);
 
 // Execute Utils
 char	*get_path(char **cmd, t_env env);
@@ -217,7 +229,7 @@ int		ft_strcmp(char *str1, char *str2);
 int		print_error(char *str);
 int		print_cmd_not_found(char *cmd);
 char    *ft_strtok(char *input, const char *delim);
-void	ft_perror(char *msg, char *func_name);
+int	ft_perror(char *msg, char *func_name, int exit_status);
 
 
 /* BUILTINS */

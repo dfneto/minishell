@@ -19,54 +19,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	set_single_redirects(t_process *process, int *og_stdin,
-			int *og_stdout)
-{
-	if (process->outfile != STDOUT_FILENO)
-	{
-		*og_stdout = dup(STDOUT_FILENO);
-		dup2(process->outfile, STDOUT_FILENO);
-	}
-	if (process->infile != STDIN_FILENO)
-	{
-		*og_stdin = dup(STDIN_FILENO);
-		dup2(process->infile, STDIN_FILENO);
-	}
-}
-
-static void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout)
-{
-	if (process->outfile != STDOUT_FILENO)
-	{
-		dup2(*og_stdout, STDOUT_FILENO);
-		close(*og_stdout);
-	}
-	if (process->infile != STDIN_FILENO)
-	{
-		dup2(*og_stdin, STDIN_FILENO);
-		close(*og_stdin);
-	}
-}
-
-static void	child_execution(char *path, char **argv, t_env env)
-{
-	execve(path, argv, get_env_array(env));
-	exit(EXIT_FAILURE);
-}
-
-static int	parent_execution(char *path)
-{
-	int	child_exit;
-
-	free(path);
-	wait(&child_exit);
-	return (WEXITSTATUS(child_exit));
-}
-
 int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
-	int		fork_id;
 	int		og_stdout;
 	int		og_stdin;
 	char	*path;
@@ -79,15 +34,11 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 	{
 		path = get_path(process->cmd, *env);
 		if (path == NULL)
-			return (reset_redirects(process, &og_stdin, &og_stdout),
-				print_cmd_not_found(process->cmd[0]));
-		fork_id = fork();
-		if (fork_id < 0)
-			exit(EXIT_FAILURE);
-		if (fork_id == CHILD)
-			child_execution(path, process->cmd, *env);
+			last_exit = print_cmd_not_found(process->cmd[0]);
+		else if (access(path, X_OK))
+			last_exit = ft_perror(process->cmd[0], NULL, 127);
 		else
-			last_exit = parent_execution(path);
+			last_exit = do_single_fork(path, process->cmd, *env);
 	}
 	reset_redirects(process, &og_stdin, &og_stdout);
 	return (last_exit);

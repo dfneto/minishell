@@ -19,10 +19,11 @@
 
 /* Trocar para int e retornar ele em caso de falha,
 Receber esse int por variavel? */
-void	ft_perror(char *msg, char *func_name)
+int	ft_perror(char *msg, char *func_name, int exit_status)
 {
 	print_error("Brazilian Shell: ");
 	if (func_name)
 		print_error(func_name);
 	perror(msg);
+	return (exit_status);
 }
