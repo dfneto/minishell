@@ -62,9 +62,25 @@ int	create_env(t_env *env, char **envp)
 		if (add_node_to_env(env, node))
 			return (1);
 		i++;
-	}
+	} 
 	if (ft_setenv(env, "OLDPWD", NULL, 1) || ft_setenv(env, "SHELL",
 			ft_strdup("/home/lucas/Documents/42cursus/minishell/minishell"), 1))
 		return (1);
+	/* Refactor shlvl VVV */
+	char *shlvl = ft_getenv("SHLVL", *env);
+	if (!shlvl || shlvl[0] == '\0')
+		ft_setenv(env,"SHLVL", "1", 1);
+	else if (shlvl[0] == '-')
+		ft_setenv(env,"SHLVL", "0", 1);
+	else if (ft_atoi(shlvl) >= 1000)
+	{
+		print_error("Brazilian Shell: warning: shell level (");
+		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+		print_error(shlvl);
+		print_error(") too high, resetting to 1\n");
+		ft_setenv(env,"SHLVL", "1", 1);
+	}
+	else
+		ft_setenv(env, "SHLVL", ft_itoa(ft_atoi(ft_getenv("SHLVL", *env)) + 1), 1);
 	return (0);
 }
