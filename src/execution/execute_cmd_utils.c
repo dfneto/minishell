@@ -61,7 +61,7 @@ char	*get_path(char **cmd, t_env env)
 
 	if (cmd[0][0] == '\0')
 		return (NULL);
-	if (is_cmd_executable(cmd[0]))
+	if (is_cmd_executable(cmd[0]) || !ft_getenv("PATH", env))
 		return (ft_strdup(cmd[0]));
 	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
 	if (!abs_path)
