@@ -163,7 +163,7 @@ t_token					*create_token_with_next(char *input, int start, int end,
 							int type, t_token *next_tok_after_expand);
 t_token					*create_token_split(char *str, t_token *next_token);
 t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
-t_token					*expand_double_quote_token(t_token *token, t_env env);
+t_token					*expand_double_quote_token(t_token *token, t_env env, int last_exit);
 t_token					*lexical_analysis(char *input);
 t_token					*create_token(char *input, int start, int end,
 							int type);
