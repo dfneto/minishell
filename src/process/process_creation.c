@@ -106,13 +106,19 @@ t_process	*create_process(t_token *token, int num_token_str)
 			break;
 		else //aqui crio a lista de redireções
 		{
+			/* Modifiquei aqui para juntar varias strings caso estejam "grudadas" */
+			char *joined = NULL;
 			type = token->type;
 			token = token->next;
 			if (token->type == SPC)
 				token = token->next;
-			redirect = create_redirect(token->str, type);
+			while (token && token->str)
+			{
+				joined = ft_strjoin(joined, token->str);
+				token = token->next;
+			}
+			redirect = create_redirect(joined, type);
 			add_redirect(&(process->redirect), redirect);
-			token = token->next;
 		}
 	}
 	//ao termino desse metodo vou ter os comandos, infile e outfile padrão, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
