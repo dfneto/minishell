@@ -117,12 +117,15 @@ void	print_process_list(t_process *root)
 	{
 		i = 0;
 		printf("processo: ");
-		while (root->cmd[i])
+		if (root->cmd)
 		{
-			printf("%s ", root->cmd[i]);
-			i++;
+			while (root->cmd[i])
+			{
+				printf("%s ", root->cmd[i]);
+				i++;
+			}
+			printf("\n");
 		}
-		printf("\n");
 		printf("outfile: %d\n", root->outfile);
 		printf("infile: %d\n", root->infile);
 		print_redirect(root->redirect);

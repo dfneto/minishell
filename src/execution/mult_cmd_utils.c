@@ -96,6 +96,8 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	char	*path;
 	int		check;
 
+	if (!process->cmd)
+		return (0);
 	path = get_path(process->cmd, *env);
 	if (!is_builtins(process->cmd, functions))
 	{

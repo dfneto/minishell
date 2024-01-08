@@ -33,6 +33,28 @@ static int	print_validate_error(t_type error_type)
 	return (1);
 }
 
+static int	validate_helper(t_token *token, int *cmd)
+{
+	int	pipe;
+
+	pipe = 0;
+	if (token->type == PIPE && !(*cmd))
+		return (print_validate_error(token->type));
+	if (token->type == PIPE)
+		pipe = 1;
+	*cmd = 0;
+	token = token->next;
+	while (token && token->type == SPC)
+		token = token->next;
+	if (!token)
+		return (0);
+	if (pipe && token->type != PIPE)
+		pipe = 0;
+	else if (token && !token->str)
+		return (print_validate_error(token->type));
+	return (0);
+}
+
 int	validate_tokens(t_token *token)
 {
 	int	cmd;
@@ -42,21 +64,15 @@ int	validate_tokens(t_token *token)
 	{
 		if (!(token->str || token->type == SPC))
 		{
-			if (token->type == PIPE && !cmd)
-				return (print_validate_error(token->type));
-			cmd = 0;
-			token = token->next;
-			while (token && token->type == SPC)
-				token = token->next;
-			if (token && !token->str)
-				return (print_validate_error(token->type));
-			if (!token)
-				return (print_validate_error(NL));
-			cmd = 1;
+			if (validate_helper(token, &cmd))
+				return (1);
 		}
-		else if (token->str)
+		if (token && token->str)
 			cmd = 1;
-		token = token->next;
+		if (token)
+			token = token->next;
 	}
+	if (!token && !cmd)
+		return (print_validate_error(NL));
 	return (0);
 }
