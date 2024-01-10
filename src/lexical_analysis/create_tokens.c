@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexical_analysis_create_tokens.c                   :+:      :+:    :+:   */
+/*   create_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:39:42 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/10 20:31:00 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:26:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_token	*create_string_token(char *input, int *i)
 
 	start = *i;
 	(*i)++;
-	// Acho que posso tirar essa linha
+	// Acho que posso tirar essa linha: (*i)++;
 	while (input[*i] && input[*i] != DOUB_QUOTE_CHAR
 		&& input[*i] != SING_QUOTE_CHAR && input[*i] != SPACE_CHAR
 		&& input[*i] != GREATER_CHAR && input[*i] != LESS_CHAR
