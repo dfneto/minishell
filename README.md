@@ -6,19 +6,9 @@
 - Lucas: 3, 5
 
 
-### Task 3 - BUILTINS [ESS]
-
-Refactor all (refatorar a partir do execute command para o David poder alterar - colocar comentarios TODO para o david ou lucas fazerem depois)  
-Verificar quais builtins faltam e [criar tarefas](https://github.com/dfneto/minishell/blob/main/src/builtin/builtin_todo.md)    
-
 ### Task 4 - SINAIS [ESS]
 
 Sinais
-
-### Task 5 - REDIRECTS [ESS]
-
-Redirect (heredoc não)
-Pq mudei a forma como construímos os processos:
 
 
 ### Task 8 - READLINE [___]
@@ -48,7 +38,6 @@ Será que tem leaks nesses comandos? E por que o leaks trava?
 
 
 ## DONE
-
 
 ### Task 1 - OK
 
@@ -184,3 +173,13 @@ Organizar makefile
 ### Task 20 - HEREDOC [ESS]
 Meu objetivo é fazer até sexta uma lista de redireções por processo e o heredoc e deixar pro mr Juppi fazer a execucação das redireções (lembrando que pode ter várias e ainda os pipes)
 Daí no sábado e domingo faria os sinais e o sr Juppi o resto que faltava ;)
+
+### Task 3 - BUILTINS [ESS]
+
+Refactor all (refatorar a partir do execute command para o David poder alterar - colocar comentarios TODO para o david ou lucas fazerem depois)  
+Verificar quais builtins faltam e [criar tarefas](https://github.com/dfneto/minishell/blob/main/src/builtin/builtin_todo.md)    
+
+### Task 5 - REDIRECTS [ESS]
+
+Redirect (heredoc não)
+Pq mudei a forma como construímos os processos:
