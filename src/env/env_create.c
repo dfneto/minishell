@@ -50,8 +50,7 @@ static int	set_default_envs(t_env *env, char *shlvl)
 {
 	int	ret;
 
-	if (ft_setenv(env, "OLDPWD", NULL, 1) || ft_setenv(env, "SHELL",
-			ft_strdup("/home/lucas/Documents/42cursus/minishell/minishell"), 1))
+	if (ft_setenv(env, "OLDPWD", NULL, 1))
 		return (1);
 	if (!shlvl || shlvl[0] == '\0')
 		ret = ft_setenv(env, "SHLVL", "1", 1);
