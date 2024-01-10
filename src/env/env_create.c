@@ -74,15 +74,22 @@ static int	set_default_envs(t_env *env, char *shlvl)
 int	create_env(t_env *env, char **envp)
 {
 	int		i;
+	char	*val;
 	t_node	*node;
 	size_t	pos;
 
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		pos = ft_strchr(envp[i], '=') - envp[i];
-		node = create_node(ft_substr(envp[i], 0, pos), ft_strdup(envp[i] + pos
-					+ 1));
+		val = ft_strchr(envp[i], '=');
+		if (val)
+		{
+			pos = ft_strchr(envp[i], '=') - envp[i];
+			node = create_node(ft_substr(envp[i], 0, pos),
+					ft_strdup(envp[i] + pos + 1));
+		}
+		else
+			node = create_node(ft_strdup(envp[i]), NULL);
 		if (add_node_to_env(env, node))
 			return (1);
 		i++;
