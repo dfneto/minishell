@@ -114,6 +114,7 @@ void	init_minishell(t_env *envp)
 			if (!validate_tokens(first_token))
 			{
 				expansion(first_token, last_exit, *envp);
+				//print_token(first_token);
 				// printf("Lista de tokens finais:\n");
 				// print_list(first_token);
 				first_process = process_creation(first_token);

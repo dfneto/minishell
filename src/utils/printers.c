@@ -44,12 +44,15 @@ void	print_list_token(t_token *root)
 
 void	print_token(t_token *token)
 {
-	if (!token)
-		printf("Token nulo\n");
-	else if (token->str)
-		printf("<%s>\n", token->str);
-	else
-		print_type(token->type);
+	while(token)
+	{
+
+		if (token->str)
+			printf("<%s>\n", token->str);
+		else
+			print_type(token->type);
+		token = token->next;
+	}
 }
 
 void	print_process(t_process *process)
