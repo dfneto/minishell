@@ -226,6 +226,7 @@ int						add_node_to_env(t_env *env, t_node *node);
 void					clean_env(t_env *env);
 
 // Env Utils Functions
+int						exist_in_env(char *name, t_env env);
 int						ft_setenv(t_env *env, char *name, char *value, int ow);
 int						ft_unsetenv(t_env *env, char *name);
 char					*ft_getenv(char *name, t_env env);

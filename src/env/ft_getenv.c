@@ -16,6 +16,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int		exist_in_env(char *name, t_env env)
+{
+	while (env.head)
+	{
+		if (!ft_strcmp(name, env.head->name))
+			return (1);
+		env.head = env.head->next;
+	}
+	return (0);
+}
+
 char	*ft_getenv(char *name, t_env env)
 {
 	while (env.head)

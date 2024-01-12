@@ -22,12 +22,10 @@ int	ft_pwd(char **argv, t_env *env, int last_exit)
 
 	(void)argv;
 	(void)last_exit;
-	(void)env;
-	directory = getcwd(NULL, PATH_MAX);
+	directory = ft_getenv("PWD", *env);
 	if (directory)
 	{
 		printf("%s\n", directory);
-		free(directory);
 		return (EXIT_SUCCESS);
 	}
 	else
