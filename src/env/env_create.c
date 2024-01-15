@@ -50,8 +50,8 @@ static int	set_default_envs(t_env *env, char *shlvl)
 {
 	int	ret;
 
-	if (ft_setenv(env, "OLDPWD", NULL, 1))
-		return (1);
+	if (ft_setenv(env, "OLDPWD", NULL, 1)) //comentar essas linha no linux
+		return (1); 
 	if (!shlvl || shlvl[0] == '\0')
 		ret = ft_setenv(env, "SHLVL", "1", 1);
 	else if (shlvl[0] == '-')

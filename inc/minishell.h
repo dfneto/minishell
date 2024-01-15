@@ -262,6 +262,9 @@ int						ft_unset(char **argv, t_env *env, int last_exit);
 // ft_export utils
 int						print_ordered(t_env env);
 
+// ft_cd utils
+int	ft_chdir(char *str, t_env *env);
+
 /* SIGNALS */
 void					handle_control_c(void);
 

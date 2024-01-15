@@ -21,13 +21,18 @@ int	ft_pwd(char **argv, t_env *env, int last_exit)
 	char	*directory;
 
 	(void)argv;
-	(void)last_exit;
-	directory = ft_getenv("PWD", *env);
-	if (directory)
+	(void)env;
+	last_exit = 1;
+	directory = getcwd(NULL, PATH_MAX);
+	if (!directory)
 	{
-		printf("%s\n", directory);
-		return (EXIT_SUCCESS);
+		last_exit = 0;
+		directory = ft_getenv("PWD", *env);
 	}
-	else
-		return (ft_perror("pwd", NULL, 1));
+	if (!directory)
+		return (EXIT_FAILURE);
+	printf("%s\n", directory);
+	if (last_exit)
+		free(directory);
+	return (EXIT_SUCCESS);
 }

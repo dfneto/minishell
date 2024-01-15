@@ -16,42 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_chdir(char *str, t_env *env)
-{
-	char	*path;
-	char	*pwd;
-
-	if (chdir(str))
-		return(ft_perror(str, "cd: ", 1));
-	else
-	{
-		path = getcwd(NULL, PATH_MAX);
-		if (!path)
-		{
-			if (exist_in_env("PWD", *env))
-			{
-				ft_setenv(env, "PWD", "/", 0);
-				ft_setenv(env, "PWD", str, 0);
-			}
-			return (ft_perror(" error retrieving current directory: getcwd: cannot access parent directories", "cd:", 1));
-		}
-		if (exist_in_env("PWD", *env))
-		{
-			pwd = ft_getenv("PWD", *env);
-			if (exist_in_env("OLDPWD", *env))
-			{
-				if (pwd == NULL)
-					ft_setenv(env, "OLDPWD", NULL, 1);
-				else
-					ft_setenv(env, "OLDPWD", ft_strdup(ft_getenv("PWD", *env)), 1);
-			}
-			ft_setenv(env, "PWD", path, 1);
-		}
-	}
-	return (0);
-}
-
-static int go_home(t_env *env)
+static int	go_home(t_env *env)
 {
 	if (exist_in_env("HOME", *env) && ft_getenv("HOME", *env))
 		return (ft_chdir(ft_getenv("HOME", *env), env));
@@ -62,10 +27,10 @@ static int go_home(t_env *env)
 	}
 }
 
-static int go_oldpwd(t_env *env)
+static int	go_oldpwd(t_env *env)
 {
-	int result;
-	
+	int	result;
+
 	if (exist_in_env("OLDPWD", *env))
 		result = ft_chdir(ft_getenv("OLDPWD", *env), env);
 	else
