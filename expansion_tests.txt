@@ -1,0 +1,61 @@
+$a$b$c
+hola$a$b$c
+
+
+echo $a$a$a
+
+Testar:
+bash-3.2$ export a="    ls    -la   "
+bash-3.2$ echo$a
+ls -la
+bash-3.2$ echo$USER
+bash: echodavifern: command not found
+bash-3.2$ export b="ls -la"
+bash-3.2$ echo$b
+bash: echols: command not found
+
+export a="  ls   -l   -a  -F   "
+export b="ls   -la  "
+
+hola$a
+bash: hola: command not found
+
+hola$b
+bash: holals: command not found  
+
+echo "$USER$USER" -> deve printar sem aspas
+testar hola$USER$USER$USER
+export a="  ls   -l   -a  -F   "
+testar hola $a $USER $USER (uma vez me deu segfault e depois não mais)  
+
+-echo "$USER$USER" -> deve printar sem aspas
+-testar hola$USER$USER$USER
+-testar $z, hola$z quando z eh uma variável não existente em env
+--$a$a
+-"$a$a"
+Testes de expansão:
+-"    $PWD   $USER   a"
+-0123456789012345678901
+-         i1         2
+-
+-"1234$USER#5678$PATH****"
+-0123456789012345678901234
+-
+-"1234$USER”
+-01234567890
+-
+-"123$USER#456"
+-012345678901234
+-
+-
+-Testar:
+-"123$USER"
+-"123 $USER"
+-123$USER
+-"  $PWD  $USER a"
+
++<"ls       -la">
++
++hola$a
++token value:
++<holals       -la> -> tem que ser: holals -la

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   exp_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 16:49:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:23:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ t_token	*create_token_split(char *str, t_token *next_token)
 	return (tok);
 }
 
-int	is_alnum_or_slash(char c)
+int	is_alpha_or_slash(char c)
 {
-	if (ft_isalnum(c) || c == '_')
+	if (ft_isalpha(c) || c == '_')
 		return (1);
 	return (0);
 }
 
 /*
- * Return the dolar position or /0 position
+ * Return the dolar position or the last 
+ * dolar position in case of $$$, for example,
+ * or \0 position, starting by i position
  */
 int	get_dolar_position(char *str, int i)
 {
@@ -59,7 +61,8 @@ int	is_expansible(char *str)
 	int	i;
 
 	i = get_dolar_position(str, 0);
-	if (str[i])
+	if (str[i]) //TODO: voltar para is_alpha_or_slash? Ou REMOVER TODO ESSE METODO JA QUE EU TRATO AS EXCECOES DENTRO DOS 
+	//METODOS SEGUIHNTES expand_double_quote_token E expand_token_int_n_tokens
 		return (1);
 	return (0);
 }
@@ -69,7 +72,6 @@ A função funciona só nos casos que a str começa com $?
 echo $? funciona e retorn 0 (ou o exit value atual)
 echo abc$? nao funciona e retorna abc$?
 */
-
 int	is_dollarquestion_mark(char *str)
 {
 	if (str[0] == '$' && str[1] == '?')

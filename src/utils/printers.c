@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 16:06:17 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/12 12:42:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_type(int type)
 		printf("nothing to be printed\n");
 }
 
-void	print_list(t_token *root)
+void	print_token_list(t_token *root)
 {
 	while (root)
 	{
