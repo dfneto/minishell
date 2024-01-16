@@ -1,3 +1,26 @@
+echo "$"
+echo "hi$"
+echo "$hola"
+echo $"USER"
+echo $"hola"
+
+echo "$USER"
+echo $USER$USER
+echo $USER$USER$USER
+
+
+echo "$$hola"
+echo "$$USER"
+echo "hi$$"
+echo "$$"
+
+echo "$/"
+echo ""hi$/"
+echo ""hi$$/"
+
+
+Handle environment variables ($ followed by a sequence of characters) which should expand to their values.
+
 $a$b$c
 hola$a$b$c
 

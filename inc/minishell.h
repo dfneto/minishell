@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/15 19:03:22 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:57:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ int						is_expansible(char *str);
 int						get_dolar_position(char *str, int i);
 int						is_expansible(char *str);
 int						is_alpha_or_slash(char c);
+int						is_alnum_or_slash(char c);
 int						is_dollarquestion_mark(char *str);
 void					add_token(t_token **first, t_token *new);
 void					add_redirect(t_redirect **first, t_redirect *new);
