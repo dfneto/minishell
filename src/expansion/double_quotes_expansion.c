@@ -20,11 +20,9 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 	word_to_expand = NULL;
 	while (is_alnum_or_slash(token->str[*i]))
 		(*i)++;
-	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
+	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
 			- dolar_position - 1);
-	if (word_to_expand == NULL)
-		return (ft_strdup(""));
-	return (ft_strdup(ft_getenv(word_to_expand, env)));
+	return (safe_strdup(ft_getenv(word_to_expand, env)));
 }
 
 t_token	*expand_double_quote_token(t_token *token, t_env env)
@@ -41,10 +39,10 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 	while (token->str[i])
 	{
 		pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-		joined = ft_strjoin(joined, pre_dolar);
+		joined = safe_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;
 		if (token->str[i])
-			joined = ft_strjoin(joined, get_word_expanded(token, &i,
+			joined = safe_strjoin(joined, get_word_expanded(token, &i,
 						dolar_position, env));
 	}
 	token->str = joined;

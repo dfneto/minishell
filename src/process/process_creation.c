@@ -60,37 +60,19 @@ t_process	*create_process(t_token *token, int num_token_str)
 	em outro lugar, ao verificarmos if (process->next) não passar,
 	ao invés de passar com sujeira
 	*/
-	process = (t_process *)ft_calloc(1, sizeof(t_process));
-
-	if (process == NULL)
-	{
-		perror("malloc process");
-		exit(EXIT_FAILURE);
-	}
+	process = (t_process *)safe_calloc(1, sizeof(t_process));
 	process->next = NULL;
 	process->redirect = NULL;
 	process->cmd = NULL;
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	if (num_token_str > 0)
-	{ 
-		process->cmd = (char **)ft_calloc((num_token_str + 1), sizeof(char *));
-		if (process->cmd == NULL)
-		{
-			perror("calloc cmd");
-			exit(EXIT_FAILURE);
-		}
-	}
+		process->cmd = (char **)safe_calloc((num_token_str + 1), sizeof(char *));
 	while (token)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
-			process->cmd[i] = ft_strjoin(process->cmd[i], token->str);
-			if (process->cmd[i] == NULL)
-			{
-				perror("ft_strjoin");
-				exit(EXIT_FAILURE);
-			}
+			process->cmd[i] = safe_strjoin(process->cmd[i], token->str);
 			token = token->next;
 		}	
 		else if (token->type == SPC)//se encontro um espaço
@@ -114,7 +96,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 				token = token->next;
 			while (token && token->str)
 			{
-				joined = ft_strjoin(joined, token->str);
+				joined = safe_strjoin(joined, token->str);
 				token = token->next;
 			}
 			redirect = create_redirect(joined, type);

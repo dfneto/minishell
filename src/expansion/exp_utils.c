@@ -17,9 +17,7 @@ t_token	*create_token_split(char *str, t_token *next_token)
 {
 	t_token	*tok;
 
-	tok = (t_token *)malloc(sizeof(t_token));
-	if (!tok)
-		return (NULL);
+	tok = (t_token *)safe_malloc(sizeof(t_token));
 	tok->str = str;
 	tok->type = STRING;
 	tok->next = next_token;
@@ -93,5 +91,5 @@ int	ignore_spaces(char *str, int i)
 char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
 {
 	*dolar_position = get_dolar_position(str, i);
-	return (ft_substr(str, i, *dolar_position - i));
+	return (safe_substr(str, i, *dolar_position - i));
 }

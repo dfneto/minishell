@@ -27,9 +27,7 @@ t_node	*create_node(char *name, char *value)
 
 	if (name == NULL)
 		return (NULL);
-	node = (t_node *)ft_calloc(1, sizeof(t_node));
-	if (!node)
-		return (NULL);
+	node = (t_node *)safe_calloc(1, sizeof(t_node));
 	node->name = name;
 	node->value = value;
 	return (node);

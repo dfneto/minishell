@@ -24,18 +24,20 @@ static int	no_path(t_env *env, char *str)
 		ft_setenv(env, "PWD", str, 0);
 	}
 	return (ft_perror(" error retrieving current directory: \
-			getcwd: cannot access parent directories", "cd:", 1));
+getcwd: cannot access parent directories", "cd:", 1));
 }
 
-static void	no_pwd(t_env *env, char *oldpwd, char **oldpwd_static)
+static void	no_pwd(t_env *env, char *oldpwd)
 {
+	static char	*oldpwd_static;
+
 	if (exist_in_env("OLDPWD", *env))
 	{
-		if ((*oldpwd_static))
+		if (oldpwd_static)
 			ft_setenv(env, "OLDPWD", oldpwd, 1);
 		else
 			ft_setenv(env, "OLDPWD", NULL, 1);
-		(*oldpwd_static) = ft_strdup(oldpwd);
+		oldpwd_static = safe_strdup(oldpwd);
 	}
 }
 
@@ -49,7 +51,7 @@ static void	yes_pwd(t_env *env, char *path)
 		if (pwd == NULL)
 			ft_setenv(env, "OLDPWD", NULL, 1);
 		else
-			ft_setenv(env, "OLDPWD", ft_strdup(pwd), 1);
+			ft_setenv(env, "OLDPWD", safe_strdup(pwd), 1);
 	}
 	ft_setenv(env, "PWD", path, 1);
 }
@@ -58,7 +60,6 @@ int	ft_chdir(char *str, t_env *env)
 {
 	char		*path;
 	char		*oldpwd;
-	static char	*oldpwd_static;
 
 	oldpwd = getcwd(NULL, PATH_MAX);
 	if (chdir(str))
@@ -71,7 +72,7 @@ int	ft_chdir(char *str, t_env *env)
 		if (exist_in_env("PWD", *env))
 			yes_pwd(env, path);
 		else
-			no_pwd(env, oldpwd, &oldpwd_static);
+			no_pwd(env, oldpwd);
 	}
 	return (0);
 }

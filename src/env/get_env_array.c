@@ -26,19 +26,17 @@ char	**get_env_array(t_env env)
 	tmp = env.head;
 	while (tmp && ++i)
 		tmp = tmp->next;
-	array = (char **)ft_calloc(i + 1, sizeof(char *));
-	if (!array)
-		return (NULL);
+	array = (char **)safe_calloc(i + 1, sizeof(char *));
 	tmp = env.head;
 	while (i--)
 	{
 		if (tmp->value)
 		{
-			array[i] = ft_strjoin(tmp->name, "=");
-			array[i] = ft_strjoin(array[i], tmp->value);
+			array[i] = safe_strjoin(tmp->name, "=");
+			array[i] = safe_strjoin(array[i], tmp->value);
 		}
 		else
-			array[i] = ft_strdup(tmp->name);
+			array[i] = safe_strdup(tmp->name);
 		tmp = tmp->next;
 	}
 	return (array);

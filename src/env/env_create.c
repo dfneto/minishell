@@ -59,14 +59,14 @@ static int	set_default_envs(t_env *env, char *shlvl)
 	else if (ft_atoi(shlvl) >= 1000)
 	{
 		print_error("Brazilian Shell: warning: shell level (");
-		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+		shlvl = safe_itoa(ft_atoi(shlvl) + 1);
 		print_error(shlvl);
 		print_error(") too high, resetting to 1\n");
 		ret = ft_setenv(env, "SHLVL", "1", 1);
 	}
 	else
 		ret = ft_setenv(env, "SHLVL",
-				ft_itoa(ft_atoi(ft_getenv("SHLVL", *env)) + 1), 1);
+				safe_itoa(ft_atoi(ft_getenv("SHLVL", *env)) + 1), 1);
 	return (ret);
 }
 
@@ -85,11 +85,11 @@ int	create_env(t_env *env, char **envp)
 		if (val)
 		{
 			pos = ft_strchr(envp[i], '=') - envp[i];
-			node = create_node(ft_substr(envp[i], 0, pos),
-					ft_strdup(envp[i] + pos + 1));
+			node = create_node(safe_substr(envp[i], 0, pos),
+					safe_strdup(envp[i] + pos + 1));
 		}
 		else
-			node = create_node(ft_strdup(envp[i]), NULL);
+			node = create_node(safe_strdup(envp[i]), NULL);
 		if (add_node_to_env(env, node))
 			return (1);
 		i++;

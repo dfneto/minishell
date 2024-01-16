@@ -40,7 +40,7 @@ Refazer junto com a is_dolarquestion_mark
  */
 char	*get_exit_status(int last_exit)
 {
-	return (ft_itoa(last_exit));
+	return (safe_itoa(last_exit));
 }
 
 /*
