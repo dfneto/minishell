@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/12 12:42:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:46:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_type(int type)
 		printf("nothing to be printed\n");
 }
 
-void	print_token_list(t_token *root)
+void	print_list_token(t_token *root)
 {
 	while (root)
 	{
@@ -81,10 +81,10 @@ void	print_process(t_process *process)
 			}
 		}
 	}
-	print_redirect(process->redirect);
+	print_list_redirect(process->redirect);
 }
 
-void	print_redirect(t_redirect *redirect)
+void	print_list_redirect(t_redirect *redirect)
 {
 	printf("Imprimindo as redireções ...\n");
 	if (!redirect)
@@ -105,7 +105,7 @@ void	print_redirect(t_redirect *redirect)
 	}
 }
 
-void	print_process_list(t_process *root)
+void	print_list_process(t_process *root)
 {
 	int	i;
 
@@ -128,7 +128,7 @@ void	print_process_list(t_process *root)
 		}
 		printf("outfile: %d\n", root->outfile);
 		printf("infile: %d\n", root->infile);
-		print_redirect(root->redirect);
+		print_list_redirect(root->redirect);
 		root = root->next;
 	}
 }

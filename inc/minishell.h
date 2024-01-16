@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/16 15:20:06 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:52:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef enum token_type
  */
 typedef struct s_token
 {
-	int type; // creio que deveria ter o tipo token_type
+	int					type;
 	char				*str;
 	struct s_token		*next;
 }						t_token;
@@ -140,13 +140,10 @@ int						is_dollarquestion_mark(char *str);
 void					add_token(t_token **first, t_token *new);
 void					add_redirect(t_redirect **first, t_redirect *new);
 void					print_token(t_token *token);
-void	print_token_list(t_token *root);           
-			// mudar o nome para print_list_token
-void	print_redirect(t_redirect *redirect);
-			// mudar o nome para print_list_redirect
-void	print_process(t_process *process);   
-			////mudar o nome para print_list_process
-void					print_process_list(t_process *root);
+void					print_list_token(t_token *root);
+void					print_list_redirect(t_redirect *redirect);
+void					print_list_process(t_process *process);
+void					print_process(t_process *root);
 void					remove_spaces(char **str);
 void					execute_heredoc(t_process *first_process);
 char					*remove_pre_dolar_text(char *str, int start);
@@ -184,12 +181,11 @@ t_process				*create_process(t_token *token, int i);
 t_redirect				*create_redirect(char *name, t_type type);
 
 // VVVVVV LUKITAS VVVVV
-/* Organizei as funções por "modulo",
-	cada módulo corresponde ao nome do folder. Dentro de cada "módulo" separei as funções por funcionalidades.
-Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
-Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula e comentado com
-	//
-*/
+//Organizei as funções por "modulo", cada módulo corresponde ao nome do
+//folder. Dentro de cada "módulo" separei as funções por funcionalidades.
+//Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
+//Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula 
+// e comentado com
 
 /* EXECUTION */
 // Execute CMD
@@ -245,15 +241,14 @@ char					*ft_strtok(char *input, const char *delim);
 int						ft_perror(char *msg, char *func_name, int exit_status);
 
 // Safe allocation functions
-void    *safe_malloc(size_t len);
-char	*safe_itoa(int n);
-char	*safe_strdup(const char *s1);
-void	*safe_calloc(size_t count, size_t size);
-char	**safe_split(char const *s, char c);
-char	*safe_strjoin(char const *s1, char const *s2);
-char	*safe_strtrim(char const *s1, char const *set);
-char	*safe_substr(char const *s, unsigned int start, size_t len);
-
+void					*safe_malloc(size_t len);
+char					*safe_itoa(int n);
+char					*safe_strdup(const char *s1);
+void					*safe_calloc(size_t count, size_t size);
+char					**safe_split(char const *s, char c);
+char					*safe_strjoin(char const *s1, char const *s2);
+char					*safe_strtrim(char const *s1, char const *set);
+char					*safe_substr(char const *s, unsigned int start, size_t len);
 
 /* BUILTINS */
 // Init builtins
@@ -275,11 +270,10 @@ int						ft_unset(char **argv, t_env *env, int last_exit);
 int						print_ordered(t_env env);
 
 // ft_cd utils
-int	ft_chdir(char *str, t_env *env);
+int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
 void					handle_control_c(void);
-
 
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 
@@ -292,8 +286,5 @@ void					init_minishell(t_env *envp);
 int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);
-
-
-
 
 #endif
