@@ -41,9 +41,9 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar, t_env env)
 	next_tok_after_expand = token->next;
 
 	if (token->str == NULL)
-		expanded_str = ft_strdup("");
+		expanded_str = safe_strdup("");
 	else
-		expanded_str = ft_strdup(ft_getenv(token->str, env));
+		expanded_str = safe_strdup(ft_getenv(token->str, env));
 	if (expanded_str == NULL)
 		return (set_token_str(token, ""));
 	token->str = NULL;
@@ -141,7 +141,7 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 // 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
 	
 	//fazemos o split
-	split = ft_split(token->str, '$');
+	split = safe_split(token->str, '$');
 	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
 	token->str = split[0]; 
 
@@ -197,7 +197,7 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
 	
 	//fazemos o split
-	split = ft_split(str_without_pre_dolar_text, '$');
+	split = safe_split(str_without_pre_dolar_text, '$');
 	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
 	token->str = pre_dolar;
 

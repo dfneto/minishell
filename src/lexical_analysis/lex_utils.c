@@ -32,15 +32,13 @@ t_token	*create_token(char *input, int start, int end, int type)
 {
 	t_token	*tok;
 
-	tok = (t_token *)malloc(sizeof(t_token));
+	tok = (t_token *)safe_malloc(sizeof(t_token));
 		// todo: tenho que criar com duas posiçoes e colocar null na ultima?
-	if (!tok)
-		return (NULL);
 	tok->str = NULL;
 	if (type == STRING)
-		tok->str = ft_substr(input, start, end - start + 1);
+		tok->str = safe_substr(input, start, end - start + 1);
 	else if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE))
-		tok->str = ft_substr(input, start + 1, end - start - 1);
+		tok->str = safe_substr(input, start + 1, end - start - 1);
 	tok->type = type;
 	tok->next = NULL;
 	return (tok);
@@ -52,12 +50,10 @@ t_token	*create_token_with_next(char *input, int start, int end, int type,
 {
 	t_token	*tok;
 
-	tok = (t_token *)malloc(sizeof(t_token));
-	if (!tok)
-		return (NULL);
+	tok = (t_token *)safe_malloc(sizeof(t_token));
 	tok->str = NULL;
 	if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE) | (type == STRING))
-		tok->str = ft_substr(input, start, end - start + 1);
+		tok->str = safe_substr(input, start, end - start + 1);
 	tok->type = type;
 	tok->next = next_tok_after_expand;
 	return (tok);

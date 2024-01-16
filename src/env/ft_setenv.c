@@ -33,15 +33,13 @@ static int	no_overwrite(t_node *tmp, char *value)
 {
 	char	*current_env;
 
-	current_env = ft_strdup(tmp->value);
+	current_env = safe_strdup(tmp->value);
 	if (!current_env)
 		return (1);
 	if (tmp->value)
 		free(tmp->value);
-	tmp->value = ft_strjoin(current_env, value);
+	tmp->value = safe_strjoin(current_env, value);
 	free(current_env);
-	if (!tmp->value)
-		return (1);
 	return (0);
 }
 
@@ -63,7 +61,7 @@ int	ft_setenv(t_env *env, char *name, char *value, int overwrite)
 		}
 		tmp = tmp->next;
 	}
-	tmp = create_node(ft_strdup(name), value);
+	tmp = create_node(safe_strdup(name), value);
 	if (add_node_to_env(env, tmp))
 		return (-1);
 	return (0);

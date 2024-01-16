@@ -244,6 +244,17 @@ int						print_cmd_not_found(char *cmd);
 char					*ft_strtok(char *input, const char *delim);
 int						ft_perror(char *msg, char *func_name, int exit_status);
 
+// Safe allocation functions
+void    *safe_malloc(size_t len);
+char	*safe_itoa(int n);
+char	*safe_strdup(const char *s1);
+void	*safe_calloc(size_t count, size_t size);
+char	**safe_split(char const *s, char c);
+char	*safe_strjoin(char const *s1, char const *s2);
+char	*safe_strtrim(char const *s1, char const *set);
+char	*safe_substr(char const *s, unsigned int start, size_t len);
+
+
 /* BUILTINS */
 // Init builtins
 void					init_builtins(t_builtin array[]);
@@ -269,6 +280,7 @@ int	ft_chdir(char *str, t_env *env);
 /* SIGNALS */
 void					handle_control_c(void);
 
+
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 
 // Process utils
@@ -280,5 +292,8 @@ void					init_minishell(t_env *envp);
 int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);
+
+
+
 
 #endif

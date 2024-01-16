@@ -25,12 +25,12 @@ void	add_token_after(t_token **token, t_token *new_token)
  */
 char	*remove_pre_dolar_text(char *str, int start)
 {
-	return (ft_substr(str, start, ft_strlen(str) - start));
+	return (safe_substr(str, start, ft_strlen(str) - start));
 }
 
 t_token	*set_token_str(t_token *token, char *value)
 {
-	token->str = ft_strdup(value);
+	token->str = safe_strdup(value);
 	return (token);
 }
 
@@ -81,7 +81,7 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 			if (expanded_str[i + 1] == ' ' && first_token_alterated == 0)
 				// e altero o primeiro token str
 			{
-				token->str = ft_substr(expanded_str, start, i - start + 1);
+				token->str = safe_substr(expanded_str, start, i - start + 1);
 				first_token_alterated = 1;
 			}
 			else if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0')

@@ -62,12 +62,10 @@ char	*get_path(char **cmd, t_env env)
 	if (cmd[0][0] == '\0')
 		return (NULL);
 	if (is_cmd_executable(cmd[0]) || !ft_getenv("PATH", env))
-		return (ft_strdup(cmd[0]));
-	abs_path = (char *)ft_calloc(PATH_MAX, sizeof(char));
-	if (!abs_path)
-		return (NULL);
-	paths = ft_strdup(ft_getenv("PATH", env));
-	if (!paths)
+		return (safe_strdup(cmd[0]));
+	abs_path = (char *)safe_calloc(PATH_MAX, sizeof(char));
+	paths = safe_strdup(ft_getenv("PATH", env));
+	if (!paths) // talvez deletar?
 		return (return_path(abs_path, paths));
 	path = ft_strtok(paths, ":");
 	while (path)

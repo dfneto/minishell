@@ -67,7 +67,7 @@ static int	is_num(char *str)
 {
 	char	*cpy;
 
-	str = ft_strtrim(str, " ");
+	str = safe_strtrim(str, " ");
 	cpy = str;
 	if (*str == '-' || *str == '+')
 		str++;

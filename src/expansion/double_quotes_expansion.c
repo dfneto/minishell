@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 13:56:28 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:14:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 	word_to_expand = NULL;
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;
-	word_to_expand = ft_substr(token->str, dolar_position + 1, *i
+	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
 			- dolar_position - 1);
 	if (word_to_expand == NULL)
-		return (ft_strdup(""));
-	return (ft_strdup(ft_getenv(word_to_expand, env)));
+		return (safe_strdup(""));
+	return (safe_strdup(ft_getenv(word_to_expand, env)));
 }
 
 /*
@@ -59,16 +59,16 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 	while (token->str[i])
 	{
 		pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-		joined = ft_strjoin(joined, pre_dolar);
+		joined = safe_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;
 		if (token->str[i])
 		{
 			word_expanded = get_word_expanded(token, &i,
 						dolar_position, env);
-			joined = ft_strjoin(joined, word_expanded);
+			joined = safe_strjoin(joined, word_expanded);
 		}
 		else if (token->str[i-1] == '$') //para os casos 5 e 6
-			joined = ft_strjoin(joined, "$");
+			joined = safe_strjoin(joined, "$");
 		// i++; 
 	}
 	token->str = joined;

@@ -43,7 +43,7 @@
 static void	case_plus_env(t_env *env, char *name, char *value, int i)
 {
 	name[i] = '\0';
-	ft_setenv(env, ft_strdup(name), ft_strdup(value), 0);
+	ft_setenv(env, safe_strdup(name), safe_strdup(value), 0);
 }
 
 static int	is_valid_env2(char *str, t_env *env)
@@ -68,9 +68,9 @@ static int	is_valid_env2(char *str, t_env *env)
 	else if (name[i] == '+')
 		case_plus_env(env, name, value, i);
 	else if (!value)
-		ft_setenv(env, ft_strdup(name), value, 0);
+		ft_setenv(env, safe_strdup(name), value, 0);
 	else
-		ft_setenv(env, ft_strdup(name), ft_strdup(value), 1);
+		ft_setenv(env, safe_strdup(name), safe_strdup(value), 1);
 	return (1);
 }
 
@@ -89,9 +89,7 @@ int	ft_export(char **argv, t_env *env, int last_exit)
 		return (print_ordered(*env));
 	while (*argv)
 	{
-		cpy = ft_strdup(*argv);
-		if (!cpy)
-			exit(EXIT_FAILURE);
+		cpy = safe_strdup(*argv);
 		if (!is_valid_env2(*argv, env))
 		{
 			ret = 1;

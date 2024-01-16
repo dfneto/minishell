@@ -48,10 +48,10 @@ static t_node	*create_ordered_env(t_env env)
 	while (env.head)
 	{
 		if (!env.head->value)
-			tmp = create_node(ft_strdup(env.head->name), NULL);
+			tmp = create_node(safe_strdup(env.head->name), NULL);
 		else
-			tmp = create_node(ft_strdup(env.head->name),
-					ft_strdup(env.head->value));
+			tmp = create_node(safe_strdup(env.head->name),
+					safe_strdup(env.head->value));
 		if (add_alphabetical(&head, tmp))
 			break ;
 		env.head = env.head->next;
