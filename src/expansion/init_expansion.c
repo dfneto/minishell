@@ -6,26 +6,29 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/22 15:28:54 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:44:23 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
+ * Returns: the token expanded and in case that the expansion
+ * generate multiple tokens, returns the last token from the 
+ * expansion.
+ * Details:
  * If the token type is DOUBLE_QUOTE it must be expanded equally
- * as is in the env. Ex:
+ * as it is in the env. Ex:
  * In case that we have in env $a="ls  -l  -a  -F"
  * "$a" should produce one token with token->str = "ls  -l  -a  -F"
  * If the token type is STRING it must be expanded
  * without the spaces. Ex:
  * In case that we have in env $a="ls  -l  -a  -F"
  * $a should produce four tokens, each token->str would have
- * ls, -l, -a, -F, respectively
+ * ls, -l, -a, -F, respectively, and return the next token, in this
+ * case null. But, if: $a waka, the token to be returned is <spc>
  */
-// retorna o token expandido e no caso em que a expansão gere vários tokens,
-//	retorna o último token da expansão
-t_token	*expand(t_token *token, t_env env)
+t_token	*expand_according_to_type(t_token *token, t_env env)
 {
 	if (token->type == DOUBLE_QUOTE)
 		return (expand_double_quote_token(token, env));
@@ -44,21 +47,28 @@ char	*get_exit_status(int last_exit)
 }
 
 /*
- * If the token to be expand is $? get the exit status.
- * Otherwise check if it's expansible and expand it.
+ * If the token to be expand is $? get the exit status,
+ * otherwise expand it.
+ * token is one word of the first_token
  */
 int	check_and_expand(t_token *token, int last_exit, t_env env)
 {
-	// TODO: testar 123$? -> se resolver por aqui retiramos o last do ft_getenv
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))
-		token = expand(token, env);
+	{
+		// printf("Expandindo o token %s\n", token->str);
+		token = expand_according_to_type(token, env);
+	}
 	return (1);
 }
 
 /*
- * Expand al the tokens of type DOUBLE_QUOTE or STRING
+ * For each token of the first_token it will:
+ * If the token type is DOUBLE_QUOTE or STRING, 
+ * check if it is expansible and expand it, 
+ * otherwise does nothing.
+ * first_token: is all the input text typed by the user
  */
 int	expansion(t_token *first_token, int last_exit, t_env env)
 {

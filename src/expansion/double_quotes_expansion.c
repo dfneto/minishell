@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 15:20:55 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:41:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 	word_expanded = NULL;
 	while (token->str[i])
 	{
+		// printf("Avaliando o token %s\n", token->str);
 		pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
 		joined = safe_strjoin(joined, pre_dolar);
 		i = dolar_position + 1;

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/16 15:52:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:24:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,12 @@ typedef struct s_builtin
 }						t_builtin;
 
 int						check_open_quotes(char *input);
-int						ignore_spaces(char *str, int i);
 int						clean_input(char **input);
 int						is_exit(char *input);
 int						expansion(t_token *first_token, int last_exit,
 							t_env env);
-int						is_expansible(char *str);
 int						get_dolar_position(char *str, int i);
 int						is_expansible(char *str);
-int						is_alpha_or_slash(char c);
 int						is_alnum_or_slash(char c);
 int						is_dollarquestion_mark(char *str);
 void					add_token(t_token **first, t_token *new);

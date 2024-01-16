@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:18:03 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/11 21:40:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:56:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,20 +114,14 @@ void	init_minishell(t_env *envp)
 			if (!validate_tokens(first_token))
 			{
 				expansion(first_token, last_exit, *envp);
-				// printf("Lista de tokens finais:\n");
-				// print_list(first_token);
 				first_process = process_creation(first_token);
-				// print_process_list(first_process);
 				if (first_process)
 				{
 					execute_heredoc(first_process);
-					// print_process_list(first_process);
 					if (set_redirects(first_process))
 						last_exit = 1;
-					// TODO: cat << h1 > test > test2 < no << h2
 					else if (first_process->cmd && first_process->cmd[0])
 					{
-						// print_process_list(first_process);
 						last_exit = execute_cmd(first_process, envp, last_exit,
 								functions);
 					}

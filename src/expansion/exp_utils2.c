@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_2.c                                          :+:      :+:    :+:   */
+/*   exp_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/24 15:06:11 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:13:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void	add_token_after(t_token **token, t_token *new_token)
 {
 	(*token)->next = new_token;
 	(*token) = new_token;
+}
+
+int	is_alnum_or_slash(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
 }
 
 /*

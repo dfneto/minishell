@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 15:46:45 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:08:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,18 @@ void	print_type(int type)
 		printf("nothing to be printed\n");
 }
 
-void	print_list_token(t_token *root)
+void	print_list_token(t_token *token)
 {
-	while (root)
+	while (token)
 	{
-		if (root->str)
-			printf("<%s>\n", root->str);
+		if (token->str)
+			printf("<%s>\n", token->str);
 		else
-			print_type(root->type);
-		root = root->next;
+			print_type(token->type);
+		token = token->next;
 	}
+	if (!token)
+		printf("Token NULO!\n");
 }
 
 void	print_token(t_token *token)
