@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/15 20:23:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:45:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ t_token	*create_token_split(char *str, t_token *next_token)
 int	is_alpha_or_slash(char c)
 {
 	if (ft_isalpha(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+int	is_alnum_or_slash(char c)
+{
+	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
 }
