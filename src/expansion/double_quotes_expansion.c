@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 20:41:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:10:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ caso 10: echo "hi$/"  hi$/    - decidi não tratar porque não encontrei a lógi
 caso 11: echo "hi$$/"  hi$$/  - decidi não tratar porque não encontrei a lógica. Ex: hi$/ e hi$& imprimem igual, mas hi$!, hi$(, hi$* imprime outra coisa
 caso 12: echo "'$'"
 */
+//echo "$USER$PATH$PWD"
 t_token	*expand_double_quote_token(t_token *token, t_env env)
 {
 	int i;
@@ -50,23 +51,33 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 	char *pre_dolar;
 	char *joined;
 	char *word_expanded;
+	char *post_word;
 
 	i = 0;
 	dolar_position = 0;
 	pre_dolar = NULL;
 	joined = NULL;
 	word_expanded = NULL;
-	while (token->str[i])
+	post_word = NULL;
+	while (token->str[i] && dolar_position >= 0)
 	{
-		// printf("Avaliando o token %s\n", token->str);
 		pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
 		joined = safe_strjoin(joined, pre_dolar);
-		i = dolar_position + 1;
-		if (token->str[i])
+		if (dolar_position >= 0)
+			i = dolar_position + 1;
+		// printf("i: %d\n", i);
+		if (token->str[i] && dolar_position >= 0)
 		{
 			word_expanded = get_word_expanded(token, &i,
 						dolar_position, env);
 			joined = safe_strjoin(joined, word_expanded);
+			//get_pos_word
+			if (token->str[i] != '$')
+			{
+				post_word = safe_substr(token->str, i, ft_strlen(token->str) - i);
+				// printf("i: %d, len: %zu, post word: %s\n", i, ft_strlen(token->str), post_word);
+				joined = safe_strjoin(joined, post_word);
+			}
 		}
 		else if (token->str[i-1] == '$') //para os casos 5 e 6
 			joined = safe_strjoin(joined, "$");

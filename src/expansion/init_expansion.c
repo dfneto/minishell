@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 20:44:23 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/17 20:13:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,19 @@ char	*get_exit_status(int last_exit)
 	return (safe_itoa(last_exit));
 }
 
+// int	is_quotes(char *str)
+// {
+// 	printf("verificnado o token %s\n", str);
+// 	int	dolar_position;
+
+// 	dolar_position = get_dolar_position(str, 0);
+// 	if (dolar_position == -1)
+// 		return (0);
+// 	if (str[dolar_position + 1] == 34 || str[dolar_position + 1] == 39)
+// 		return (1);
+// 	return (0);
+// }
+
 /*
  * If the token to be expand is $? get the exit status,
  * otherwise expand it.
@@ -60,6 +73,20 @@ int	check_and_expand(t_token *token, int last_exit, t_env env)
 		// printf("Expandindo o token %s\n", token->str);
 		token = expand_according_to_type(token, env);
 	}
+	//quando eu faco isso abaixo eu resolvo o 
+	/*
+	echo $"   t  hi   t    "|                       [K0]
+  199. |echo $'   t  hi   t    '|                       [K0]
+  200. |echo $'   r  hi   t    '|                       [K0]
+  */ //mas para de funcionar o 
+  /*
+  echo $ e echo $/
+  */
+ 
+	else if (token->str[0] == '$' && !token->next)
+		token->str = safe_strdup("");
+	else if (token->str[0] == '$' && token->next->type != SPC)
+		token->str = safe_strdup("");
 	return (1);
 }
 

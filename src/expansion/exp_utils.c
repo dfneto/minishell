@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 20:48:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:36:35 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	get_dolar_position(char *str, int i)
 	while (str[i] && str[i] != '$')
 		i++;
 	if (str[i] == '\0')
-		return i;
-		// return (-1); coloquei -1 para ser identificado no is_expansible e nao ser expandido nesse caso de \0
+		// return i;
+		return (-1); //coloquei -1 para ser identificado no is_expansible e nao ser expandido nesse caso de \0
 	while (str[i] && str[i] == '$')
 		i++;
 	return (i - 1);
@@ -66,6 +66,8 @@ int	get_dolar_position(char *str, int i)
 int	is_expansible(char *str)
 {
 	int	i;
+
+	// printf("O token %s eh expansivel?\n", str);
 
 	i = get_dolar_position(str, 0);
 	if (i == -1)
@@ -98,11 +100,12 @@ int	is_dollarquestion_mark(char *str)
 // 	return (i);
 // }
 
-char	*get_pre_dolar_text(char *str, int *dolar_position, int i)
+char	*get_pre_dolar_text(char *str, int *dolar_position, int i) // 0 5
 {
 	*dolar_position = get_dolar_position(str, i);
 	// printf("palavra %s - dolar position: %d\n", str, *dolar_position);
 	if (*dolar_position == -1)
-		*dolar_position = i;
+		return (safe_strdup(""));
+	// printf("i: %d, dolar: %d\n", i, *dolar_position);
 	return (safe_substr(str, i, *dolar_position - i));
 }
