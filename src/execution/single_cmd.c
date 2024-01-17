@@ -28,7 +28,7 @@ int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 
 	if (process->outfile == -1 || process->infile == -1)
 		return (1);
-	if (!process->cmd[0][0])
+	if (!process->cmd[0][0]) // remover quando arrumar a expansao...
 		return (0);
 	set_single_redirects(process, &og_stdin, &og_stdout);
 	last_exit = execute_builtins(process->cmd, env, last_exit, functions);
