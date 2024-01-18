@@ -120,9 +120,7 @@ void lukita_linker(t_token *og_token, t_token *new_tokens)
 	og_next = og_token->next;
 	lukita_add_next_to_list(new_tokens, og_next);
 	free(og_token->str);
-	og_token->str = new_tokens->str;
-	og_token->next = new_tokens->next;
-	og_token->type = new_tokens->type;
+	*og_token = *new_tokens;
 	free(new_tokens);	
 }
 t_token *lukita_split_token(t_token *token)
