@@ -43,32 +43,44 @@
 static void	case_plus_env(t_env *env, char *name, char *value, int i)
 {
 	name[i] = '\0';
-	ft_setenv(env, safe_strdup(name), safe_strdup(value), 0);
+	if (value)
+		ft_setenv(env, safe_strdup(name), safe_strdup(value), 0);
+}
+
+static int	check_env_name(char *name, int *i)
+{
+	if (!name || !(ft_isalpha(*name) || *name == '_'))
+		return (1);
+	*i = 1;
+	while (name[*i] && name[*i] != '+')
+	{
+		if (!(ft_isalnum(name[*i]) || name[*i] == '_'))
+			return (1);
+		(*i)++;
+	}
+	return (0);
 }
 
 static int	is_valid_env2(char *str, t_env *env)
 {
 	char	*name;
 	char	*value;
+	char	*has_equal;
 	int		i;
 
+	has_equal = ft_strchr(str, '=');
 	name = ft_strtok(str, "=");
-	if (!name || !(ft_isalpha(*name) || *name == '_'))
+	if (check_env_name(name, &i))
 		return (0);
-	i = 1;
-	while (name[i] && name[i] != '+')
-	{
-		if (!(ft_isalnum(name[i]) || name[i] == '_'))
-			return (0);
-		i++;
-	}
 	value = ft_strtok(NULL, "\0");
-	if (name[i] == '+' && !value)
+	if (name[i] == '+' && !has_equal)
 		return (0);
 	else if (name[i] == '+')
 		case_plus_env(env, name, value, i);
-	else if (!value)
+	else if (!value && !has_equal)
 		ft_setenv(env, safe_strdup(name), value, 0);
+	else if (!value && has_equal)
+		ft_setenv(env, safe_strdup(name), safe_strdup(""), 1);
 	else
 		ft_setenv(env, safe_strdup(name), safe_strdup(value), 1);
 	return (1);

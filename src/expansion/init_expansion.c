@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int ft_isspace(char ch) {
+    return (ch == ' ' || ch == '\t' || 
+		ch == '\n' || ch == '\r' || 
+		ch == '\v' || ch == '\f');
+}
+
 char *lukita_get_expansion(char *str, int *i, t_env env, int last_exit)
 {
 	int j;
@@ -76,39 +82,71 @@ char	*lukita_str_expand(char *str, t_env env, int last_exit)
 	return (expanded_str);
 }
 
-t_token *lukita_split_token(t_token *token)
+t_token *lukita_create_spc_token(char *str, int *i)
 {
 	t_token *tmp;
-	t_token *last;
-	char *tk;
 
-	tk = ft_strtok(token->str, " \t\n\r\v\f");
-	last = token;
-	tk = ft_strtok(NULL, " \t\n\r\v\f");
-	while (tk)
+	while (str[*i] && ft_isspace(str[*i]))
+		(*i)++;
+	tmp = (t_token *) safe_calloc(1, sizeof(t_token));
+	tmp->type = SPC;
+	return (tmp);
+}
+
+t_token *lukita_create_str_token(char *str, int *i)
+{
+	t_token *tmp;
+	int		start;
+
+	start = *i;
+	while (str[*i] && !ft_isspace(str[*i]))
+		(*i)++;
+	tmp = (t_token *)safe_calloc (1, sizeof(t_token));
+	tmp->str = safe_substr(str, start, (*i) - start);
+	return (tmp);
+}
+
+void lukita_add_next_to_list(t_token *list, t_token *og_next)
+{
+	while (list->next)
+		list = list->next;
+	list->next = og_next;
+}
+
+void lukita_linker(t_token *og_token, t_token *new_tokens)
+{
+	t_token	*og_next;
+
+	og_next = og_token->next;
+	lukita_add_next_to_list(new_tokens, og_next);
+	free(og_token->str);
+	og_token->str = new_tokens->str;
+	og_token->next = new_tokens->next;
+	og_token->type = new_tokens->type;
+	free(new_tokens);	
+}
+t_token *lukita_split_token(t_token *token)
+{
+	int		i;
+	t_token	*first_token;
+	t_token *tmp;
+	char *str;
+
+	first_token = NULL;
+	i = 0;
+	str = token->str;
+	while (str[i])
 	{
-		tmp = ft_calloc(1, sizeof(t_token));
-		tmp->type = SPC;
-		last->next = tmp;
-		last = last->next;
-		tmp = ft_calloc(1, sizeof(t_token));
-		tmp->type = STRING;
-		tmp->str = ft_strdup(tk);
-		last->next = tmp;
-		last = last->next;
-		tk = ft_strtok(NULL, " \t\n\r\v\f");
+		if (ft_isspace(str[i]))
+			tmp = lukita_create_spc_token(str, &i);
+		else
+			tmp = lukita_create_str_token(str, &i);
+		add_token(&first_token, tmp);
 	}
-	
-		
-
+	lukita_linker(token, first_token);
 	return (token);
 }
 
-int ft_isspace(char ch) {
-    return (ch == ' ' || ch == '\t' || 
-		ch == '\n' || ch == '\r' || 
-		ch == '\v' || ch == '\f');
-}
 
 
 int lukita_str_has_space(char *str)
@@ -127,6 +165,28 @@ t_token	*lukita_expand(t_token *token, t_env env, int last_exit)
 {
 //	printf("%s\n", token->str);
 	token->str = lukita_str_expand(token->str, env, last_exit);
+	if (token->str && !token->str[0])
+	{
+		if (!token->next)
+		{
+			if (token->str)
+				free(token->str);
+			token->str = NULL;
+			token->type = SPC;
+			return (token);
+		}
+		else
+		{
+			if (token->str)
+				free(token->str);
+			token->str = token->next->str;
+			token->type = token->next->type;
+			t_token *tmp = token->next;
+			token->next = token->next->next;
+			free (tmp);
+			return (token);
+		}
+	}
 //	printf("%s\n", token->str);
 	if (token->type == DOUBLE_QUOTE)
 		return (token);
@@ -199,7 +259,8 @@ int	expansion(t_token *first_token, int last_exit, t_env env)
 					else
 						first_token = lukita_expand(first_token, env, last_exit);
 				}
-		first_token = first_token->next;
+		if (first_token)
+			first_token = first_token->next;
 	}
 	return (0);
 }
