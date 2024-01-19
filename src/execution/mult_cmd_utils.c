@@ -32,15 +32,12 @@ int	count_processes(t_process *process)
 	return (num_processes);
 }
 
-static void	parent_execution(t_process *process, int i, int num_processes,
-			char *path)
+static void	parent_execution(t_process *process, int i, int num_processes)
 {
 	if (i != 0)
 		close_pipes(process->prev->fd);
 	if (i == num_processes - 1)
 		close_pipes(process->fd);
-	if (path)
-		free(path);
 }
 
 static void	child_execution(t_process *process, int last_exit, t_env *env,
@@ -96,12 +93,14 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	char	*path;
 	int		check;
 
-	if (!process->cmd || !process->cmd[0] || !process->cmd[0][0])
+	if (!process->cmd || !process->cmd[0] || !process->cmd[0][0]) // remover os ultimos dois quando arrumar a expansao...
 		return (0);
-	path = get_path(process->cmd, *env);
 	if (!is_builtins(process->cmd, functions))
 	{
+		path = get_path(process->cmd, *env);
 		check = check_path(path, process);
+		if (path)
+			free(path);
 		if (check == 0 || check == 127)
 			return (check);
 	}
@@ -111,6 +110,6 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	if (check == CHILD)
 		child_execution(process, num_arr[2], env, functions);
 	else
-		parent_execution(process, num_arr[1], num_arr[0], path);
+		parent_execution(process, num_arr[1], num_arr[0]);
 	return (0);
 }

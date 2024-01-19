@@ -44,11 +44,17 @@ void	execute_heredoc(t_process *first_process)
 					exit(EXIT_FAILURE);
 				}
 				input = readline(":->");
-				while (ft_strcmp(input, redirect->name))
+				//Adicionei os ifs para o caso de apertarem ctrl+d no meio do heredoc...
+				if (input)
 				{
-					write(pipefd[1], input, ft_strlen(input));
-					write(pipefd[1], "\n", 1);
-					input = readline(":->");
+					while (ft_strcmp(input, redirect->name))
+					{
+						write(pipefd[1], input, ft_strlen(input));
+						write(pipefd[1], "\n", 1);
+						input = readline(":->");
+						if (!input)
+							break ;
+					}
 				}
 				close(pipefd[1]);
 				first_process->heredoc = pipefd[0];

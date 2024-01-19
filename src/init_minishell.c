@@ -108,7 +108,7 @@ void	init_minishell(t_env *envp)
 		input = get_input(last_exit);
 		if (!input)
 			exit(EXIT_FAILURE);
-		if (input[0] != '\0')
+		if (input[0] != '\0' && input[0] != '#')
 		{
 			first_token = lexical_analysis(input);
 			if (!validate_tokens(first_token))

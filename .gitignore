@@ -10,4 +10,4 @@ minishell
 *.dSYM/
 mpanic
 *.log
-*.sh
+readline
