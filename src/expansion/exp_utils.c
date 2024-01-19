@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/17 19:36:35 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:16:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ int	get_dolar_position(char *str, int i)
 int	is_expansible(char *str)
 {
 	int	i;
-
-	// printf("O token %s eh expansivel?\n", str);
 
 	i = get_dolar_position(str, 0);
 	if (i == -1)

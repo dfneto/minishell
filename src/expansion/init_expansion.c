@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/17 20:13:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:18:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,8 @@ int	check_and_expand(t_token *token, int last_exit, t_env env)
 	if (is_dollarquestion_mark(token->str))
 		token->str = get_exit_status(last_exit);
 	else if (is_expansible(token->str))
-	{
-		// printf("Expandindo o token %s\n", token->str);
 		token = expand_according_to_type(token, env);
-	}
-	//quando eu faco isso abaixo eu resolvo o 
-	/*
-	echo $"   t  hi   t    "|                       [K0]
-  199. |echo $'   t  hi   t    '|                       [K0]
-  200. |echo $'   r  hi   t    '|                       [K0]
-  */ //mas para de funcionar o 
-  /*
-  echo $ e echo $/
-  */
- 
-	else if (token->str[0] == '$' && !token->next)
-		token->str = safe_strdup("");
-	else if (token->str[0] == '$' && token->next->type != SPC)
+	else if (token->str[0] == '$' && token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE)) //para os testes 198, 199 e 200
 		token->str = safe_strdup("");
 	return (1);
 }
