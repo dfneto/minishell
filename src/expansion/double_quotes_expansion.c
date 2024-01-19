@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/17 19:10:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:14:48 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,20 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 		joined = safe_strjoin(joined, pre_dolar);
 		if (dolar_position >= 0)
 			i = dolar_position + 1;
-		// printf("i: %d\n", i);
 		if (token->str[i] && dolar_position >= 0)
 		{
 			word_expanded = get_word_expanded(token, &i,
 						dolar_position, env);
 			joined = safe_strjoin(joined, word_expanded);
 			//get_pos_word
-			if (token->str[i] != '$')
+			if (token->str[i] != '$' && token->str[i] != ' ') //para os casos 38, 39 e 40 echo "|$USER|"
 			{
 				post_word = safe_substr(token->str, i, ft_strlen(token->str) - i);
-				// printf("i: %d, len: %zu, post word: %s\n", i, ft_strlen(token->str), post_word);
 				joined = safe_strjoin(joined, post_word);
 			}
 		}
 		else if (token->str[i-1] == '$') //para os casos 5 e 6
 			joined = safe_strjoin(joined, "$");
-		// i++; 
 	}
 	token->str = joined;
 	return (token);
