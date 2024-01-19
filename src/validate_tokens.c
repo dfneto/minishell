@@ -60,6 +60,9 @@ int	validate_tokens(t_token *token)
 	int	cmd;
 
 	cmd = 0;
+
+	if (token && token->type == SPC && !token->next)
+		return (0);
 	while (token)
 	{
 		if (!(token->str || token->type == SPC))
