@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 19:13:00 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:31:53 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,14 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 	start = 0;
 	while (i < ft_strlen(expanded_str))
 	{
-		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
+				while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
 		{
-			if (expanded_str[i + 1] != ' ' && first_token_alterated == 0)
-				// e cria um token espaço
+			if (expanded_str[i + 1] != ' ' && first_token_alterated == 0) //para quando a palavra expandida começa com espaço
 			{
-				token->type = SPC;
+				token->type = SPC; //alter o tipo do token para espaco
 				first_token_alterated = 1;
 			}
-			else if (expanded_str[i + 1] != ' ' && first_token_alterated == 1)
+			else if (expanded_str[i + 1] != ' ' && first_token_alterated == 1) //crio token <spc>
 			{
 				t_token *new_token = create_token_with_next(expanded_str, start,
 					i - 1, SPC, next_tok_after_expand);
@@ -82,9 +81,8 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 			i++;
 		}
 		start = i;
-		while (expanded_str[i] && expanded_str[i] != ' ')
+		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char
 		{                                                                
-			// avança os char
 			if (expanded_str[i + 1] == ' ' && first_token_alterated == 0)
 				// e altero o primeiro token str
 			{
@@ -92,8 +90,8 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 				first_token_alterated = 1;
 			}
 			else if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0')
-				&& first_token_alterated == 1) // e cria um token str
-			{
+				&& first_token_alterated == 1) // e cria um token str 
+			{ 
 				t_token *new_token = create_token_with_next(expanded_str, start,
 					i, STRING, next_tok_after_expand);
 				add_token_after(&token, new_token);

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/16 20:08:08 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:27:41 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	print_type(int type)
 
 void	print_list_token(t_token *token)
 {
+	if (!token)
+		printf("Token NULO!\n");
 	while (token)
 	{
 		if (token->str)
@@ -40,8 +42,6 @@ void	print_list_token(t_token *token)
 			print_type(token->type);
 		token = token->next;
 	}
-	if (!token)
-		printf("Token NULO!\n");
 }
 
 void	print_token(t_token *token)
