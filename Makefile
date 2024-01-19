@@ -1,46 +1,76 @@
-NAME = minishell
+# Makefile
 
+# Set the name of your executable
+TARGET = minishell
+
+# Set the source directory
 SRC_DIR = src
+
+# Set the object directory
 OBJ_DIR = obj
-LIBFT_DIR = libft
 
-SRCS := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/builtin/*.c) $(wildcard $(SRC_DIR)/env/*.c) $(wildcard $(SRC_DIR)/expansion/*.c) $(wildcard $(SRC_DIR)/lexical_analysis/*.c) $(wildcard $(SRC_DIR)/process/*.c) $(wildcard $(SRC_DIR)/utils/*.c) $(wildcard $(SRC_DIR)/execution/*.c)
-OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+# Set the installation directory for readline
+READLINE_INSTALL_DIR = $(shell pwd)/readline/library
+READLINE_INCLUDE_DIR = $(READLINE_INSTALL_DIR)/include
+READLINE_LIB_DIR = $(READLINE_INSTALL_DIR)/lib
+READLINE_LIB = $(READLINE_LIB_DIR)/libreadline.a
 
-LIBFT = $(LIBFT_DIR)/libft.a
+MINI_H = inc/minishell.h
 
+LIBFT = libft/libft.a
+
+# Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
-# Lucas readline:
-LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline
-INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc
-# David readline
-# LDFLAGS = -L$(LIBFT_DIR) -lft -L/Users/davifern/.brew/opt/readline/lib -lreadline
-# INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -Iinc -I/Users/davifern/.brew/opt/readline/include
-# For compilers to find readline you may need to set:
-# export LDFLAGS="-L/Users/davifern/.brew/opt/readline/lib"
-# export CPPFLAGS="-I/Users/davifern/.brew/opt/readline/include"
+CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE_DIR) -Ilibft -Iinc
+LDFLAGS = -L$(READLINE_LIB_DIR) -lreadline -lhistory -Llibft -lft
 
-all: $(LIBFT) $(NAME)
+# Find all source files in the src directory and its subdirectories
+SRC_FILES := $(shell find $(SRC_DIR) -name '*.c')
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+# Generate object file names from source files
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+# Extract directory structure from object file paths
+OBJ_DIRS := $(sort $(dir $(OBJ_FILES)))
+
+# Default rule
+all: $(TARGET)
+
+run_me: $(TARGET)
+	./$(TARGET)
+
+# Rule for the target executable
+$(TARGET): $(OBJ_FILES)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+# Rule for generating object files and creating directories
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MINI_H) $(READLINE_LIB) $(LIBFT) | $(OBJ_DIRS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Rule for creating the obj directory
+$(OBJ_DIRS):
+	mkdir -p $@
+
+# Rule for configuring, building, and installing readline
+$(READLINE_LIB):
+	@echo "Installing readline..."
+	@cd ./readline; ./configure --prefix=$(READLINE_INSTALL_DIR) > /dev/null 2>&1; make > /dev/null 2>&1; make install > /dev/null 2>&1
+	@echo "Readline installed"
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
+	make -C libft
 
+# Clean rule
 clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)
+	make clean -C libft
 
-fclean: clean
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@rm -f $(NAME)
+fclean: clean clean_readline
+	rm -rf $(TARGET)
+	make fclean -C libft
 
-re: fclean all
+clean_readline:
+	rm -rf $(READLINE_INSTALL_DIR)
 
-.PHONY: all clean fclean re
+# Phony targets to avoid conflicts with file names
+.PHONY: all clean fclean clean_readline run_me
