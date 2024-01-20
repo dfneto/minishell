@@ -72,5 +72,7 @@ fclean: clean clean_readline
 clean_readline:
 	rm -rf $(READLINE_INSTALL_DIR)
 
+re: fclean all
+
 # Phony targets to avoid conflicts with file names
-.PHONY: all clean fclean clean_readline run_me
+.PHONY: all clean fclean clean_readline run_me re
