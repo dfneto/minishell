@@ -9,5 +9,6 @@ obj/*
 minishell
 *.dSYM/
 mpanic
+open_fd.sh
 *.log
 readline

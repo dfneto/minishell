@@ -21,8 +21,8 @@ LIBFT = libft/libft.a
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(READLINE_INCLUDE_DIR) -Ilibft -Iinc
-LDFLAGS = -L$(READLINE_LIB_DIR) -lreadline -lhistory -Llibft -lft
+CFLAGS = -Wall -Wextra -Werror -Ilibft -Iinc -I$(READLINE_INCLUDE_DIR)
+LDFLAGS = -L$(READLINE_LIB_DIR) -Llibft -lreadline -lhistory -lft -lncurses
 
 # Find all source files in the src directory and its subdirectories
 SRC_FILES := $(shell find $(SRC_DIR) -name '*.c')
