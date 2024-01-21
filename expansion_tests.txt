@@ -1,3 +1,29 @@
+FAILING:
+echo 123$?
+echo $A$?
+echo $?123
+echo $USER$?abc
+
+
+echo "123$0 $USER david"
+echo "123$0$USER david"
+
+echo $b/
+echo $USER!
+echo $USER/
+
+
+-------------
+PASSING:
+echo "$USER $USER" - ok
+echo "123$? $USER" - OK
+echo "123$0 $USER" - ok (o bash tem um comportamento específico)
+echo "$?david" - ok
+echo "aa $? $USER david" - ok
+
+
+-------------
+
 echo "$"
 echo "hi$"
 echo "$hola"
