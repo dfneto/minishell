@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/19 21:31:53 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:25:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 			}
 			else if (expanded_str[i + 1] != ' ' && first_token_alterated == 1) //crio token <spc>
 			{
-				t_token *new_token = create_token_with_next(expanded_str, start,
-					i - 1, SPC, next_tok_after_expand);
+				t_token *new_token = create_token(expanded_str, start,
+					i - 1, SPC);
+				new_token->next = next_tok_after_expand;
 				add_token_after(&token, new_token);
 			}
 			i++;
@@ -92,8 +93,9 @@ t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
 			else if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0')
 				&& first_token_alterated == 1) // e cria um token str 
 			{ 
-				t_token *new_token = create_token_with_next(expanded_str, start,
-					i, STRING, next_tok_after_expand);
+				t_token *new_token = create_token(expanded_str, start,
+					i, STRING);
+				new_token->next = next_tok_after_expand;
 				add_token_after(&token, new_token);
 			}
 			i++;
