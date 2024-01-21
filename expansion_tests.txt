@@ -20,7 +20,20 @@ echo "123$? $USER" - OK
 echo "123$0 $USER" - ok (o bash tem um comportamento específico)
 echo "$?david" - ok
 echo "aa $? $USER david" - ok
-
+caso 1: echo "$USER" 				david 		- ok
+caso 2: echo "$$USER"				$david 		- ok
+caso 3: echo "$hola"							- ok
+caso 4: echo "$$hola"				$			- ok
+caso 5: echo "$"					$			- ok
+caso 6: echo "$$"					$$			- ok
+caso 8: echo "hi$"    				hi$     	- ok
+caso 9: echo "hi$$"   				hi$$    	- ok
+caso 13: echo "'$USER'"				'david'		- ok
+caso 7: echo "$/"		     		$/      	- ok
+caso 10: echo "hi$/"  				hi$/    	- ok
+caso 11: echo "hi$$/"  				hi$$/ 		- ok
+caso 12: echo "'$'"					'$'			- ok
+caso 13: echo "$USER$PATH$PWD"		imprime...	- ok
 
 -------------
 

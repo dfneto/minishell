@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 17:29:06 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 	pre_dolar = NULL;
 	dolar_position = 0;
-	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
+	pre_dolar = g_pre_dol(token->str, &dolar_position, i);
 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
 	
 	//fazemos o split

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/21 17:28:21 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void					execute_heredoc(t_process *first_process);
 char					*remove_pre_dolar_text(char *str, int start);
 void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);
-char					*get_pre_dolar_text(char *str, int *dolar_position,
+char					*g_pre_dol(char *str, int *dolar_position,
 							int i);
 char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);

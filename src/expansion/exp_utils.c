@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 13:05:08 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,28 +82,20 @@ echo abc$? nao funciona e retorna abc$?
 */
 int	is_dollarquestion_mark(char *str)
 {
+	//TODO: ao inves de usar 0 e 1 usar dolar position
 	if (str[0] == '$' && str[1] == '?')
 		return (1);
 	return (0);
 }
 
 /*
- * Jump the spaces in a string starting in the i position of the string
- * Return: the indice of the first not space char
- */
-// int	ignore_spaces(char *str, int i)
-// {
-// 	while (str[i] && str[i] != ' ')
-// 		i++;
-// 	return (i);
-// }
-
-char	*get_pre_dolar_text(char *str, int *dolar_position, int i) // 0 5
+* returns: the text before the dolar sign. 
+* Ex: for "123$USER" return 123
+*/
+char	*g_pre_dol(char *str, int *dolar_position, int i) // 0 5
 {
 	*dolar_position = get_dolar_position(str, i);
-	// printf("palavra %s - dolar position: %d\n", str, *dolar_position);
 	if (*dolar_position == -1)
 		return (safe_strdup(""));
-	// printf("i: %d, dolar: %d\n", i, *dolar_position);
 	return (safe_substr(str, i, *dolar_position - i));
 }

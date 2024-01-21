@@ -6,13 +6,17 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 21:02:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:50:51 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_word_expanded(t_token *token, int *i, int dolar_position,
+/*
+* Get the word expanded
+* Returns the word expanded
+*/
+char	*g_w_expd(t_token *token, int *i, int dolar_position,
 		t_env env)
 {
 	char	*word_to_expand;
@@ -29,96 +33,52 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 			- dolar_position - 1);
 	if (word_to_expand == NULL)
 		return (safe_strdup(""));
-	// printf("word to expand: %s\n", word_to_expand);
 	return (safe_strdup(ft_getenv(word_to_expand, env)));
-}
-
-char	*expand_post_dollar(t_token *token, int *i, int dolar_position,
-		t_env env)
-{
-	char	*word_expanded;
-	char	*post_word;
-
-	word_expanded = NULL;
-	post_word = NULL;
-	word_expanded = get_word_expanded(token, i, dolar_position, env);
-	// printf("word to expand: %s\n", word_expanded);
-		
-	// joined = safe_strjoin(joined, word_expanded);
-	// get_pos_word
-	// if (token->str[*i] != '$') // para os casos 38, 39 e 40 echo "|$USER|"
-	// {
-	// 	post_word = safe_substr(token->str, *i, ft_strlen(token->str) - *i);
-	// 	word_expanded = safe_strjoin(word_expanded, post_word);
-	// }
-	return (word_expanded);
 }
 
 /*
 * cases: "$USER"
-* 		 "123$USER" - with pre dolar
-*		 "123$USER $USER"
-*		 "123$USER $USER waka"
+* 			"123$USER" - with pre dolar
+*			"123$USER $USER"
+*			"123$USER $USER waka"
 Let's take the case: "123$USER vaca $USER waka"
 	- pre_dolar_text: 123
-	- expand_post_dollar will analyse $USER $USER waka 
+	- expand_post_dollar will analyse $USER $USER waka
 	- pos_last_word_expanded: waka
+Another example: "|$USER|"
+	- pre_dolar_text: |
+	- expand_post_dollar will analyse $USER
+	- pos_last_word_expanded: |
 * If dolar_position < 0 so it isn't expansible. It is necessary
 * because we are going to check and expand every word inside
-* the quotes. So vaca and waka won't be expanded and so for these
-* words the dolar position is -1.
-* Others cases:
-caso 1: echo "$USER" 				david 		- ok
-caso 2: echo "$$USER"				$david 		- ok
-caso 3: echo "$hola"								- ok
-caso 4: echo "$$hola"				$			- ok
-caso 5: echo "$""					$			- ok
-caso 6: echo "$$""					$$			- ok
-caso 8: echo "hi$"    				hi$     	- ok
-caso 9: echo "hi$$"   				hi$$    	- ok
-caso 13: echo "'$USER'"				'david'		- ok
-caso 7: echo "$/"		     		$/      	- ok
-caso 10: echo "hi$/"  				hi$/    	- ok
-caso 11: echo "hi$$/"  				hi$$/ 		- ok
-caso 12: echo "'$'"					'$'			- ok
-caso 13: echo "$USER$PATH$PWD"		imprime...	- ok
+* the quotes. So waka won't be expanded and so for waka 
+* in "123$USER $USER waka" the dolar position is -1.
 */
-t_token	*expand_double_quote_token(t_token *token, t_env env)
+t_token	*expand_double_quote_token(t_token *tok, t_env env)
 {
 	int		i;
-	int		dolar_position;
-	char	*pre_dolar;
-	char	*joined;
-	char	*word_expanded;
-	char	*post_word;
+	int		dol_pos;
+	char	*exp;
+	char	*post_expansion;
 
 	i = 0;
-	dolar_position = 0;
-	pre_dolar = NULL;
-	joined = NULL;
-	word_expanded = NULL;
-	post_word = NULL;
-	
-	while (token->str[i] && dolar_position >= 0)
+	dol_pos = 0;
+	exp = NULL;
+	post_expansion = NULL;
+	while (tok->str[i] && dol_pos >= 0)
 	{
-		joined = safe_strjoin(joined, get_pre_dolar_text(token->str, &dolar_position, i));
-		if (dolar_position >= 0)
+		exp = safe_strjoin(exp, g_pre_dol(tok->str, &dol_pos, i));
+		if (dol_pos >= 0 && tok->str[dol_pos + 1])
 		{
-			i = dolar_position + 1;
-			if (token->str[i])
-				joined = safe_strjoin(joined, expand_post_dollar(token, &i, dolar_position, env));
+			i = dol_pos + 1;
+			exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env));
 		}
-		else if (token->str[i - 1] == '$') // para os casos 5 e 6
-			joined = safe_strjoin(joined, "$");
 	}
-	// printf("i: %d, joined: %s\n", i, joined);
-	//if there is an expansion get_pos_last_word_expanded 
-	if (token->str[i] != '$') // para os casos 38, 39 e 40 echo "|$USER|"
+	if (tok->str[i] && tok->str[i] != '$')
 	{
-		post_word = safe_substr(token->str, i, ft_strlen(token->str) - i);
-		// printf("post word: %s\n", post_word);
-		joined = safe_strjoin(joined, post_word);
+		post_expansion = safe_substr(tok->str, i, ft_strlen(tok->str) - i);
+		exp = safe_strjoin(exp, post_expansion);
 	}
-	token->str = joined;
-	return (token);
+	tok->str = exp;
+	return (tok);
 }
