@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/19 23:14:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 12:03:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 						dolar_position, env);
 			joined = safe_strjoin(joined, word_expanded);
 			//get_pos_word
-			if (token->str[i] != '$' && token->str[i] != ' ') //para os casos 38, 39 e 40 echo "|$USER|"
+			if (token->str[i] != '$') //para os casos 38, 39 e 40 echo "|$USER|"
 			{
 				post_word = safe_substr(token->str, i, ft_strlen(token->str) - i);
 				joined = safe_strjoin(joined, post_word);
