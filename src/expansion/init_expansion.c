@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 15:34:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:31:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,19 @@ char	*get_exit_status(void)
 // }
 
 /*
- * If the token to be expand is $? get the exit status,
- * otherwise expand it.
- * token is one word of the first_token
+ * token: it is one word of the first_token.
+ * The "else if" deals with cases like: $"   t  hi   t    " 
+ * or $'   t  hi   t    ' (tests 198-200) and them remove the token $
+ * TODO: idealmente nesses casos (198-200) seria remover o token $ ao
+ * invés de apagá-lo e seria bom ter um ponteiro previous
  */
 int	check_and_expand(t_token *token, t_env env)
 {
 	if (is_expansible(token->str))
 		token = expand_according_to_type(token, env);
-	else if (token->str[0] == '$' && token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE)) //para os testes 198, 199 e 200
+	else if (token->str[0] == '$' && token->next
+		&& (token->next->type == DOUBLE_QUOTE
+			|| token->next->type == SINGLE_QUOTE))
 		token->str = safe_strdup("");
 	return (1);
 }
