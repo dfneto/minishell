@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/21 15:36:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:22:59 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,6 @@ char					*deals_with_the_first_word(char *token_str, int i,
 t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str, char *pre_dolar, t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(void);
-t_token					*create_token_with_next(char *input, int start, int end,
-							int type, t_token *next_tok_after_expand);
 t_token					*create_token_split(char *str, t_token *next_token);
 t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
 t_token					*expand_double_quote_token(t_token *token, t_env env);

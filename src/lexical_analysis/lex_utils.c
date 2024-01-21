@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:23:32 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/03 16:13:27 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:38:49 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_token	*create_token(char *input, int start, int end, int type)
 	t_token	*tok;
 
 	tok = (t_token *)safe_malloc(sizeof(t_token));
-		// todo: tenho que criar com duas posiçoes e colocar null na ultima?
 	tok->str = NULL;
 	if (type == STRING)
 		tok->str = safe_substr(input, start, end - start + 1);
@@ -41,21 +40,6 @@ t_token	*create_token(char *input, int start, int end, int type)
 		tok->str = safe_substr(input, start + 1, end - start - 1);
 	tok->type = type;
 	tok->next = NULL;
-	return (tok);
-}
-
-// TODO: juntar esse metodo com o original acima e colocar o next token como opcional ou se possível como obrigatorio
-t_token	*create_token_with_next(char *input, int start, int end, int type,
-		t_token *next_tok_after_expand)
-{
-	t_token	*tok;
-
-	tok = (t_token *)safe_malloc(sizeof(t_token));
-	tok->str = NULL;
-	if ((type == DOUBLE_QUOTE) | (type == SINGLE_QUOTE) | (type == STRING))
-		tok->str = safe_substr(input, start, end - start + 1);
-	tok->type = type;
-	tok->next = next_tok_after_expand;
 	return (tok);
 }
 
