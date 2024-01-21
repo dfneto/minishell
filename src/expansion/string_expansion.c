@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 15:37:27 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:29:06 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	has_space(char *str)
 * ex: a="ls   -l    -a  -F   " 
 * $a patata: returns the token -F with token->next = patata
 */
-t_token	*expand_token_dolar(t_token *token, char *pre_dolar, t_env env)
+t_token	*expand_token_dolar(t_token *token, t_env env)
 {
 	char		*expanded_str;
 	t_token		*next_tok_after_expand;
@@ -55,7 +55,7 @@ t_token	*expand_token_dolar(t_token *token, char *pre_dolar, t_env env)
 	//	return (set_token_str(token, ""));
 	token->str = NULL;
 	if (has_space(expanded_str))
-		return (create_tok_per_word_in(expanded_str, pre_dolar, next_tok_after_expand, token));
+		return (create_tok_per_word_in(expanded_str, next_tok_after_expand, token));
 	else //TODO: talvez deva alterar o compartamento de quando a string expandida (ex: $USER -> david) não tenha espaço para se 
 	{	//assemelhar ao caso em que tem espaço, ou não tbm. Porque se eu tenhoo que token->str tem um valor diferente de nulo tbm da erro de segfault
 		token->str = expanded_str;
@@ -166,7 +166,7 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 	//agora vou expandir cada token_$ criado
 	while (token && i < tokens_$_created) 
 	{
-		aux = expand_token_dolar(token, NULL, env);
+		aux = expand_token_dolar(token, env);
 		token = aux->next; 
 		i++;
 	}
@@ -227,7 +227,7 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 	//agora vou expandir cada split_token
 	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
 	{
-		aux = expand_token_dolar(token, NULL, env);
+		aux = expand_token_dolar(token, env);
 		token = aux->next; 
 		i++;
 	}

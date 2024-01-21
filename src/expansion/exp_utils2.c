@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 17:25:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:28:08 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ t_token	*set_token_str(t_token *token, char *value)
 * $a patata: returns the token spc with token->next = patata e o token anterior ao spc sendo
 	-F
 */
-t_token	*create_tok_per_word_in(char *expanded_str, char *pre_dolar,
+t_token	*create_tok_per_word_in(char *expanded_str,
 		t_token *next_tok_after_expand, t_token *token)
 {
-	(void)pre_dolar;
 	size_t i;
 	int start;
 	int first_token_alterated;
