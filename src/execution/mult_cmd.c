@@ -29,21 +29,20 @@ VERIFICAR REDIRECTS E HEREDOC
 ORGANIZAR PIPES
 */
 
-int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
+int	execute_multi_cmd(t_process *process, t_env *env,
 		t_builtin functions[])
 {
-	int	num_arr[3];
+	int	num_arr[2];
 
 	num_arr[0] = count_processes(process);
 	num_arr[1] = 0;
-	num_arr[2] = last_exit;
 	while (process)
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
 		if (process->outfile == -1 || process->infile == -1)
 			last_exit = 1;
-		else
+		else	
 			if (main_execution(process, env, num_arr, functions))
 				return (127);
 		process = process->next;

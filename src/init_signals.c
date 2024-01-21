@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_signals.c                                     :+:      :+:    :+:   */
+/*   set_main_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,21 +16,31 @@
 #include <signal.h>
 #include <stdio.h>
 
-void	handle_control_c(void)
+void	main_control_c(int signum)
 {
+	(void)signum;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	// last_exit = 1;
+	last_exit = 130;
 }
 
-// void	init_signals(void)
-// {
-// 	struct sigaction	act;
+/* Handle signals in main loop */
+void	set_main_signals(void)
+{
+	signal(SIGINT, &main_control_c);
+	signal(SIGQUIT, SIG_IGN);
+}
 
-// 	ft_bzero(&act, sizeof(act));
-// 	act.sa_handler = &handler;
-// 	sigaction(SIGINT, &act, NULL);
-// 	sigaction(SIGQUIT, &act, NULL);
-// }
+/* Handle signals during execution */
+void set_child_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void set_parent_signals(void)
+{
+	signal(SIGINT, SIG_IGN);
+}

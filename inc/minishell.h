@@ -42,6 +42,11 @@
 # define L_MAX "9223372036854775807"
 # define L_MIN "9223372036854775808"
 
+
+
+extern int last_exit;
+
+
 // typedef enum char //usar isso ou os defines?
 // {
 // 	,
@@ -122,14 +127,13 @@ typedef struct s_env
 typedef struct s_builtin
 {
 	char				*name;
-	int					(*function)(char **, t_env *, int);
+	int					(*function)(char **, t_env *);
 }						t_builtin;
 
 int						check_open_quotes(char *input);
 int						clean_input(char **input);
 int						is_exit(char *input);
-int						expansion(t_token *first_token, int last_exit,
-							t_env env);
+int						expansion(t_token *first_token, t_env env);
 int						get_dolar_position(char *str, int i);
 int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);
@@ -187,11 +191,11 @@ t_redirect				*create_redirect(char *name, t_type type);
 /* EXECUTION */
 // Execute CMD
 int						execute_cmd(t_process *process, t_env *envp,
-							int last_exit, t_builtin funcitons[]);
+							t_builtin funcitons[]);
 
 // Single cmd
 int						execute_single_cmd(t_process *process, t_env *env,
-							int last_exit, t_builtin functions[]);
+							t_builtin functions[]);
 
 // Single cmd utils
 int						do_single_fork(char *path, char **cmd, t_env env);
@@ -202,11 +206,11 @@ void					reset_redirects(t_process *process, int *og_stdin,
 
 // Mult cmds
 int						execute_multi_cmd(t_process *process, t_env *env,
-							int last_exit, t_builtin functions[]);
+							t_builtin functions[]);
 
 // Mult cmds utils
 int						main_execution(t_process *process, t_env *env,
-							int num_arr[3], t_builtin functions[]);
+							int num_arr[2], t_builtin functions[]);
 int						count_processes(t_process *process);
 
 // Execute Utils
@@ -251,17 +255,17 @@ char					*safe_substr(char const *s, unsigned int start, size_t len);
 // Init builtins
 void					init_builtins(t_builtin array[]);
 int						is_builtins(char **argv, t_builtin functions[]);
-int						execute_builtins(char **argv, t_env *env, int last_exit,
+int						execute_builtins(char **argv, t_env *env,
 							t_builtin functions[]);
 
 // Built-in functions
-int						ft_echo(char **argv, t_env *env, int last_exit);
-int						ft_pwd(char **argv, t_env *env, int last_exit);
-int						ft_exit(char **argv, t_env *env, int last_exit);
-int						ft_env(char **argv, t_env *env, int last_exit);
-int						ft_cd(char **argv, t_env *env, int last_exit);
-int						ft_export(char **argv, t_env *env, int last_exit);
-int						ft_unset(char **argv, t_env *env, int last_exit);
+int						ft_echo(char **argv, t_env *env);
+int						ft_pwd(char **argv, t_env *env);
+int						ft_exit(char **argv, t_env *env);
+int						ft_env(char **argv, t_env *env);
+int						ft_cd(char **argv, t_env *env);
+int						ft_export(char **argv, t_env *env);
+int						ft_unset(char **argv, t_env *env);
 
 // ft_export utils
 int						print_ordered(t_env env);
@@ -270,15 +274,17 @@ int						print_ordered(t_env env);
 int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
-void					handle_control_c(void);
+void					set_main_signals(void);
+void 					set_parent_signals(void);
+void set_child_signals(void);
+
 
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 
 // Process utils
 // t_process   *create_process(char *input, int in, int out);
 void					clean_process(t_process **process);
-void					init_signals(void);
-void					init_minishell(t_env *envp);
+void					init_minishell(t_env *envp, t_builtin functions[]);
 
 int						validate_tokens(t_token *token);
 

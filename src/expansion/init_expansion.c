@@ -41,7 +41,7 @@ Função só funciona com o caso $? sozinho
 Refazer junto com a is_dolarquestion_mark
 -->> proteger malloc (ft_itoa)
  */
-char	*get_exit_status(int last_exit)
+char	*get_exit_status(void)
 {
 	return (safe_itoa(last_exit));
 }
@@ -64,10 +64,10 @@ char	*get_exit_status(int last_exit)
  * otherwise expand it.
  * token is one word of the first_token
  */
-int	check_and_expand(t_token *token, int last_exit, t_env env)
+int	check_and_expand(t_token *token, t_env env)
 {
 	if (is_dollarquestion_mark(token->str))
-		token->str = get_exit_status(last_exit);
+		token->str = get_exit_status();
 	else if (is_expansible(token->str))
 		token = expand_according_to_type(token, env);
 	else if (token->str[0] == '$' && token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE)) //para os testes 198, 199 e 200
@@ -82,12 +82,12 @@ int	check_and_expand(t_token *token, int last_exit, t_env env)
  * otherwise does nothing.
  * first_token: is all the input text typed by the user
  */
-int	expansion(t_token *first_token, int last_exit, t_env env)
+int	expansion(t_token *first_token, t_env env)
 {
 	while (first_token)
 	{
 		if (first_token->type == DOUBLE_QUOTE || first_token->type == STRING)
-			check_and_expand(first_token, last_exit, env);
+			check_and_expand(first_token, env);
 		first_token = first_token->next;
 	}
 	return (0);
