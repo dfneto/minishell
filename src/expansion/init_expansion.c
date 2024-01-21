@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/19 15:18:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:16:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
  * ls, -l, -a, -F, respectively, and return the next token, in this
  * case null. But, if: $a waka, the token to be returned is <spc>
  */
-t_token	*expand_according_to_type(t_token *token, t_env env)
+t_token	*expand_according_to_type(t_token *token, t_env env, int last_exit)
 {
 	if (token->type == DOUBLE_QUOTE)
-		return (expand_double_quote_token(token, env));
+		return (expand_double_quote_token(token, env, last_exit));
 	else
-		return (expand_token_int_n_tokens(token, env));
+		return (expand_token_int_n_tokens(token, env, last_exit));
 }
 
 /* TO DO
@@ -66,10 +66,11 @@ char	*get_exit_status(int last_exit)
  */
 int	check_and_expand(t_token *token, int last_exit, t_env env)
 {
-	if (is_dollarquestion_mark(token->str))
-		token->str = get_exit_status(last_exit);
-	else if (is_expansible(token->str))
-		token = expand_according_to_type(token, env);
+	// if (is_dollarquestion_mark(token->str))
+	// 	token->str = get_exit_status(last_exit);
+	// else 
+	if (is_expansible(token->str))
+		token = expand_according_to_type(token, env, last_exit);
 	else if (token->str[0] == '$' && token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE)) //para os testes 198, 199 e 200
 		token->str = safe_strdup("");
 	return (1);

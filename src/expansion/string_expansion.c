@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/24 14:59:21 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:25:13 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 * a $USER$USER a
 * a $a$a$a a
 */
-t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
+t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env, int last_exit)
 {
 	int			i;
 	int			tokens_$_created;
@@ -140,6 +140,13 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 	next_tok_after_expand = token->next;
 	aux = token;
 	tokens_$_created = 0;
+
+	//isso ficaria melhor fora deste método
+	if (is_dollarquestion_mark(token->str))
+	{
+		token->str = safe_strdup(get_exit_status(last_exit));
+		return (token);
+	}
 	
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 // 	pre_dolar = NULL;
@@ -243,13 +250,14 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 *	$a$a Z -> tokens: ls, -la, ls -la, Z
 *	$a Z -> tokens: ls, -la, Z
 */
-t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
+t_token	*expand_token_int_n_tokens(t_token *token, t_env env, int last_exit)
 {
 	t_token	*last_token_expanded;
 
 	last_token_expanded = NULL;
+	//TODO: tratar $? quando tem texto ou variáveis de ambiente antes e depois
 	if (token->str[0] == '$')
-		last_token_expanded = expand_tok_withOUT_text_before(token, env);
+		last_token_expanded = expand_tok_withOUT_text_before(token, env, last_exit);
 	else
 		last_token_expanded = expand_tok_with_text_before(token, env);
 	return (last_token_expanded);

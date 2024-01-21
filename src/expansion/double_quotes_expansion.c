@@ -6,18 +6,23 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 12:03:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:08:09 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char	*get_word_expanded(t_token *token, int *i, int dolar_position,
-		t_env env)
+		t_env env, int last_exit)
 {
 	char	*word_to_expand;
-
+	(void) last_exit;
 	word_to_expand = NULL;
+	if (token->str[*i] == '?')
+	{
+		(*i)++;
+		return get_exit_status(last_exit);
+	}
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;
 	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
@@ -44,7 +49,7 @@ caso 11: echo "hi$$/"  hi$$/  - decidi não tratar porque não encontrei a lógi
 caso 12: echo "'$'"
 */
 //echo "$USER$PATH$PWD"
-t_token	*expand_double_quote_token(t_token *token, t_env env)
+t_token	*expand_double_quote_token(t_token *token, t_env env, int last_exit)
 {
 	int i;
 	int dolar_position;
@@ -68,7 +73,7 @@ t_token	*expand_double_quote_token(t_token *token, t_env env)
 		if (token->str[i] && dolar_position >= 0)
 		{
 			word_expanded = get_word_expanded(token, &i,
-						dolar_position, env);
+						dolar_position, env, last_exit);
 			joined = safe_strjoin(joined, word_expanded);
 			//get_pos_word
 			if (token->str[i] != '$') //para os casos 38, 39 e 40 echo "|$USER|"
