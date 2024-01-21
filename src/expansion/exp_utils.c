@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:03:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ int	is_alpha_or_slash(char c)
 }
 
 /*
- * Return the dolar position or the last 
+ * Return the dolar position or the last
  * dolar position in case of $$$, for example,
  * or \0 position, starting by i position
+ * Returns -1 in case that the str hasn't $
+ * and should not be expanded so.
  */
 int	get_dolar_position(char *str, int i)
 {
@@ -43,26 +45,19 @@ int	get_dolar_position(char *str, int i)
 	while (str[i] && str[i] != '$')
 		i++;
 	if (str[i] == '\0')
-		// return i;
-		return (-1); //coloquei -1 para ser identificado no is_expansible e nao ser expandido nesse caso de \0
+		return (-1);
 	while (str[i] && str[i] == '$')
 		i++;
 	return (i - 1);
 }
 
-// Modifiquei aqui pq dava um erro quando passava o valgrind.
-// Em casos sem expansão o i retornava fora do tamanho da str
-// EX: ls retornava um i = 3 e dai quando ia pro if tava fora 
-// e podia dar seg fault (nao sei pq nao dava...)
-// Retirei tambem o is alnum or slash pq nao acho que deve ser testado aqui
-
 /*
-* Check if the str (token->str) is expansible. So you can avoid
-* execute expansion methods in tokens that doesn't even has $
-* (for example: echo, hola etc)
-* and others tokens that doesn't start by an alphacharacter or slash
-* (for example: $1, $/, $' etc)
-*/
+ * Check if the str (token->str) is expansible. So you can avoid
+ * execute expansion methods in tokens that doesn't even has $
+ * (for example: echo, hola etc)
+ * and others tokens that doesn't start by an alphacharacter or slash
+ * (for example: $1, $/, $' etc)
+ */
 int	is_expansible(char *str)
 {
 	int	i;
@@ -79,19 +74,19 @@ int	is_expansible(char *str)
 A função funciona só nos casos que a str começa com $?
 echo $? funciona e retorn 0 (ou o exit value atual)
 echo abc$? nao funciona e retorna abc$?
+// TODO: ao inves de usar 0 e 1 usar dolar position
 */
 int	is_dollarquestion_mark(char *str)
 {
-	//TODO: ao inves de usar 0 e 1 usar dolar position
 	if (str[0] == '$' && str[1] == '?')
 		return (1);
 	return (0);
 }
 
 /*
-* returns: the text before the dolar sign. 
-* Ex: for "123$USER" return 123
-*/
+ * returns: the text before the dolar sign.
+ * Ex: for "123$USER" return 123
+ */
 char	*g_pre_dol(char *str, int *dolar_position, int i) // 0 5
 {
 	*dolar_position = get_dolar_position(str, i);
