@@ -33,7 +33,7 @@ void print_open_fds() {
     }
 }
 
-char	*get_input(int last_exit)
+char	*get_input(void)
 {
 	char	*input;
 	int		wr;
@@ -83,29 +83,21 @@ void	clean_tokens(t_token *first)
 	}
 }
 
-void	init_minishell(t_env *envp)
+void	init_minishell(t_env *envp, t_builtin functions[])
 {
 	char		*input;
-	int			last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
-	t_builtin	functions[BUILTINS_NUM];
 
 	(void)envp;
-	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
 	input = NULL;
-	last_exit = 0;
 	while (42)
 	{
-		// control + c
-		// struct sigaction	si;
-		// si.sa_handler = &handle_control_c;
-		// si.sa_flags = SA_RESTART;
-		// sigaction(SIGINT, &si, NULL);
 		//print_open_fds();
-		input = get_input(last_exit);
+		set_main_signals();
+		input = get_input();
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0' && input[0] != '#')
@@ -113,16 +105,20 @@ void	init_minishell(t_env *envp)
 			first_token = lexical_analysis(input);
 			if (!validate_tokens(first_token))
 			{
-				expansion(first_token, last_exit, *envp);
+				expansion(first_token, *envp);
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
+					// Necessita criar um signal handler para o heredoc...
+					// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 					execute_heredoc(first_process);
+					// ************************************************
 					if (set_redirects(first_process))
 						last_exit = 1;
 					else if (first_process->cmd && first_process->cmd[0])
 					{
-						last_exit = execute_cmd(first_process, envp, last_exit,
+						set_parent_signals();
+						last_exit = execute_cmd(first_process, envp,
 								functions);
 					}
 				}
@@ -132,8 +128,6 @@ void	init_minishell(t_env *envp)
 		}
 		clean_tokens(first_token);
 		clean_process(&first_process);
-		// limpar as redireções
-		// limpar os processos
 		first_token = NULL;
 		clean_input(&input);
 	}

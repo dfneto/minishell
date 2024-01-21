@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_env(char **argv, t_env *env, int last_exit)
+int	ft_env(char **argv, t_env *env)
 {
 	t_node	*tmp;
 

@@ -77,7 +77,7 @@ static int	is_valid_env2(char *str, t_env *env)
 /*
 
  */
-int	ft_export(char **argv, t_env *env, int last_exit)
+int	ft_export(char **argv, t_env *env)
 {
 	int		ret;
 	char	*cpy;

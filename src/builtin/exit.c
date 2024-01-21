@@ -85,7 +85,7 @@ static int	is_num(char *str)
 	return (1);
 }
 
-int	ft_exit(char **argv, t_env *env, int last_exit)
+int	ft_exit(char **argv, t_env *env)
 {
 	(void)env;
 	argv++;
