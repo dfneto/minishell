@@ -60,7 +60,9 @@ static int	parent_execution(char *path)
 
 	free(path);
 	wait(&child_exit);
-	return (WEXITSTATUS(child_exit));
+	if (WIFEXITED(child_exit))
+		return (WEXITSTATUS(child_exit));
+	return (128 + WTERMSIG(child_exit));
 }
 
 int	do_single_fork(char *path, char **cmd, t_env env)

@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_unset(char **argv, t_env *env)
+int	ft_unset(char **argv, t_env *env, int last_exit)
 {
 	(void)last_exit;
 	argv++;

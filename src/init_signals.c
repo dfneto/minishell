@@ -18,12 +18,11 @@
 
 void	main_control_c(int signum)
 {
-	(void)signum;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	last_exit = 130;
+	g_signal = signum;
 }
 
 /* Handle signals in main loop */
