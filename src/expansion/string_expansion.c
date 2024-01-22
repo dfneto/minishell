@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:34:40 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:50:41 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 /* 
 * Pequena aula de quando enviar um ponteiro ou o seu endereço:
-* no add_token_after eu envio &ponteiro quando vou alterar o valor do ponteiro no método chamado e quero o valor atualizado aqui,
-* se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de aux a cada
-* while, assim que quero saber seu valor aqui. Então, devo enviar seu endereço. Diferentemente
-* de next_tok_after_expand do qual não será atualizado no método chamado ou new_token que é
-* atualizado e retornado.
+* no add_token_after eu envio &ponteiro quando vou alterar o valor do ponteiro
+* no método chamado e quero o valor atualizado aqui,
+* se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de 
+* aux a cada while, assim que quero saber seu valor aqui. Então, devo enviar 
+* seu endereço. Diferentemente de next_tok_after_expand do qual não será 
+* atualizado no método chamado ou new_token que é atualizado e retornado.
 */
 /*
 * criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens:
@@ -29,18 +30,17 @@
 int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *next_tok_after_expand, int a)
 {
 	int			i;
-	t_token 	*new_token;
+	t_token		*new_token;
 
-	if (a == 1) //TODO: melhorar essa nojeira!
+	if (a == 1)
 	{
 		i = 1;
 		new_token = NULL;
 		while (split[i])
 		{
 			new_token = create_token_split(split[i], next_tok_after_expand);
-			add_token_after(&aux, new_token); 
+			add_token_after(&aux, new_token);
 			i++;
-			
 		}
 		return (i);
 	}
@@ -51,15 +51,17 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 		while (split[i])
 		{
 			new_token = create_token_split(split[i], next_tok_after_expand);
-			add_token_after(&aux, new_token); 
+			add_token_after(&aux, new_token);
 			i++;
-			
 		}
 		return (i + 1);
 	}
 }
 
-/* In the case that you have a token of the form $a$b$c
+/*
+* It also create tokens in case that there are more than one $
+* Case 1: without text before: 
+* In the case that you have a token of the form $a$b$c
 * it will split in $a, $b, $c, expand each of them and
 * after the split and expansion will
 * return: the last token created after the expansion
@@ -71,40 +73,8 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 * $a$a$a
 * a $USER$USER a
 * a $a$a$a a
-*/
-t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
-{
-	int			toks_dol_created;
-	char		**split;
-	t_token		*aux;
-	t_token 	*next_tok_after_expand; 
-
-	/* RELATED TO PRE DOLAR TEXT */
-	// int			dolar_position;
-	// char		*pre_dolar;
-	
-	split = NULL;
-	next_tok_after_expand = token->next;
-	aux = token;
-	toks_dol_created = 0;
-
-	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
-// 	pre_dolar = NULL;
-// 	dolar_position = 0;
-// 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-// 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
-	
-	//fazemos o split
-	split = safe_split(token->str, '$');
-	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	token->str = split[0]; 
-
-
-	toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
-	return (expand_tokens_created(token, toks_dol_created, env));
-}
-
-/* In the case that you have a token of the form hola$a$b$c
+* Case 2: with text before
+* In the case that you have a token of the form hola$a$b$c
 * it will split in hola$a, $b, $c, expand eacch of them and
 * after the split and expansion will
 * return: the last token created after the expansion
@@ -116,32 +86,6 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 * hola$a b
 * hola$a$a$a b
 * hola$USER$USER b
-*/
-t_token	*expand_tok_with_text_before(t_token *token, t_env env)
-{
-	int			toks_dol_created;
-	char		**split;
-	t_token 	*aux;
-	t_token 	*next_tok_after_expand; 
-	
-	split = NULL;
-	next_tok_after_expand = token->next;
-	aux = token;
-	toks_dol_created = 0;
-	
-	//fazemos o split
-	split = safe_split(remove_pre_dolar_text(token->str), '$');
-	
-	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	token->str = g_pre_dol(token->str, 0);
-
-	toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
-
-	return expand_tokens_created(token->next, toks_dol_created - 1, env);	
-}
-
-/*
-* It also create tokens in case that there are more than one $
 * obs: we reuse the actual token and we set its value to the text before the 
 * dollar or to the first expansion, in case that the token has not pre text
 */
@@ -149,14 +93,13 @@ t_token	*expand_tokens(t_token *token, t_env env)
 {
 	int			toks_dol_created;
 	char		**split;
-	t_token 	*aux;
-	t_token 	*next_tok_after_expand; 
-	
+	t_token		*aux;
+	t_token		*next_tok_after_expand;
+
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
 	toks_dol_created = 0;
-	
 	if (token->str[0] == '$')
 	{
 		split = safe_split(token->str, '$');
@@ -164,12 +107,12 @@ t_token	*expand_tokens(t_token *token, t_env env)
 		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
 		return (expand_tokens_created(token, toks_dol_created, env));
 	}
-	else 
+	else
 	{
 		split = safe_split(remove_pre_dolar_text(token->str), '$');
 		token->str = g_pre_dol(token->str, 0);
 		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
-		return expand_tokens_created(token->next, toks_dol_created - 1, env);	
+		return (expand_tokens_created(token->next, toks_dol_created - 1, env));
 	}
 }
 
@@ -208,9 +151,5 @@ t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
 	}
 	else
 		last_token_expanded = expand_tokens(token, env);
-	// if (token->str[0] == '$')
-	// 	last_token_expanded = expand_tok_withOUT_text_before(token, env);
-	// else
-	// 	last_token_expanded = expand_tok_with_text_before(token, env);
 	return (last_token_expanded);
 }
