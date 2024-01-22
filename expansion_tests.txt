@@ -2,6 +2,7 @@ FAILING:
 echo 123$?
 echo $A$?
 echo $?123
+echo $?badasb
 echo $USER$?abc
 
 

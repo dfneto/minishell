@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:50:41 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:02:54 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,25 +93,23 @@ t_token	*expand_tokens(t_token *token, t_env env)
 {
 	int			toks_dol_created;
 	char		**split;
-	t_token		*aux;
 	t_token		*next_tok_after_expand;
 
 	split = NULL;
 	next_tok_after_expand = token->next;
-	aux = token;
 	toks_dol_created = 0;
 	if (token->str[0] == '$')
 	{
 		split = safe_split(token->str, '$');
 		token->str = split[0];
-		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
+		toks_dol_created = create_and_add_token_for_each_dollar(split, token, next_tok_after_expand, 1);
 		return (expand_tokens_created(token, toks_dol_created, env));
 	}
 	else
 	{
 		split = safe_split(remove_pre_dolar_text(token->str), '$');
 		token->str = g_pre_dol(token->str, 0);
-		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
+		toks_dol_created = create_and_add_token_for_each_dollar(split, token, next_tok_after_expand, 0);
 		return (expand_tokens_created(token->next, toks_dol_created - 1, env));
 	}
 }
