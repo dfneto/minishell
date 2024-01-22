@@ -40,7 +40,7 @@ static void	parent_execution(t_process *process, int i, int num_processes)
 		close_pipes(process->fd);
 }
 
-static void	child_execution(t_process *process, int last_exit, t_env *env,
+static void	child_execution(t_process *process, t_env *env,
 			t_builtin functions[])
 {
 	set_child_signals();
@@ -60,15 +60,15 @@ static void	child_execution(t_process *process, int last_exit, t_env *env,
 			close_pipes(process->prev->fd);
 	}
 	close_pipes(process->fd);
-	last_exit = execute_builtins(process->cmd, env, last_exit,
+	env->last_exit = execute_builtins(process->cmd, env,
 			functions);
-	if (last_exit == -1)
+	if (env->last_exit == -1)
 	{
 		execve(get_path(process->cmd, *env), process->cmd,
 			get_env_array(*env));
 		exit(EXIT_FAILURE);
 	}
-	exit(last_exit);
+	exit(env->last_exit);
 }
 
 int	check_path(char *path, t_process *process)
@@ -109,7 +109,7 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	if (check == -1)
 		exit(EXIT_FAILURE);
 	if (check == CHILD)
-		child_execution(process, num_arr[2], env, functions);
+		child_execution(process, env, functions);
 	else
 		parent_execution(process, num_arr[1], num_arr[0]);
 	return (0);

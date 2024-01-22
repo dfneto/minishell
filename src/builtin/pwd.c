@@ -16,23 +16,22 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_pwd(char **argv, t_env *env, int last_exit)
+int	ft_pwd(char **argv, t_env *env)
 {
 	char	*directory;
 
 	(void)argv;
-	(void)env;
-	last_exit = 1;
+	env->last_exit = 1;
 	directory = getcwd(NULL, PATH_MAX);
 	if (!directory)
 	{
-		last_exit = 0;
+		env->last_exit = 0;
 		directory = ft_getenv("PWD", *env);
 	}
 	if (!directory)
 		return (EXIT_FAILURE);
 	printf("%s\n", directory);
-	if (last_exit)
+	if (env->last_exit)
 		free(directory);
 	return (EXIT_SUCCESS);
 }

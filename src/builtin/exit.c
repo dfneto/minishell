@@ -85,12 +85,11 @@ static int	is_num(char *str)
 	return (1);
 }
 
-int	ft_exit(char **argv, t_env *env, int last_exit)
+int	ft_exit(char **argv, t_env *env)
 {
-	(void)env;
 	argv++;
 	if (argv[0] == NULL || (!strcmp(argv[0], "--") && !argv[1]))
-		exit(last_exit);
+		exit(env->last_exit);
 	if (argv[1] == NULL && is_num(argv[0]))
 		exit(ft_atoi(argv[0]));
 	else if (!is_num(argv[0]))

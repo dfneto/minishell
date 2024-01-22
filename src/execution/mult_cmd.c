@@ -29,20 +29,20 @@ VERIFICAR REDIRECTS E HEREDOC
 ORGANIZAR PIPES
 */
 
-int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
+int	execute_multi_cmd(t_process *process, t_env *env,
 		t_builtin functions[])
 {
 	int	num_arr[3];
 
 	num_arr[0] = count_processes(process);
 	num_arr[1] = 0;
-	num_arr[2] = last_exit;
+	num_arr[2] = env->last_exit;
 	while (process)
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
 		if (process->outfile == -1 || process->infile == -1)
-			last_exit = 1;
+			env->last_exit = 1;
 		else
 			if (main_execution(process, env, num_arr, functions))
 				return (127);
@@ -55,17 +55,17 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 	int last_ok_exit = 0;
 	while (num_arr[1] < num_arr[0])
 	{
-		wait(&last_exit);
-		if (WIFEXITED(last_exit))
+		wait(&env->last_exit);
+		if (WIFEXITED(env->last_exit))
 		{
 			checker = 1;
-			last_ok_exit = WEXITSTATUS(last_exit);
+			last_ok_exit = WEXITSTATUS(env->last_exit);
 		}
-		else if (WIFSIGNALED(last_exit) && !checker)
-			last_exit = 128 + WTERMSIG(last_exit);
+		else if (!checker && WIFSIGNALED(env->last_exit))
+			env->last_exit = 128 + WTERMSIG(env->last_exit);
 		num_arr[1]++;
 	}
 	if (checker)
-		last_exit = last_ok_exit;
-	return (last_exit);
+		env->last_exit = last_ok_exit;
+	return (env->last_exit);
 }

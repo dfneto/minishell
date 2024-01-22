@@ -49,11 +49,10 @@ COLOCAR GETCWD AQUI... EM ALGUM LUGAR
  VERIFICAR TROCA DE ENV -> PWD & OLDPWD
  */
 
-int	ft_cd(char **argv, t_env *env, int last_exit)
+int	ft_cd(char **argv, t_env *env)
 {
 	int	result;
 
-	(void)last_exit;
 	if (argv[1])
 	{
 		if (!ft_strcmp(argv[1], "-"))

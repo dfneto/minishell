@@ -120,18 +120,19 @@ typedef struct s_env
 {
 	t_node				*head;
 	t_node				*tail;
+	int					last_exit;
 }						t_env;
 
 typedef struct s_builtin
 {
 	char				*name;
-	int					(*function)(char **, t_env *, int);
+	int					(*function)(char **, t_env *);
 }						t_builtin;
 
 int						check_open_quotes(char *input);
 int						clean_input(char **input);
 int						is_exit(char *input);
-int						expansion(t_token *first_token, int last_exit,
+int						expansion(t_token *first_token, 
 							t_env env);
 int						get_dolar_position(char *str, int i);
 int						is_expansible(char *str);
@@ -157,8 +158,8 @@ t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);
 t_token					*create_token_split(char *str, t_token *next_token);
-t_token					*expand_token_int_n_tokens(t_token *token, t_env env, int last_exit);
-t_token					*expand_double_quote_token(t_token *token, t_env env, int last_exit);
+t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
+t_token					*expand_double_quote_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input);
 t_token					*create_token(char *input, int start, int end,
 							int type);
@@ -187,11 +188,11 @@ t_redirect				*create_redirect(char *name, t_type type);
 /* EXECUTION */
 // Execute CMD
 int						execute_cmd(t_process *process, t_env *envp,
-							int last_exit, t_builtin funcitons[]);
+							 t_builtin funcitons[]);
 
 // Single cmd
 int						execute_single_cmd(t_process *process, t_env *env,
-							int last_exit, t_builtin functions[]);
+							 t_builtin functions[]);
 
 // Single cmd utils
 int						do_single_fork(char *path, char **cmd, t_env env);
@@ -202,7 +203,7 @@ void					reset_redirects(t_process *process, int *og_stdin,
 
 // Mult cmds
 int						execute_multi_cmd(t_process *process, t_env *env,
-							int last_exit, t_builtin functions[]);
+							 t_builtin functions[]);
 
 // Mult cmds utils
 int						main_execution(t_process *process, t_env *env,
@@ -251,17 +252,17 @@ char					*safe_substr(char const *s, unsigned int start, size_t len);
 // Init builtins
 void					init_builtins(t_builtin array[]);
 int						is_builtins(char **argv, t_builtin functions[]);
-int						execute_builtins(char **argv, t_env *env, int last_exit,
+int						execute_builtins(char **argv, t_env *env, 
 							t_builtin functions[]);
 
 // Built-in functions
-int						ft_echo(char **argv, t_env *env, int last_exit);
-int						ft_pwd(char **argv, t_env *env, int last_exit);
-int						ft_exit(char **argv, t_env *env, int last_exit);
-int						ft_env(char **argv, t_env *env, int last_exit);
-int						ft_cd(char **argv, t_env *env, int last_exit);
-int						ft_export(char **argv, t_env *env, int last_exit);
-int						ft_unset(char **argv, t_env *env, int last_exit);
+int						ft_echo(char **argv, t_env *env);
+int						ft_pwd(char **argv, t_env *env);
+int						ft_exit(char **argv, t_env *env);
+int						ft_env(char **argv, t_env *env);
+int						ft_cd(char **argv, t_env *env);
+int						ft_export(char **argv, t_env *env);
+int						ft_unset(char **argv, t_env *env);
 
 // ft_export utils
 int						print_ordered(t_env env);

@@ -83,24 +83,22 @@ void	clean_tokens(t_token *first)
 	}
 }
 
-void	init_minishell(t_env *envp)
+void	init_minishell(t_env *env)
 {
 	char		*input;
-	int			last_exit;
 	t_token		*first_token;
 	t_process	*first_process;
 	t_builtin	functions[BUILTINS_NUM];
 
-	(void)envp;
 	init_builtins(functions);
 	first_token = NULL;
 	first_process = NULL;
 	input = NULL;
-	last_exit = 0;
+	env->last_exit = 0;
 	while (42)
 	{
 		set_main_signals();
-		input = get_input(last_exit);
+		input = get_input(env->last_exit);
 		set_parent_signals();
 		if (!input)
 			exit(EXIT_FAILURE);
@@ -111,25 +109,24 @@ void	init_minishell(t_env *envp)
 			{
 				if (g_signal != 0)
 				{
-					last_exit = 128 + g_signal;
+					env->last_exit = 128 + g_signal;
 					g_signal = 0;
 				}
-				expansion(first_token, last_exit, *envp);
+				expansion(first_token, *env);
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
 
 					if (execute_heredoc(first_process))
-						last_exit = 130;
+						env->last_exit = 130;
 					else if (set_redirects(first_process))
-						last_exit = 1;
+						env->last_exit = 1;
 					else if (first_process->cmd && first_process->cmd[0])
-						last_exit = execute_cmd(first_process, envp, last_exit,
-								functions);
+						env->last_exit = execute_cmd(first_process, env, functions);
 				}
 			}
 			else
-				last_exit = 2;
+				env->last_exit = 2;
 		}
 		clean_tokens(first_token);
 		clean_process(&first_process);

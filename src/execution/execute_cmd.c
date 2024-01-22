@@ -27,11 +27,11 @@
 // 	+ de 1 processo: executa a função execute_multi_cmd
 //		que vai controlar os pipes e redirections
 // Return: O valor de saida do programa executado
-int	execute_cmd(t_process *process, t_env *envp, int last_exit,
+int	execute_cmd(t_process *process, t_env *env,
 		t_builtin functions[])
 {
 	if (!process->next)
-		return (execute_single_cmd(process, envp, last_exit, functions));
+		return (execute_single_cmd(process, env, functions));
 	else
-		return (execute_multi_cmd(process, envp, last_exit, functions));
+		return (execute_multi_cmd(process, env, functions));
 }
