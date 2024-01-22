@@ -26,7 +26,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define PROMPT "\033[38;5;143mbr.sh$ \033[0;39m"
+# define PROMPT "\r\033[38;5;143mbr.sh$ \033[0;39m"
 # define QUOTE_OPENED "You have to close your quotes"
 
 # define CHILD 0
@@ -145,7 +145,7 @@ void					print_list_redirect(t_redirect *redirect);
 void					print_list_process(t_process *process);
 void					print_process(t_process *root);
 void					remove_spaces(char **str);
-void					execute_heredoc(t_process *first_process);
+int					execute_heredoc(t_process *first_process);
 char					*remove_pre_dolar_text(char *str, int start);
 void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);

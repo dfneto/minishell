@@ -12,6 +12,40 @@
 
 #include "minishell.h"
 
+
+int do_parent_heredoc(int pipefd[2])
+{
+	int child_exit;
+
+	close(pipefd[1]);
+	wait(&child_exit);
+	if (WIFEXITED(child_exit))
+		return (pipefd[0]);
+	close(pipefd[0]);
+	return (-1)	;
+}
+
+void do_child_heredoc(int pipefd[2], char *name)
+{
+	char *input;
+	
+	set_child_signals();
+	close(pipefd[0]);
+	input = readline(":->");
+	if (input)
+	{
+		while (ft_strcmp(input, name))
+		{
+			write(pipefd[1], input, ft_strlen(input));
+			write(pipefd[1], "\n", 1);
+			input = readline(":->");
+			if (!input)
+				break ;
+		}
+	}
+	close(pipefd[1]);
+	exit(EXIT_SUCCESS);
+}
 /*
  * Para cada processo vou verificar suas redireções e caso encontre
  * um heredoc o executo a medidade que o encontro. Ex: o processo
@@ -22,13 +56,11 @@
 // cat << h1 >t1 | cat << h2 > t2
 // casos execeção:
 // TODO: cat << h1 > test > test2 < no << h2 (testar)
-void	execute_heredoc(t_process *first_process)
+int	execute_heredoc(t_process *first_process)
 {
 	t_redirect *redirect;
-	char *input;
 	int pipefd[2];
 
-	input = NULL;
 	while (first_process)
 	{
 		redirect = first_process->redirect;
@@ -43,27 +75,22 @@ void	execute_heredoc(t_process *first_process)
 					perror("pipe");
 					exit(EXIT_FAILURE);
 				}
-				// usar fork para criar um child que envia o texto por pipe?
-				// enviar kill se SIGINT?
-				// testar saida do child, se fail limpar heredoc e evitar entrada na execução?
-				input = readline(":->");
-				//Adicionei os ifs para o caso de apertarem ctrl+d no meio do heredoc...
-				if (input)
+				int id = fork();
+				if (id < 0)
 				{
-					while (ft_strcmp(input, redirect->name))
-					{
-						write(pipefd[1], input, ft_strlen(input));
-						write(pipefd[1], "\n", 1);
-						input = readline(":->");
-						if (!input)
-							break ;
-					}
+					perror("fork");
+					exit(EXIT_FAILURE);	
 				}
-				close(pipefd[1]);
-				first_process->heredoc = pipefd[0];
+				if (id == CHILD)
+					do_child_heredoc(pipefd, redirect->name);
+				else
+					first_process->heredoc = do_parent_heredoc(pipefd);
+				if (first_process->heredoc < 0)
+					return (1);
 			}
 			redirect = redirect->next;
 		}
 		first_process = first_process->next;
 	}
+	return (0);
 }

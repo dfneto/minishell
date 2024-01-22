@@ -101,6 +101,7 @@ void	init_minishell(t_env *envp)
 	{
 		set_main_signals();
 		input = get_input(last_exit);
+		set_parent_signals();
 		if (!input)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0' && input[0] != '#')
@@ -117,18 +118,14 @@ void	init_minishell(t_env *envp)
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
-					// Necessita criar um signal handler para o heredoc...
-					// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-					execute_heredoc(first_process);
-					// ************************************************);
-					if (set_redirects(first_process))
+
+					if (execute_heredoc(first_process))
+						last_exit = 130;
+					else if (set_redirects(first_process))
 						last_exit = 1;
 					else if (first_process->cmd && first_process->cmd[0])
-					{
-						set_parent_signals();
 						last_exit = execute_cmd(first_process, envp, last_exit,
 								functions);
-					}
 				}
 			}
 			else
