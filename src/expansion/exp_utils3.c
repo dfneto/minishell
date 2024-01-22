@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 12:44:43 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 12:46:22 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:11:48 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ int	is_alpha_or_slash(char c)
  * Returns -1 in case that the str hasn't $
  * and should not be expanded so.
  */
-int	get_dolar_position(char *str, int i)
+int	get_dolar_position(char *str, int start)
 {
-	if (str[i] == '\"')
-		i++;
-	while (str[i] && str[i] != '$')
-		i++;
-	if (str[i] == '\0')
+	if (str[start] == '\"')
+		start++;
+	while (str[start] && str[start] != '$')
+		start++;
+	if (str[start] == '\0')
 		return (-1);
-	while (str[i] && str[i] == '$')
-		i++;
-	return (i - 1);
+	while (str[start] && str[start] == '$')
+		start++;
+	return (start - 1);
 }
