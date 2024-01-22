@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2023/12/11 21:41:46 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:32:22 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	add_process(t_process **first, t_process *new)
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	t_process	*process;
-	t_redirect 	*redirect;
-	t_type			type;
+	t_redirect	*redirect;
+	t_type		type;
 	int			i;
 
 	i = 0;
@@ -67,15 +67,16 @@ t_process	*create_process(t_token *token, int num_token_str)
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	if (num_token_str > 0)
-		process->cmd = (char **)safe_calloc((num_token_str + 1), sizeof(char *));
+		process->cmd = (char **)safe_calloc((num_token_str + 1),
+				sizeof(char *));
 	while (token)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
 			process->cmd[i] = safe_strjoin(process->cmd[i], token->str);
 			token = token->next;
-		}	
-		else if (token->type == SPC)//se encontro um espaço
+		}
+		else if (token->type == SPC) //se encontro um espaço
 		{
 			token = token->next; //vou para o próximo token
 			if (num_token_str > 0) //eu só posso checar abaixo se eu tenho token str.
@@ -85,10 +86,10 @@ t_process	*create_process(t_token *token, int num_token_str)
 			}
 		}
 		else if (token->type == PIPE)
-			break;
+			break ;
 		else //aqui crio a lista de redireções
 		{
-			/* Modifiquei aqui para juntar varias strings caso estejam "grudadas" */
+			/* Modifiquei aqui para juntar varias strings caso estejam "grudadas" -> ex: echo test > "double"'single'noquote deve juntar as tres palavras e criar um output doublesinglenoquote  */
 			char *joined = NULL;
 			type = token->type;
 			token = token->next;
@@ -151,7 +152,8 @@ int	look_for_commands(t_token **head)
 /*
 * return: a list of process where each process can have an 
 * array of commands or a list of redirections
-*/ 
+*/
+
 t_process	*process_creation(t_token *first_token)
 {
 	t_process	*head;

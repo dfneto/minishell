@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/30 23:45:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:26:48 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 void	clean_process(t_process **process)
 {
-	int	i;
-	t_process *tmp;
-	
+	int			i;
+	t_process	*tmp;
+
 	while (*process)
 	{
 		tmp = (*process)->next;
@@ -51,6 +51,7 @@ void	clean_process(t_process **process)
 void	add_redirect(t_redirect **first, t_redirect *new) //TODO: experimentar com * porque no void    execute_heredoc(t_process *first_process) eu usei um * somente
 {
 	t_redirect	*temp;
+
 	if (!new)
 		return ;
 	if (*first == NULL)
