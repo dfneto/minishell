@@ -12,3 +12,4 @@ mpanic
 open_fd.sh
 *.log
 readline
+gitstatus.sh

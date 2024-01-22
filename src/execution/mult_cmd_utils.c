@@ -94,7 +94,7 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	char	*path;
 	int		check;
 
-	if (!process->cmd || !process->cmd[0] || !process->cmd[0][0]) // remover os ultimos dois quando arrumar a expansao...
+	if (!process->cmd)
 		return (0);
 	if (!is_builtins(process->cmd, functions))
 	{

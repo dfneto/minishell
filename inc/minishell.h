@@ -278,6 +278,7 @@ int						print_ordered(t_env env);
 int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
+void	ignore_sigquit_forever(void);
 void	set_main_signals(void);
 void set_child_signals(void);
 void set_parent_signals(void);
@@ -287,6 +288,7 @@ void set_parent_signals(void);
 // Process utils
 // t_process   *create_process(char *input, int in, int out);
 void					clean_process(t_process **process);
+void	clean_redirects(t_redirect *redirect);
 void					init_signals(void);
 void					init_minishell(t_env *envp);
 

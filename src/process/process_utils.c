@@ -37,6 +37,8 @@ void	clean_process(t_process **process)
 			close((*process)->infile);
 		if ((*process)->outfile != STDOUT_FILENO)
 			close((*process)->outfile);
+		if ((*process)->redirect)
+			clean_redirects((*process)->redirect);
 		free(*process);
 		*process = tmp;
 	}

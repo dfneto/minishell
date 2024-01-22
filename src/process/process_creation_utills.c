@@ -22,3 +22,17 @@ t_redirect	*create_redirect(char *name, t_type type)
 	redirect->next = NULL;
 	return (redirect);
 }
+
+void	clean_redirects(t_redirect *redirect)
+{
+	t_redirect *tmp;
+
+	while (redirect)
+	{
+		tmp = redirect->next;
+		if (redirect->name)
+			free(redirect->name);
+		free(redirect);
+		redirect = tmp;
+	}
+}

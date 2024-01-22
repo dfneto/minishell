@@ -28,6 +28,7 @@ int	main(int argc, char **argv, char **envp)
 	// sigaction(SIGQUIT, &sq, NULL);
 	(void)argc;
 	(void)argv;
+	ignore_sigquit_forever();
 	env.head = NULL;
 	env.tail = NULL;
 	if (create_env(&env, envp))
