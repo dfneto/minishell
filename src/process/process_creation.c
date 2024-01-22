@@ -151,7 +151,7 @@ int	look_for_commands(t_token **head)
 * array of commands or a list of redirections
 */
 
-t_process	*process_creation(t_token *first_token)
+t_process	*process_creation(t_token *first_token, t_env *env)
 {
 	t_process	*head;
 	t_process	*process;
@@ -167,6 +167,12 @@ t_process	*process_creation(t_token *first_token)
 		process = create_process(tmp, num_tok_str);
 		add_process(&head, process);
 	}
+	if (execute_heredoc(head))
+	{
+		env->last_exit = 130;
+		return (clean_process(&head));
+	}
+	set_redirects(head);
 	//ao termino terei uma lista de processos e cada processo com seus comandos e sua lista de redireções
 	return (head);
 }

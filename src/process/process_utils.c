@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	clean_process(t_process **process)
+t_process	*clean_process(t_process **process)
 {
 	int			i;
 	t_process	*tmp;
@@ -23,14 +23,11 @@ void	clean_process(t_process **process)
 	while (*process)
 	{
 		tmp = (*process)->next;
-		i = 0;
+		i = -1;
 		if ((*process)->cmd)
 		{
-			while ((*process)->cmd[i])
-			{
+			while ((*process)->cmd[++i])
 				free((*process)->cmd[i]);
-				i++;
-			}
 			free((*process)->cmd);
 		}
 		if ((*process)->infile != STDIN_FILENO)
@@ -42,6 +39,7 @@ void	clean_process(t_process **process)
 		free(*process);
 		*process = tmp;
 	}
+	return (NULL);
 }
 
 /*

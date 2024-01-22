@@ -181,7 +181,7 @@ t_token					*create_quote_token(char *input, int *i, int type,
 t_token					*create_redirec_tok(char *input, int *i, int type,
 							int quote_char);
 t_token					*create_string_token(char *input, int *i);
-t_process				*process_creation(t_token *first_token);
+t_process				*process_creation(t_token *first_token, t_env *env);
 t_process				*create_process(t_token *token, int i);
 t_redirect				*create_redirect(char *name, t_type type);
 
@@ -286,7 +286,7 @@ void set_parent_signals(void);
 
 // Process utils
 // t_process   *create_process(char *input, int in, int out);
-void					clean_process(t_process **process);
+t_process				*clean_process(t_process **process);
 void	clean_redirects(t_redirect *redirect);
 void					init_signals(void);
 void					init_minishell(t_env *envp);
@@ -295,6 +295,6 @@ int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);
 
-void	clean_tokens(t_token *first);
+t_token	*clean_tokens(t_token *first);
 
 #endif
