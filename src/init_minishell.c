@@ -104,19 +104,12 @@ void	init_minishell(t_env *env)
 			exit(EXIT_FAILURE);
 		if (input[0] != '\0' && input[0] != '#')
 		{
-			first_token = lexical_analysis(input);
-			if (!validate_tokens(first_token))
+			first_token = lexical_analysis(input, env);
+			if (first_token)
 			{
-				if (g_signal != 0)
-				{
-					env->last_exit = 128 + g_signal;
-					g_signal = 0;
-				}
-				expansion(first_token, *env);
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
-
 					if (execute_heredoc(first_process))
 						env->last_exit = 130;
 					else if (set_redirects(first_process))

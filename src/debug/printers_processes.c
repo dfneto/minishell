@@ -28,8 +28,7 @@ void	print_cmd(char **cmd)
 		printf("CMD[%d] NULL", i);
 		return ;
 	}
-	printf("CMD[%d] not NULL\n", i);
-	while (*cmd)
+	while (cmd[i])
 	{
 		printf("CMD[%d] -> %s\n", i, cmd[i]);
 		i++;

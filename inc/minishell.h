@@ -165,7 +165,7 @@ char					*get_exit_status(int last_exit);
 t_token					*create_token_split(char *str, t_token *next_token);
 t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
 t_token					*expand_double_quote_token(t_token *token, t_env env);
-t_token					*lexical_analysis(char *input);
+t_token					*lexical_analysis(char *input, t_env *env);
 t_token					*create_token(char *input, int start, int end,
 							int type);
 t_token					*expand_token_dolar(t_token *token, t_env env);
@@ -294,5 +294,7 @@ void					init_minishell(t_env *envp);
 int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);
+
+void	clean_tokens(t_token *first);
 
 #endif

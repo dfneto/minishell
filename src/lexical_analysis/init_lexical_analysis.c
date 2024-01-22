@@ -18,9 +18,23 @@
  * it just produces a list of tokens.
  * Here it also remove the quotes
  */
-t_token	*lexical_analysis(char *input)
+t_token	*lexical_analysis(char *input, t_env *env)
 {
-	return (create_tokens(input));
+	t_token	*return_token;
+
+	return_token = create_tokens(input);
+	if (validate_tokens(return_token))
+	{
+		clean_tokens(return_token);
+		return (NULL);
+	}
+	if (g_signal != 0)
+	{
+		env->last_exit = 128 + g_signal;
+		g_signal = 0;
+	}
+	expansion(return_token, *env);
+	return (return_token);
 }
 
 /*

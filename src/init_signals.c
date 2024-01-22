@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_main_signals.c                                     :+:      :+:    :+:   */
+/*   init_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:53:27 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/11 21:02:52 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:42:09 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ void	set_main_signals(void)
 }
 
 /* Handle signals during execution */
-void set_child_signals(void)
+void	set_child_signals(void)
 {
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR
+		|| signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 		exit(EXIT_FAILURE);
 }
 
-void set_parent_signals(void)
+void	set_parent_signals(void)
 {
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		exit(EXIT_FAILURE);
