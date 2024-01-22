@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 17:21:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:31:39 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,13 @@ void					print_list_redirect(t_redirect *redirect);
 void					print_list_process(t_process *process);
 void					print_process(t_process *root);
 void					remove_spaces(char **str);
-int					execute_heredoc(t_process *first_process);
-char					*remove_pre_dolar_text(char *str);
+int						execute_heredoc(t_process *first_process);
 void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);
 char					*g_pre_dol(char *str, int start);
 char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);
-char				    *expand_dollar_question(char *str, t_env env);							
+char				    *expand_dollar_question(char *str, t_env env);		
 t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);

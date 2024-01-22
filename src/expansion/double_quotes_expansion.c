@@ -6,11 +6,21 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:18:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:31:42 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+char	*get_text_post_extension(t_token *token, char *exp, int i)
+{
+	char	*post_expansion;
+
+	post_expansion = NULL;
+	post_expansion = safe_substr(token->str, i, ft_strlen(token->str) - i);
+	return (safe_strjoin(exp, post_expansion));
+}
 
 /*
 * Get the word expanded
@@ -59,12 +69,10 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 	int		i;
 	int		dol_pos;
 	char	*exp;
-	char	*post_expansion;
 
 	i = 0;
 	dol_pos = 0;
 	exp = NULL;
-	post_expansion = NULL;
 	while (tok->str[i] && dol_pos >= 0)
 	{
 		exp = safe_strjoin(exp, g_pre_dol(tok->str, i));
@@ -76,10 +84,7 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 		}
 	}
 	if (tok->str[i] && tok->str[i] != '$')
-	{
-		post_expansion = safe_substr(tok->str, i, ft_strlen(tok->str) - i);
-		exp = safe_strjoin(exp, post_expansion);
-	}
+		exp = get_text_post_extension(tok, exp, i);
 	tok->str = exp;
 	return (tok);
 }

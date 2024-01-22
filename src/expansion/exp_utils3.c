@@ -6,18 +6,18 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 12:44:43 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:11:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:32:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	has_space(char *str)
 {
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == ' ')
 			return (1);
@@ -51,4 +51,18 @@ int	get_dolar_position(char *str, int start)
 	while (str[start] && str[start] == '$')
 		start++;
 	return (start - 1);
+}
+
+int	is_alnum_or_slash(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+
+t_token	*set_token_str(t_token *token, char *value)
+{
+	token->str = safe_strdup(value);
+	return (token);
 }
