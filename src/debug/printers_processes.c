@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:14:48 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:37:49 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ void	print_process(t_process *process)
 
 	i = 0;
 	if (process == NULL)
-		return (printf("Process NULL\n"));
+	{
+		printf("Process NULL\n");
+		return ;
+	}
 	printf("Processo nao eh nulo\n");
 	print_cmd(process->cmd);
 	print_list_redirect(process->redirect);
