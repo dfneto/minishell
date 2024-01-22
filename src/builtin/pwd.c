@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_pwd(char **argv, t_env *env)
+int	ft_pwd(char **argv, t_env *env, int last_exit)
 {
 	char	*directory;
 

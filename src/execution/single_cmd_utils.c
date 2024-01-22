@@ -49,7 +49,6 @@ void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout)
 
 static void	child_execution(char *path, char **argv, t_env env)
 {
-	set_child_signals();
 	execve(path, argv, get_env_array(env));
 	exit(EXIT_SUCCESS);
 }

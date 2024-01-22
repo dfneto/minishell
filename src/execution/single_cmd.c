@@ -19,7 +19,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	execute_single_cmd(t_process *process, t_env *env,
+int	execute_single_cmd(t_process *process, t_env *env, int last_exit,
 		t_builtin functions[])
 {
 	int		og_stdout;
@@ -31,7 +31,7 @@ int	execute_single_cmd(t_process *process, t_env *env,
 	if (!process->cmd[0][0]) // remover quando arrumar a expansao...
 		return (0);
 	set_single_redirects(process, &og_stdin, &og_stdout);
-	last_exit = execute_builtins(process->cmd, env, functions);
+	last_exit = execute_builtins(process->cmd, env, last_exit, functions);
 	if (last_exit == -1)
 	{
 		path = get_path(process->cmd, *env);
