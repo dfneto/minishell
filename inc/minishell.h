@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:12:56 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ extern int g_signal;
 // # define INPUT_REDIRECTION_TYPE 6
 // # define HERE_DOC_TYPE 7
 
+/*
+* obs: NL is not a token
+*/
 typedef enum token_type
 {
 	DOUBLE_QUOTE = 0,
@@ -134,6 +137,7 @@ int						clean_input(char **input);
 int						is_exit(char *input);
 int						expansion(t_token *first_token, 
 							t_env env);
+int						has_word_expansible(char *str);
 int						get_dolar_position(char *str, int i);
 int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);

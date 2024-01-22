@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 22:03:46 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:32:31 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,17 @@ int	is_expansible(char *str)
 	else if (is_alpha_or_slash(str[i + 1]) || str[i + 1] == '?')
 		return (1);
 	return (0);
+}
+
+/* 
+* If it has at least one expansible word returns 1
+* Otherwise returns 0.
+* It is not implemented, but should deal with cases
+* where the first $word is not expansible, like echo "$1 $USER"
+*/
+int	has_word_expansible(char *str)
+{
+	return (is_expansible(str));
 }
 
 /* TO DO

@@ -5,14 +5,16 @@ echo $?123
 echo $USER$?abc
 
 
-echo "123$0 $USER david"
-echo "123$0$USER david"
 
 echo $b/
 echo $USER!
 echo $USER/
 
 
+
+echo "$1 $USER" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
+echo "123$0 $USER waka" 
+echo "123$0$USER waka"
 -------------
 PASSING:
 echo "$USER $USER" - ok

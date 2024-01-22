@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:39:42 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 16:38:27 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:08:16 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ t_token	*create_pipe_token(char *input, int *i)
 	return (create_token(input, 0, 0, PIPE));
 }
 
+/*
+* We create the quote token with quote type and with 
+* the content WITHOUT the history_quotes_inhibit_expansion
+*/
 t_token	*create_quote_token(char *input, int *i, int type, int quote_char)
 {
 	int		start;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexical_analysis.c                                 :+:      :+:    :+:   */
+/*   init_lexical_analysis.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2023/11/10 20:07:31 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:07:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
  * Ideally the lexical analysis does more stuffs than
  * allocate tokens, but in this shell
- * it just produces a list of tokens
+ * it just produces a list of tokens.
+ * Here it also remove the quotes
  */
 t_token	*lexical_analysis(char *input)
 {
@@ -66,6 +67,7 @@ void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
 /*
  * return: a pointer to a token that is chainned with others tokens
  * where each token pointes to the next
+ * There are 9 types of token (see enum token_type).
  */
 t_token	*create_tokens(char *input)
 {
