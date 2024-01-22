@@ -114,7 +114,7 @@ void	init_minishell(t_env *env)
 						env->last_exit = 130;
 					else if (set_redirects(first_process))
 						env->last_exit = 1;
-					else if (first_process->cmd && first_process->cmd[0])
+					else
 						env->last_exit = execute_cmd(first_process, env, functions);
 				}
 			}
