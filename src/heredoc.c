@@ -43,6 +43,9 @@ void	execute_heredoc(t_process *first_process)
 					perror("pipe");
 					exit(EXIT_FAILURE);
 				}
+				// usar fork para criar um child que envia o texto por pipe?
+				// enviar kill se SIGINT?
+				// testar saida do child, se fail limpar heredoc e evitar entrada na execução?
 				input = readline(":->");
 				//Adicionei os ifs para o caso de apertarem ctrl+d no meio do heredoc...
 				if (input)

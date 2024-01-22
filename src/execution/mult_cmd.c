@@ -50,14 +50,22 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		num_arr[1]++;
 	}
 	num_arr[1] = 0;
+	// UGLY BUT WORKS
+	int checker = 0;
+	int last_ok_exit = 0;
 	while (num_arr[1] < num_arr[0])
 	{
 		wait(&last_exit);
+		if (WIFEXITED(last_exit))
+		{
+			checker = 1;
+			last_ok_exit = WEXITSTATUS(last_exit);
+		}
+		else if (WIFSIGNALED(last_exit) && !checker)
+			last_exit = 128 + WTERMSIG(last_exit);
 		num_arr[1]++;
 	}
-	if (WIFEXITED(last_exit))
-		last_exit = WEXITSTATUS(last_exit);
-	else if (WIFSIGNALED(last_exit))
-		last_exit = 128 + WTERMSIG(last_exit);
+	if (checker)
+		last_exit = last_ok_exit;
 	return (last_exit);
 }
