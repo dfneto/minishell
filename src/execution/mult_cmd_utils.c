@@ -43,6 +43,7 @@ static void	parent_execution(t_process *process, int i, int num_processes)
 static void	child_execution(t_process *process, int last_exit, t_env *env,
 			t_builtin functions[])
 {
+	set_child_signals();
 	if (process->outfile == STDOUT_FILENO && process->next)
 		dup2(process->fd[1], STDOUT_FILENO);
 	else

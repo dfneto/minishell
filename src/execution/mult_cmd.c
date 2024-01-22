@@ -55,6 +55,9 @@ int	execute_multi_cmd(t_process *process, t_env *env, int last_exit,
 		wait(&last_exit);
 		num_arr[1]++;
 	}
-	last_exit = WEXITSTATUS(last_exit);
+	if (WIFEXITED(last_exit))
+		last_exit = WEXITSTATUS(last_exit);
+	else if (WIFSIGNALED(last_exit))
+		last_exit = 128 + WTERMSIG(last_exit);
 	return (last_exit);
 }

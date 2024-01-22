@@ -42,6 +42,9 @@
 # define L_MAX "9223372036854775807"
 # define L_MIN "9223372036854775808"
 
+extern int g_signal;
+
+
 // typedef enum char //usar isso ou os defines?
 // {
 // 	,
@@ -152,10 +155,10 @@ char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);
 t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token);
-char					*get_exit_status(void);
+char					*get_exit_status(int last_exit);
 t_token					*create_token_split(char *str, t_token *next_token);
-t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
-t_token					*expand_double_quote_token(t_token *token, t_env env);
+t_token					*expand_token_int_n_tokens(t_token *token, t_env env, int last_exit);
+t_token					*expand_double_quote_token(t_token *token, t_env env, int last_exit);
 t_token					*lexical_analysis(char *input);
 t_token					*create_token(char *input, int start, int end,
 							int type);
@@ -267,7 +270,9 @@ int						print_ordered(t_env env);
 int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
-void					handle_control_c(void);
+void	set_main_signals(void);
+void set_child_signals(void);
+void set_parent_signals(void);
 
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 

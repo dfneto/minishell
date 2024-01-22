@@ -17,7 +17,7 @@
 * Returns the word expanded
 */
 char	*g_w_expd(t_token *token, int *i, int dolar_position,
-		t_env env)
+		t_env env, int last_exit)
 {
 	char	*word_to_expand;
 
@@ -25,7 +25,7 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 	if (token->str[*i] == '?')
 	{
 		(*i)++;
-		return (get_exit_status());
+		return (get_exit_status(last_exit));
 	}
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;
@@ -54,7 +54,7 @@ Another example: "|$USER|"
 * the quotes. So waka won't be expanded and so for waka 
 * in "123$USER $USER waka" the dolar position is -1.
 */
-t_token	*expand_double_quote_token(t_token *tok, t_env env)
+t_token	*expand_double_quote_token(t_token *tok, t_env env, int last_exit)
 {
 	int		i;
 	int		dol_pos;
@@ -71,7 +71,7 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 		if (dol_pos >= 0 && tok->str[dol_pos + 1])
 		{
 			i = dol_pos + 1;
-			exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env));
+			exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env, last_exit));
 		}
 	}
 	if (tok->str[i] && tok->str[i] != '$')

@@ -49,6 +49,7 @@ void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout)
 
 static void	child_execution(char *path, char **argv, t_env env)
 {
+	set_child_signals();
 	execve(path, argv, get_env_array(env));
 	exit(EXIT_SUCCESS);
 }
@@ -59,7 +60,9 @@ static int	parent_execution(char *path)
 
 	free(path);
 	wait(&child_exit);
-	return (WEXITSTATUS(child_exit));
+	if (WIFEXITED(child_exit))
+		return (WEXITSTATUS(child_exit));
+	return (128 + WTERMSIG(child_exit));
 }
 
 int	do_single_fork(char *path, char **cmd, t_env env)

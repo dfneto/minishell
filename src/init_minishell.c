@@ -99,12 +99,7 @@ void	init_minishell(t_env *envp)
 	last_exit = 0;
 	while (42)
 	{
-		// control + c
-		// struct sigaction	si;
-		// si.sa_handler = &handle_control_c;
-		// si.sa_flags = SA_RESTART;
-		// sigaction(SIGINT, &si, NULL);
-		//print_open_fds();
+		set_main_signals();
 		input = get_input(last_exit);
 		if (!input)
 			exit(EXIT_FAILURE);
@@ -113,15 +108,24 @@ void	init_minishell(t_env *envp)
 			first_token = lexical_analysis(input);
 			if (!validate_tokens(first_token))
 			{
+				if (g_signal != 0)
+				{
+					last_exit = 128 + g_signal;
+					g_signal = 0;
+				}
 				expansion(first_token, last_exit, *envp);
 				first_process = process_creation(first_token);
 				if (first_process)
 				{
+					// Necessita criar um signal handler para o heredoc...
+					// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 					execute_heredoc(first_process);
+					// ************************************************);
 					if (set_redirects(first_process))
 						last_exit = 1;
 					else if (first_process->cmd && first_process->cmd[0])
 					{
+						set_parent_signals();
 						last_exit = execute_cmd(first_process, envp, last_exit,
 								functions);
 					}
