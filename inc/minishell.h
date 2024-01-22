@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 12:12:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:19:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,10 @@ int						clean_input(char **input);
 int						is_exit(char *input);
 int						expansion(t_token *first_token, 
 							t_env env);
+int						is_alpha_or_slash(char c);
 int						has_word_expansible(char *str);
 int						get_dolar_position(char *str, int i);
+int						has_space(char *str);
 int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);
 int						is_dollarquestion_mark(char *str);
@@ -158,6 +160,7 @@ char					*g_pre_dol(char *str, int *dolar_position,
 							int i);
 char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);
+char				    *expand_dollar_question(char *str, t_env env);							
 t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);

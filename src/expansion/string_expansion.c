@@ -6,25 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 21:37:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:20:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	has_space(char *str)
-{
-	int	i;
-
-	i = 0;
-	while(str[i])
-	{
-		if (str[i] == ' ')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 /*
 * Receive a token starting by $. Ex: $a
@@ -141,13 +127,6 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 	aux = token;
 	tokens_$_created = 0;
 
-	//isso ficaria melhor fora deste método
-	if (is_dollarquestion_mark(token->str))
-	{
-		token->str = safe_strdup(get_exit_status(env.last_exit));
-		return (token);
-	}
-	
 	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
 // 	pre_dolar = NULL;
 // 	dolar_position = 0;
@@ -209,7 +188,7 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 	dolar_position = 0;
 	pre_dolar = g_pre_dol(token->str, &dolar_position, i);
 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
-	
+
 	//fazemos o split
 	split = safe_split(str_without_pre_dolar_text, '$');
 	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
@@ -235,12 +214,19 @@ t_token	*expand_tok_with_text_before(t_token *token, t_env env)
 }
 
 /*
+* TODO: tratar $? quando tem texto ou variáveis de ambiente antes e 
+* depois, ex: echo $USER $? $USER (OK), echo $USER$?$USER (KO),
+* echo $USER$? (KO), echo $USER $?$USER (KO), echo $?$USER (KO), echo $USER$?
+* Como ta implementado só funciona se o token for $?
+* ----------------------------------------
 * Expand one token into 1 or more tokens.
 * return: the last token created after the expansion
 * There are 2 cases to expand:
 * $a$b$c
 # some_text$a$b$c
-* Ex:
+* In case that the token expanded has spaces, the expansion
+* is tranformed in n tokens.
+* Exs:
 *	$a="ls   -la" -> tokens: ls, -la
 *   $b="    ls    -l    -a    -F    " -> tokens: ls, -l -a, -F
 *   hola$a -> tokens: holals, -la
@@ -255,7 +241,11 @@ t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
 	t_token	*last_token_expanded;
 
 	last_token_expanded = NULL;
-	//TODO: tratar $? quando tem texto ou variáveis de ambiente antes e depois
+	if (ft_strcmp(token->str, "$?") == 0)
+	{
+		token->str = expand_dollar_question(token->str, env);
+		return (token);
+	}
 	if (token->str[0] == '$')
 		last_token_expanded = expand_tok_withOUT_text_before(token, env);
 	else
