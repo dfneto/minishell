@@ -68,7 +68,7 @@ void	print_token_info(t_token *tok)
 REFACTOR
 E colocar em um lugar melhor s2
 */
-void	clean_tokens(t_token *first)
+t_token	*clean_tokens(t_token *first)
 {
 	t_token	*tmp;
 
@@ -81,6 +81,7 @@ void	clean_tokens(t_token *first)
 			free(tmp->str);
 		free(tmp);
 	}
+	return (NULL);
 }
 
 void	init_minishell(t_env *env)
@@ -107,22 +108,15 @@ void	init_minishell(t_env *env)
 			first_token = lexical_analysis(input, env);
 			if (first_token)
 			{
-				first_process = process_creation(first_token);
+				first_process = process_creation(first_token, env);
 				if (first_process)
-				{
-					if (execute_heredoc(first_process))
-						env->last_exit = 130;
-					else if (set_redirects(first_process))
-						env->last_exit = 1;
-					else
 						env->last_exit = execute_cmd(first_process, env, functions);
-				}
 			}
 			else
 				env->last_exit = 2;
 		}
-		clean_tokens(first_token);
-		clean_process(&first_process);
+		first_token = clean_tokens(first_token);
+		first_process = clean_process(&first_process);
 		// limpar as redireções
 		// limpar os processos
 		first_token = NULL;
