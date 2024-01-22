@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 13:19:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:21:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,11 +153,10 @@ void					print_list_process(t_process *process);
 void					print_process(t_process *root);
 void					remove_spaces(char **str);
 int					execute_heredoc(t_process *first_process);
-char					*remove_pre_dolar_text(char *str, int start);
+char					*remove_pre_dolar_text(char *str);
 void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);
-char					*g_pre_dol(char *str, int *dolar_position,
-							int i);
+char					*g_pre_dol(char *str, int start);
 char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);
 char				    *expand_dollar_question(char *str, t_env env);							
@@ -170,10 +169,12 @@ t_token					*expand_double_quote_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input);
 t_token					*create_token(char *input, int start, int end,
 							int type);
+t_token					*expand_token_dolar(t_token *token, t_env env);
 t_token					*get_last_token(t_token *first);
 t_token					*create_tokens(char *input);
 t_token					*create_token(char *input, int beginning, int end,
 							int type);
+t_token					*expand_tokens_created(t_token *token, int num, t_env env);
 t_token					*create_space_token(char *input, int *i);
 t_token					*create_pipe_token(char *input, int *i);
 t_token					*create_quote_token(char *input, int *i, int type,

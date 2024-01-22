@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 12:46:52 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:39:43 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ int	is_dollarquestion_mark(char *str)
  * returns: the text before the dolar sign.
  * Ex: for "123$USER" return 123
  */
-char	*g_pre_dol(char *str, int *dolar_position, int i)
+char	*g_pre_dol(char *str, int start)
 {
-	*dolar_position = get_dolar_position(str, i);
-	if (*dolar_position == -1)
+	int	dolar_position;
+
+	dolar_position = get_dolar_position(str, start);
+	if (dolar_position == -1)
 		return (safe_strdup(""));
-	return (safe_substr(str, i, *dolar_position - i));
+	return (safe_substr(str, start, dolar_position - start));
 }

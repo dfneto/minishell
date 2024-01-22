@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 19:11:03 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:21:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ int	is_alnum_or_slash(char c)
  * from a string str starting from start char and
  * return: the new string
  */
-char	*remove_pre_dolar_text(char *str, int start)
+char	*remove_pre_dolar_text(char *str)
 {
+	int	start;
+
+	start = get_dolar_position(str, 0);
 	return (safe_substr(str, start, ft_strlen(str) - start));
 }
 

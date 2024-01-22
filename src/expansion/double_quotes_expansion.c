@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/21 21:50:51 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:18:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 	post_expansion = NULL;
 	while (tok->str[i] && dol_pos >= 0)
 	{
-		exp = safe_strjoin(exp, g_pre_dol(tok->str, &dol_pos, i));
+		exp = safe_strjoin(exp, g_pre_dol(tok->str, i));
+		dol_pos = get_dolar_position(tok->str, i);
 		if (dol_pos >= 0 && tok->str[dol_pos + 1])
 		{
 			i = dol_pos + 1;

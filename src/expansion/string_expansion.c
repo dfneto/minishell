@@ -6,56 +6,20 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 13:20:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:50:41 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-* Receive a token starting by $. Ex: $a
-* Return: the last part of the token expanded or the token in the 
-* case that the expansion is null
-* ex: a="ls   -l    -a  -F   " 
-* $a patata: returns the token -F with token->next = patata
-*/
-t_token	*expand_token_dolar(t_token *token, t_env env)
-{
-	char		*expanded_str;
-	t_token		*next_tok_after_expand;
-
-	next_tok_after_expand = token->next;
-
-	//ADICIONEI ESSE TESTE PARA EVITAR DE CRIAR O TOKEN QUANDO A VARIAVEL NAO EXISTE NO ENV
-	if (!exist_in_env(token->str, env))
-	{
-		token->str = NULL;
-		token->type = SPC;
-		return (token);
-	}
-	if (token->str == NULL)
-		expanded_str = safe_strdup("");
-	else
-		expanded_str = safe_strdup(ft_getenv(token->str, env));
-	//if (expanded_str == NULL)     -> RETIREI ESSA PARTE PORQUE O SAFE STRDUP NUNCA VAI RETORNAR NULL!
-	//	return (set_token_str(token, ""));
-	token->str = NULL;
-	if (has_space(expanded_str))
-		return (create_tok_per_word_in(expanded_str, next_tok_after_expand, token));
-	else //TODO: talvez deva alterar o compartamento de quando a string expandida (ex: $USER -> david) não tenha espaço para se 
-	{	//assemelhar ao caso em que tem espaço, ou não tbm. Porque se eu tenhoo que token->str tem um valor diferente de nulo tbm da erro de segfault
-		token->str = expanded_str;
-		return (token);
-	}
-}
-
 /* 
 * Pequena aula de quando enviar um ponteiro ou o seu endereço:
-* no add_token_after eu envio &ponteiro quando vou alterar o valor do ponteiro no método chamado e quero o valor atualizado aqui,
-* se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de aux a cada
-* while, assim que quero saber seu valor aqui. Então, devo enviar seu endereço. Diferentemente
-* de next_tok_after_expand do qual não será atualizado no método chamado ou new_token que é
-* atualizado e retornado.
+* no add_token_after eu envio &ponteiro quando vou alterar o valor do ponteiro
+* no método chamado e quero o valor atualizado aqui,
+* se nao quero envio uma copia do ponteiro. Ex: eu quero atualizar o valor de 
+* aux a cada while, assim que quero saber seu valor aqui. Então, devo enviar 
+* seu endereço. Diferentemente de next_tok_after_expand do qual não será 
+* atualizado no método chamado ou new_token que é atualizado e retornado.
 */
 /*
 * criamos um token para cada dolar existente - 1, ex: $a$b$c -> criamos 2 tokens:
@@ -66,18 +30,17 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *next_tok_after_expand, int a)
 {
 	int			i;
-	t_token 	*new_token;
+	t_token		*new_token;
 
-	if (a == 1) //TODO: melhorar essa nojeira!
+	if (a == 1)
 	{
 		i = 1;
 		new_token = NULL;
 		while (split[i])
 		{
 			new_token = create_token_split(split[i], next_tok_after_expand);
-			add_token_after(&aux, new_token); 
+			add_token_after(&aux, new_token);
 			i++;
-			
 		}
 		return (i);
 	}
@@ -88,15 +51,17 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 		while (split[i])
 		{
 			new_token = create_token_split(split[i], next_tok_after_expand);
-			add_token_after(&aux, new_token); 
+			add_token_after(&aux, new_token);
 			i++;
-			
 		}
 		return (i + 1);
 	}
 }
 
-/* In the case that you have a token of the form $a$b$c
+/*
+* It also create tokens in case that there are more than one $
+* Case 1: without text before: 
+* In the case that you have a token of the form $a$b$c
 * it will split in $a, $b, $c, expand each of them and
 * after the split and expansion will
 * return: the last token created after the expansion
@@ -108,51 +73,8 @@ int	create_and_add_token_for_each_dollar(char **split, t_token *aux, t_token *ne
 * $a$a$a
 * a $USER$USER a
 * a $a$a$a a
-*/
-t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
-{
-	int			i;
-	int			tokens_$_created;
-	char		**split;
-	t_token		*aux;
-	t_token 	*next_tok_after_expand; 
-
-	/* RELATED TO PRE DOLAR TEXT */
-	// int			dolar_position;
-	// char		*pre_dolar;
-	
-	i = 0;
-	split = NULL;
-	next_tok_after_expand = token->next;
-	aux = token;
-	tokens_$_created = 0;
-
-	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
-// 	pre_dolar = NULL;
-// 	dolar_position = 0;
-// 	pre_dolar = get_pre_dolar_text(token->str, &dolar_position, i);
-// 	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
-	
-	//fazemos o split
-	split = safe_split(token->str, '$');
-	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	token->str = split[0]; 
-
-
-	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
-	aux = NULL;
-	
-	//agora vou expandir cada token_$ criado
-	while (token && i < tokens_$_created) 
-	{
-		aux = expand_token_dolar(token, env);
-		token = aux->next; 
-		i++;
-	}
-	return token;
-}
-
-/* In the case that you have a token of the form hola$a$b$c
+* Case 2: with text before
+* In the case that you have a token of the form hola$a$b$c
 * it will split in hola$a, $b, $c, expand eacch of them and
 * after the split and expansion will
 * return: the last token created after the expansion
@@ -164,53 +86,34 @@ t_token	*expand_tok_withOUT_text_before(t_token *token, t_env env)
 * hola$a b
 * hola$a$a$a b
 * hola$USER$USER b
+* obs: we reuse the actual token and we set its value to the text before the 
+* dollar or to the first expansion, in case that the token has not pre text
 */
-t_token	*expand_tok_with_text_before(t_token *token, t_env env)
+t_token	*expand_tokens(t_token *token, t_env env)
 {
-	int			i;
-	int			tokens_$_created;
+	int			toks_dol_created;
 	char		**split;
-	t_token 	*aux;
-	t_token 	*next_tok_after_expand; 
-	
-	/* RELATED TO PRE DOLAR TEXT */
-	int			dolar_position;
-	char		*pre_dolar;
+	t_token		*aux;
+	t_token		*next_tok_after_expand;
 
-	i = 0;
 	split = NULL;
 	next_tok_after_expand = token->next;
 	aux = token;
-	tokens_$_created = 0;
-	
-	/* DO THINGS IN CASE OF TEXT PRE DOLAR */
-	pre_dolar = NULL;
-	dolar_position = 0;
-	pre_dolar = g_pre_dol(token->str, &dolar_position, i);
-	char *str_without_pre_dolar_text = remove_pre_dolar_text(token->str, dolar_position);
-
-	//fazemos o split
-	split = safe_split(str_without_pre_dolar_text, '$');
-	//reaproveitamos o token atual, mas para isso precisamos alterar seu valor
-	token->str = pre_dolar;
-
-	tokens_$_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
-	aux = NULL;
-
-	token = token->next;
-	//TODO: refatorar o expand_token_dolar e demais métodos para remover o pre_dolar
-	//aqui vou tratar o primeiro $a diferente dos $b$c. Vou expandir $a e fazer o join com pre-dolar
-	// token = expand_token_dolar(token, pre_dolar);
-	
-
-	//agora vou expandir cada split_token
-	while (token && i < tokens_$_created - 1) //entender pq tem que ser j - 1, do contrário da vários erros
+	toks_dol_created = 0;
+	if (token->str[0] == '$')
 	{
-		aux = expand_token_dolar(token, env);
-		token = aux->next; 
-		i++;
+		split = safe_split(token->str, '$');
+		token->str = split[0];
+		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 1);
+		return (expand_tokens_created(token, toks_dol_created, env));
 	}
-	return token;	
+	else
+	{
+		split = safe_split(remove_pre_dolar_text(token->str), '$');
+		token->str = g_pre_dol(token->str, 0);
+		toks_dol_created = create_and_add_token_for_each_dollar(split, aux, next_tok_after_expand, 0);
+		return (expand_tokens_created(token->next, toks_dol_created - 1, env));
+	}
 }
 
 /*
@@ -246,9 +149,7 @@ t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
 		token->str = expand_dollar_question(token->str, env);
 		return (token);
 	}
-	if (token->str[0] == '$')
-		last_token_expanded = expand_tok_withOUT_text_before(token, env);
 	else
-		last_token_expanded = expand_tok_with_text_before(token, env);
+		last_token_expanded = expand_tokens(token, env);
 	return (last_token_expanded);
 }
