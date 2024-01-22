@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:19:37 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/28 16:19:40 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:10:00 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	validate_tokens(t_token *token)
 	int	cmd;
 
 	cmd = 0;
-
 	if (token && token->type == SPC && !token->next)
 		return (0);
 	while (token)
