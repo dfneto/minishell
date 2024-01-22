@@ -6,52 +6,34 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/19 18:27:41 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:14:48 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_type(int type)
+void	print_cmd(char **cmd)
 {
-	if (type == SPC)
-		printf("spc\n");
-	else if (type == OUTPUT_REDIRECTION)
-		printf(">\n");
-	else if (type == APPEND)
-		printf(">>\n");
-	else if (type == INPUT_REDIRECTION)
-		printf("<\n");
-	else if (type == HERE_DOC)
-		printf("<<\n");
-	else if (type == PIPE)
-		printf("|\n");
-	else
-		printf("nothing to be printed\n");
-}
+	int	i;
 
-void	print_list_token(t_token *token)
-{
-	if (!token)
-		printf("Token NULO!\n");
-	while (token)
+	if (!cmd)
 	{
-		if (token->str)
-			printf("<%s>\n", token->str);
-		else
-			print_type(token->type);
-		token = token->next;
+		printf("CMD NULL\n");
+		return ;
 	}
-}
-
-void	print_token(t_token *token)
-{
-	if (!token)
-		printf("Token nulo\n");
-	else if (token->str)
-		printf("<%s>\n", token->str);
-	else
-		print_type(token->type);
+	printf("CMD not NULL\n");
+	i = 0;
+	if (!cmd[i])
+	{
+		printf("CMD[%d] NULL", i);
+		return ;
+	}
+	printf("CMD[%d] not NULL\n", i);
+	while (*cmd)
+	{
+		printf("CMD[%d] -> %s\n", i, cmd[i]);
+		i++;
+	}
 }
 
 void	print_process(t_process *process)
@@ -60,29 +42,9 @@ void	print_process(t_process *process)
 
 	i = 0;
 	if (process == NULL)
-	{
-		printf("Process NULL\n");
-		return ;
-	}
-	else
-		printf("Processo nao eh nulo\n");
-	if (process->cmd == NULL)
-		printf("CMD eh nulo\n");
-	else
-	{
-		printf("CMD NAO eh nulo\n");
-		if (process->cmd[0] == NULL)
-			printf("CMD[0] eh nulo\n");
-		else
-		{
-			printf("CMD[0] NAO eh nulo\n");
-			while (process->cmd[i])
-			{
-				printf("%s\n", process->cmd[i]);
-				i++;
-			}
-		}
-	}
+		return (printf("Process NULL\n"));
+	printf("Processo nao eh nulo\n");
+	print_cmd(process->cmd);
 	print_list_redirect(process->redirect);
 }
 
@@ -117,20 +79,7 @@ void	print_list_process(t_process *root)
 		printf("Lista de processos nula ...\n");
 	while (root)
 	{
-		i = 0;
-		printf("processo: ");
-		if (root->cmd)
-		{
-			while (root->cmd[i])
-			{
-				printf("%s ", root->cmd[i]);
-				i++;
-			}
-			printf("\n");
-		}
-		printf("outfile: %d\n", root->outfile);
-		printf("infile: %d\n", root->infile);
-		print_list_redirect(root->redirect);
+		print_process(root);
 		root = root->next;
 	}
 }
