@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:32:22 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:44:41 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ t_process	*create_process(t_token *token, int num_token_str)
 	ao invés de passar com sujeira
 	*/
 	process = (t_process *)safe_calloc(1, sizeof(t_process));
-	process->next = NULL;
-	process->redirect = NULL;
-	process->cmd = NULL;
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
 	if (num_token_str > 0)

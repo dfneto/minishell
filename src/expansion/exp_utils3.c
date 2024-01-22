@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 12:44:43 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 18:32:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:46:10 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	is_alnum_or_slash(char c)
 		return (1);
 	return (0);
 }
-
 
 t_token	*set_token_str(t_token *token, char *value)
 {

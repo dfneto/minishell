@@ -6,12 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 19:31:42 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:46:47 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char	*get_text_post_extension(t_token *token, char *exp, int i)
 {

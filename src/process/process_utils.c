@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 17:26:48 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:45:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ void	clean_process(t_process **process)
 /*
 * Resolvi fazer esse add ponteiro de forma diferente para treinar 
 * o uso de **
+* TODO: experimentar com * porque no 
+* void    execute_heredoc(t_process *first_process) eu usei um * somente
 */
-void	add_redirect(t_redirect **first, t_redirect *new) //TODO: experimentar com * porque no void    execute_heredoc(t_process *first_process) eu usei um * somente
+void	add_redirect(t_redirect **first, t_redirect *new)
 {
 	t_redirect	*temp;
 
@@ -64,52 +66,3 @@ void	add_redirect(t_redirect **first, t_redirect *new) //TODO: experimentar com 
 		temp->next = new;
 	}
 }
-
-/* t_process	*create_process(char *input, int in, int out)
-{
-	t_process	*tmp;
-	t_process	*head;
-	t_process	*tail;
-	char		**process_str;
-	int			i;
-
-	process_str = ft_split(input, '|');
-	if (process_str == NULL)
-		exit(1);
-	i = 0;
-	head = NULL;
-	while (process_str[i])
-	{
-		tmp = (t_process *)malloc(sizeof(t_process));
-		if (tmp == NULL)
-			exit(1);
-		tmp->cmd = ft_split(process_str[i], ' ');
-		if (tmp->cmd == NULL)
-		{
-			free(tmp);
-			exit(1);
-		}
-		tmp->index = i;
-		tmp->next = NULL;
-		tmp->prev = NULL;
-		tmp->infile = in;
-		tmp->outfile = out;
-		if (!head)
-		{
-			head = tmp;
-			tail = tmp;
-		}
-		else
-		{
-			tail->next = tmp;
-			tmp->prev = tail;
-			tail = tmp;
-		}
-		i++;
-	}
-	tmp = NULL;
-	tail = NULL;
-	free(process_str);
-	process_str = NULL;
-	return (head);
-} */
