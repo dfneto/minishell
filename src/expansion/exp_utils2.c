@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 19:39:18 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:57:23 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,58 @@ void	add_token_after(t_token **token, t_token *new_token)
 {
 	(*token)->next = new_token;
 	(*token) = new_token;
+}
+
+t_token	*with_space(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
+{
+	size_t		i;
+	int			start;
+	int			first_token_alterated;
+
+	i = 0;
+	first_token_alterated = 0;
+	start = 0;
+	token->type = SPC; //alter o tipo do token para espaco
+	token->str = NULL;
+	while (i < ft_strlen(expanded_str))
+	{
+		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
+		{
+			if (expanded_str[i + 1] != ' ')
+			{
+				// t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
+				// new_token->next = next_tok_after_expand;
+				// add_token_after(&token, new_token);
+				if (first_token_alterated == 0) //para quando a palavra expandida começa com espaço)
+				{
+					// printf("1\n");
+					
+					first_token_alterated = 1;
+				}
+				else //crio token <spc>
+				{
+					// printf("2\n");
+					t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
+					new_token->next = next_tok_after_expand;
+					add_token_after(&token, new_token);
+				}
+			}
+			i++;
+		}
+		start = i;
+		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char
+		{                                                                
+			if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0') && first_token_alterated == 1) // e cria um token str 
+			{ 
+				// printf("4\n");
+				t_token *new_token = create_token(expanded_str, start, i, STRING);
+				new_token->next = next_tok_after_expand;
+				add_token_after(&token, new_token);
+			}
+			i++;
+		}
+	}
+	return (token);
 }
 
 /*
@@ -39,22 +91,32 @@ t_token	*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expa
 	i = 0;
 	first_token_alterated = 0;
 	start = 0;
+	//TODO: ISSO DEVE SUBSTITUR TODO O WHILE ABAIXO
+	if (expanded_str[i] && expanded_str[i] == ' ')
+		return (with_space(expanded_str, next_tok_after_expand, token));
+	// else if (expanded_str[i] && expanded_str[i] != ' ')
+	// 	no_space()
+
 	while (i < ft_strlen(expanded_str))
 	{
 		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
 		{
-			if (expanded_str[i + 1] != ' ' && first_token_alterated == 0) //para quando a palavra expandida começa com espaço
+			if (expanded_str[i + 1] != ' ')
 			{
-				// printf("1\n");
-				token->type = SPC; //alter o tipo do token para espaco
-				first_token_alterated = 1;
-			}
-			else if (expanded_str[i + 1] != ' ' && first_token_alterated == 1) //crio token <spc>
-			{
-				// printf("2\n");
-				t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
-				new_token->next = next_tok_after_expand;
-				add_token_after(&token, new_token);
+				if (first_token_alterated == 0) //para quando a palavra expandida começa com espaço)
+				{
+					// printf("1\n");
+					token->type = SPC; //alter o tipo do token para espaco
+					token->str = NULL;
+					first_token_alterated = 1;
+				}
+				else //crio token <spc>
+				{
+					// printf("2\n");
+					t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
+					new_token->next = next_tok_after_expand;
+					add_token_after(&token, new_token);
+				}
 			}
 			i++;
 		}
