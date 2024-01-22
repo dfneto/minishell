@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:17:20 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/23 16:17:18 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:11:24 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int		exist_in_env(char *name, t_env env)
+int	exist_in_env(char *name, t_env env)
 {
 	while (env.head)
 	{

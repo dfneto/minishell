@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:35:30 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:36:16 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:16:01 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,17 @@ int	count_processes(t_process *process)
 	return (num_processes);
 }
 
-static void	parent_execution(t_process *process, int i, int num_processes)
+static void	parent_execution(t_process *process)
 {
-	if (i != 0)
+	if (process->prev)
 		close_pipes(process->prev->fd);
-	if (i == num_processes - 1)
+	if (!process->next)
 		close_pipes(process->fd);
 }
 
 static void	child_execution(t_process *process, t_env *env,
 			t_builtin functions[])
 {
-	set_child_signals();
 	if (process->outfile == STDOUT_FILENO && process->next)
 		dup2(process->fd[1], STDOUT_FILENO);
 	else
@@ -88,7 +87,7 @@ int	check_path(char *path, t_process *process)
 	return (1);
 }
 
-int	main_execution(t_process *process, t_env *env, int num_arr[3],
+int	main_execution(t_process *process, t_env *env,
 		t_builtin functions[])
 {
 	char	*path;
@@ -109,8 +108,11 @@ int	main_execution(t_process *process, t_env *env, int num_arr[3],
 	if (check == -1)
 		exit(EXIT_FAILURE);
 	if (check == CHILD)
+	{
+		set_child_signals();
 		child_execution(process, env, functions);
+	}
 	else
-		parent_execution(process, num_arr[1], num_arr[0]);
+		parent_execution(process);
 	return (0);
 }

@@ -213,8 +213,7 @@ int						execute_multi_cmd(t_process *process, t_env *env,
 							 t_builtin functions[]);
 
 // Mult cmds utils
-int						main_execution(t_process *process, t_env *env,
-							int num_arr[3], t_builtin functions[]);
+int						main_execution(t_process *process, t_env *env, t_builtin functions[]);
 int						count_processes(t_process *process);
 
 // Execute Utils

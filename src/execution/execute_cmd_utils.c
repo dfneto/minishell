@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:35:30 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/12/16 12:05:25 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:13:08 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ char	*get_path(char **cmd, t_env env)
 		return (safe_strdup(cmd[0]));
 	abs_path = (char *)safe_calloc(PATH_MAX, sizeof(char));
 	paths = safe_strdup(ft_getenv("PATH", env));
-	if (!paths) // talvez deletar?
-		return (return_path(abs_path, paths));
 	path = ft_strtok(paths, ":");
 	while (path)
 	{
