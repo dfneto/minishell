@@ -37,9 +37,6 @@ void	print_cmd(char **cmd)
 
 void	print_process(t_process *process)
 {
-	int	i;
-
-	i = 0;
 	if (process == NULL)
 	{
 		printf("Process NULL\n");
@@ -73,9 +70,6 @@ void	print_list_redirect(t_redirect *redirect)
 
 void	print_list_process(t_process *root)
 {
-	int	i;
-
-	i = 0;
 	printf("Imprimindo os processos ...\n");
 	if (!root)
 		printf("Lista de processos nula ...\n");

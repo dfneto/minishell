@@ -37,10 +37,12 @@ static void	do_child_heredoc(int pipefd[2], char *name)
 		{
 			write(pipefd[1], input, ft_strlen(input));
 			write(pipefd[1], "\n", 1);
+			free(input);
 			input = readline(":->");
 			if (!input)
 				break ;
 		}
+		free(input);
 	}
 	close(pipefd[1]);
 	exit(EXIT_SUCCESS);
