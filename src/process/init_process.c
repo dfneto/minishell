@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_creation.c                                 :+:      :+:    :+:   */
+/*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 20:44:41 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:00:27 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,40 @@ static void	add_process(t_process **first, t_process *new)
 	}
 }
 
-//aqui estamos criando o comando do processo (comando e argumentos) e também as redireções, sendo que os comandos e redireções vao dentro do processo e um não depende do outro para existir. Posso ter comando sem redireção e vice versa ou ter os dois, mas tenhho que ter um ou outro
-//echo hola > f1 - ok
-//echo hola > f1 > f2 - ok
-//echo hola >> f1 - ok
-//echo hola >> f1 >> f2 - ok
-//echo hola >> f1 >> f2 >> f3 >> f4 - ok
-//echo hola >> f1 > f2 >> f3 > f4 - ok
-//echo david      > f1       > f2 - ok
-//echo   vaca   >   f1 |   echo patata   > f2 > f3 - ok
+/*
+* Aqui estamos criando o comando do processo (comando e argumentos)
+* e uma lista de redireções, sendo que os comandos e redireções
+* são atributos do processo e um não depende do outro para existir. 
+* Posso ter um processo com comando, mas sem redireção e vice versa
+* ou ter os dois, mas tenhho que ter um ou outro.
+* Se durante a criação da lista de redireção aparecer um heredoc, ele
+* é executado aqui.
+* ---------------------------
+* echo hola > f1 - ok
+* echo hola > f1 > f2 - ok
+* echo hola >> f1 - ok
+* echo hola >> f1 >> f2 - ok
+* echo hola >> f1 >> f2 >> f3 >> f4 - ok
+* echo hola >> f1 > f2 >> f3 > f4 - ok
+* echo david      > f1       > f2 - ok
+* echo   vaca   >   f1 |   echo patata   > f2 > f3 - ok
+* ---------------------------
+* Por que usamos um calloc:
+* Ou usamos um calloc ou ao um malloc, mas daí temos que setar 
+seus valores para NULL (process->next = NULL) para evitar de 
+que haja algo em process->next e depois, 	em outro lugar, 
+ao verificarmos if (process->next) não passar, ao invés de passar com sujeira
+*/
 t_process	*create_process(t_token *token, int num_token_str)
 {
+	int			i;
+	char 		* tmp; //Adicionei para arrumar os leaks dos process.txt e process2.txt
 	t_process	*process;
 	t_redirect	*redirect;
 	t_type		type;
-	int			i;
-	char * tmp; //Adicionei para arrumar os leaks dos process.txt e process2.txt
 
 	i = 0;
 	type = -1;
-	/* ou usa um calloc abaixo ou ao fazer um malloc setar 
-	depois seus valores para NULL (process->next = NULL) 
-	para evitar de que haja algo em process->next e depois,
-	em outro lugar, ao verificarmos if (process->next) não passar,
-	ao invés de passar com sujeira
-	*/
 	process = (t_process *)safe_calloc(1, sizeof(t_process));
 	process->infile = STDIN_FILENO;
 	process->outfile = STDOUT_FILENO;
@@ -108,12 +117,14 @@ t_process	*create_process(t_token *token, int num_token_str)
 			add_redirect(&(process->redirect), redirect);
 		}
 	}
-	//ao termino desse metodo vou ter os comandos, infile e outfile padrão, e uma lista de redirecoes, sendo que se em alguma redirecao tiver um heredoc vou executar este aqui
-	
 	return (process);
 }
 
-//Return the numbers of tokens that have str (DOUBLE, SINGLE QUOTE and STR tokens) per process
+/*
+* Returns the numbers of tokens that have something in str 
+* (DOUBLE, SINGLE QUOTE and STR tokens) and before a PIPE
+* in the case that has one
+*/
 int	look_for_commands(t_token **head)
 {
 	int		num_tok_str;
@@ -147,26 +158,29 @@ int	look_for_commands(t_token **head)
 {
 	while(first_redirec) para cada redireção do comando ...
 	{ aqui vou preencher o infile/outfile do processo
-		crio o arquivo e retorno o fd (crio o arquivo a depender do tipo de redireção porque um abro com truncate, outro com append ...), 
+		crio o arquivo e retorno o fd (crio o arquivo a depender do tipo de 
+				redireção porque um abro com truncate, outro com append ...), 
 			se o processo.outfile == -1: processo.outfile = fd criado
-			se o processo.outfile != -1: , close (processo.outfile) e processo.outfile = fd criado
+			se o processo.outfile != -1: , close (processo.outfile) e 
+				processo.outfile = fd criado
 		se da algum erro na criacao do arquivo eu retorno o erro e termino
 	}
 }*/
-/*
-* return: a list of process where each process can have an 
-* array of commands or a list of redirections
-*/
 
+/*
+* Returns: a list of process where each process can have an 
+* array of commands and a list of redirections
+*/
 t_process	*process_creation(t_token *first_token, t_env *env)
 {
+	int			num_tok_str;
 	t_process	*head;
 	t_process	*process;
 	t_token		*tmp;
-	int			num_tok_str;
 
 	head = NULL;
 	process = NULL;
+	tmp = NULL;
 	while (first_token)
 	{
 		tmp = first_token;
@@ -180,6 +194,5 @@ t_process	*process_creation(t_token *first_token, t_env *env)
 		return (clean_process(&head));
 	}
 	set_redirects(head);
-	//ao termino terei uma lista de processos e cada processo com seus comandos e sua lista de redireções
 	return (head);
 }
