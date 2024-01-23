@@ -1,0 +1,31 @@
+br.sh$ echo $USER
+lucas
+br.sh$ exit
+==7179== 
+==7179== HEAP SUMMARY:
+==7179==     in use at exit: 213,387 bytes in 416 blocks
+==7179==   total heap usage: 642 allocs, 226 frees, 234,083 bytes allocated
+==7179== 
+==7179== 6 bytes in 1 blocks are definitely lost in loss record 6 of 79
+==7179==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7179==    by 0x10F2ED: ft_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10CB2B: safe_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10A68F: create_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10A637: create_string_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10AB82: create_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10A7A6: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179== 
+==7179== 21 (16 direct, 5 indirect) bytes in 1 blocks are definitely lost in loss record 17 of 79
+==7179==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7179==    by 0x10FBD9: ft_split (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10C7F9: safe_split (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10C20C: expand_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10C365: expand_token_int_n_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10B760: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7179==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)

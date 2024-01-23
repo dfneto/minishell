@@ -1,0 +1,45 @@
+br.sh$ echo $A$B$C
+foo bar baz
+br.sh$ exit
+==7378== 
+==7378== HEAP SUMMARY:
+==7378==     in use at exit: 213,526 bytes in 430 blocks
+==7378==   total heap usage: 662 allocs, 232 frees, 234,353 bytes allocated
+==7378== 
+==7378== 7 bytes in 1 blocks are definitely lost in loss record 6 of 80
+==7378==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7378==    by 0x10F2ED: ft_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10CB2B: safe_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10A68F: create_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10A637: create_string_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10AB82: create_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10A7A6: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378== 
+==7378== 21 bytes in 3 blocks are definitely lost in loss record 17 of 80
+==7378==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7378==    by 0x10F633: ft_strdup (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C757: safe_strdup (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B4D0: expand_token_dolar (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B558: expand_tokens_created (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C259: expand_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C365: expand_token_int_n_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B760: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378== 
+==7378== 38 (32 direct, 6 indirect) bytes in 1 blocks are definitely lost in loss record 24 of 80
+==7378==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7378==    by 0x10FBD9: ft_split (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C7F9: safe_split (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C20C: expand_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C365: expand_token_int_n_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B760: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7378==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)

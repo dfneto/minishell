@@ -1,0 +1,15 @@
+br.sh$ echo hola > "quote"'single'text.log
+br.sh$ exit
+==7418== 
+==7418== HEAP SUMMARY:
+==7418==     in use at exit: 213,502 bytes in 424 blocks
+==7418==   total heap usage: 662 allocs, 238 frees, 234,527 bytes allocated
+==7418== 
+==7418== 18 bytes in 2 blocks are definitely lost in loss record 13 of 77
+==7418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7418==    by 0x10F7A1: ft_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7418==    by 0x10CA84: safe_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7418==    by 0x10EDD1: create_process (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7418==    by 0x10EF4B: process_creation (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7418==    by 0x10C61D: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7418==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)

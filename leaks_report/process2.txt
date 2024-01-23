@@ -1,0 +1,16 @@
+br.sh$ echo "hola"123'quote'
+hola123quote
+br.sh$ exit
+==7532== 
+==7532== HEAP SUMMARY:
+==7532==     in use at exit: 213,483 bytes in 424 blocks
+==7532==   total heap usage: 652 allocs, 228 frees, 234,284 bytes allocated
+==7532== 
+==7532== 13 bytes in 2 blocks are definitely lost in loss record 9 of 77
+==7532==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7532==    by 0x10F7A1: ft_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7532==    by 0x10CA84: safe_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7532==    by 0x10ED18: create_process (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7532==    by 0x10EF4B: process_creation (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7532==    by 0x10C61D: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7532==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)

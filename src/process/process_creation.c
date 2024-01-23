@@ -51,6 +51,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	t_redirect	*redirect;
 	t_type		type;
 	int			i;
+	char * tmp; //Adicionei para arrumar os leaks dos process.txt e process2.txt
 
 	i = 0;
 	type = -1;
@@ -70,7 +71,10 @@ t_process	*create_process(t_token *token, int num_token_str)
 	{
 		if (token->str) //type STR, DOUB ou SING
 		{
-			process->cmd[i] = safe_strjoin(process->cmd[i], token->str);
+			tmp = safe_strjoin(process->cmd[i], token->str); //Adicionei para arrumar o leak do process2.txt
+			if (process->cmd[i])
+				free(process->cmd[i]);
+			process->cmd[i] = tmp;
 			token = token->next;
 		}
 		else if (token->type == SPC) //se encontro um espaço
@@ -94,7 +98,10 @@ t_process	*create_process(t_token *token, int num_token_str)
 				token = token->next;
 			while (token && token->str)
 			{
-				joined = safe_strjoin(joined, token->str);
+				tmp = safe_strjoin(joined, token->str); //Adicionei para arrumar o leak do process.txt
+				if (joined)
+					free(joined);
+				joined = tmp;
 				token = token->next;
 			}
 			redirect = create_redirect(joined, type);

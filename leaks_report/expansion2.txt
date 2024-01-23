@@ -1,0 +1,70 @@
+br.sh$ echo "$USER"
+lucas
+br.sh$ exit
+==7335== 
+==7335== HEAP SUMMARY:
+==7335==     in use at exit: 213,381 bytes in 418 blocks
+==7335==   total heap usage: 641 allocs, 223 frees, 234,013 bytes allocated
+==7335== 
+==7335== 1 bytes in 1 blocks are definitely lost in loss record 1 of 81
+==7335==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7335==    by 0x10F2ED: ft_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10CB2B: safe_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B9E8: g_pre_dol (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BBB2: expand_double_quote_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B741: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335== 
+==7335== 1 bytes in 1 blocks are definitely lost in loss record 2 of 81
+==7335==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7335==    by 0x10F7A1: ft_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10CA84: safe_strjoin (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BBC4: expand_double_quote_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B741: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335== 
+==7335== 5 bytes in 1 blocks are definitely lost in loss record 7 of 81
+==7335==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7335==    by 0x10F2ED: ft_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10CB2B: safe_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BB20: g_w_expd (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BC2D: expand_double_quote_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B741: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335== 
+==7335== 6 bytes in 1 blocks are definitely lost in loss record 8 of 81
+==7335==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7335==    by 0x10F2ED: ft_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10CB2B: safe_substr (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A6CF: create_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A4BA: create_quote_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A863: create_quote_tok_add_back (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10AAE8: create_tokens (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A7A6: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335== 
+==7335== 6 bytes in 1 blocks are definitely lost in loss record 9 of 81
+==7335==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7335==    by 0x10F633: ft_strdup (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C757: safe_strdup (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BB61: g_w_expd (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10BC2D: expand_double_quote_token (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B741: expand_according_to_type (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B7BE: check_and_expand (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B85F: expansion (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10A810: lexical_analysis (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10C5F3: init_minishell (in /home/lucas/Documents/42cursus/minishell/minishell)
+==7335==    by 0x10B01D: main (in /home/lucas/Documents/42cursus/minishell/minishell)
