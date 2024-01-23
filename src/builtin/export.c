@@ -16,37 +16,13 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/* static int	is_valid_env(char *str)
-{
-	// printf("%s", str);
-	if (!(ft_isalpha(*str) || *str == '_'))
-		return (-1);
-	str++;
-	while (*str && *str != '=' && *str != '+')
-	{
-		if (!(ft_isalnum(*str) || *str == '_'))
-			return (-1);
-		str++;
-	}
-	if (*str == '+')
-	{
-		str++;
-		if (*str == '=')
-			return (0);
-		return (-1);
-	}
-	if (*str)
-		return (1);
-	return (2);
-} */
-
 static void	case_plus_env(t_env *env, char *name, char *value, int i)
 {
 	name[i] = '\0';
-	ft_setenv(env, safe_strdup(name), safe_strdup(value), 0);
+	ft_setenv(env, name, safe_strdup(value), 0);
 }
 
-static int	is_valid_env2(char *str, t_env *env)
+static int	is_valid_env(char *str, t_env *env)
 {
 	char	*name;
 	char	*value;
@@ -68,9 +44,9 @@ static int	is_valid_env2(char *str, t_env *env)
 	else if (name[i] == '+')
 		case_plus_env(env, name, value, i);
 	else if (!value)
-		ft_setenv(env, safe_strdup(name), value, 0);
+		ft_setenv(env, name, NULL, 0);
 	else
-		ft_setenv(env, safe_strdup(name), safe_strdup(value), 1);
+		ft_setenv(env, name, safe_strdup(value), 1);
 	return (1);
 }
 
@@ -89,7 +65,7 @@ int	ft_export(char **argv, t_env *env)
 	while (*argv)
 	{
 		cpy = safe_strdup(*argv);
-		if (!is_valid_env2(*argv, env))
+		if (!is_valid_env(*argv, env))
 		{
 			ret = 1;
 			print_error("Brazilian Shell: export: `");

@@ -41,6 +41,8 @@ int	execute_single_cmd(t_process *process, t_env *env,
 			env->last_exit = ft_perror(process->cmd[0], NULL, 127);
 		else
 			env->last_exit = do_single_fork(path, process->cmd, *env);
+		if (path)
+			free(path);
 	}
 	reset_redirects(process, &og_stdin, &og_stdout);
 	return (env->last_exit);

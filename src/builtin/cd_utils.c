@@ -20,8 +20,8 @@ static int	no_path(t_env *env, char *str)
 {
 	if (exist_in_env("PWD", *env))
 	{
-		ft_setenv(env, "PWD", "/", 0);
-		ft_setenv(env, "PWD", str, 0);
+		ft_setenv(env, "PWD", safe_strdup("/"), 0);
+		ft_setenv(env, "PWD", safe_strdup(str), 0);
 	}
 	return (ft_perror(" error retrieving current directory: \
 getcwd: cannot access parent directories", "cd:", 1));
@@ -34,7 +34,7 @@ static void	no_pwd(t_env *env, char *oldpwd)
 	if (exist_in_env("OLDPWD", *env))
 	{
 		if (oldpwd_static)
-			ft_setenv(env, "OLDPWD", oldpwd_static, 1);
+			ft_setenv(env, "OLDPWD", safe_strdup(oldpwd), 1);
 		else
 			ft_setenv(env, "OLDPWD", NULL, 1);
 		oldpwd_static = safe_strdup(oldpwd);
