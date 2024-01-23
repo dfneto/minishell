@@ -34,7 +34,7 @@ static void	no_pwd(t_env *env, char *oldpwd)
 	if (exist_in_env("OLDPWD", *env))
 	{
 		if (oldpwd_static)
-			ft_setenv(env, "OLDPWD", oldpwd_static, 1);
+			ft_setenv(env, "OLDPWD", safe_strdup(oldpwd), 1);
 		else
 			ft_setenv(env, "OLDPWD", NULL, 1);
 		oldpwd_static = safe_strdup(oldpwd);
