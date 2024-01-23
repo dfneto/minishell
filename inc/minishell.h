@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/23 17:10:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:20:07 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,9 @@ void set_parent_signals(void);
 // t_process   *create_process(char *input, int in, int out);
 int	look_for_commands(t_token **head);
 void	add_process(t_process **first, t_process *new);
+t_process	*create_default_process(int num_token_str);
+void	add_word_to_command(t_process **process, t_token **token, int i);
+int	go_to_next_token(t_token **token, t_process *process, int num_token_str, int i);
 t_process	*get_last_process(t_process *first);
 t_process				*clean_process(t_process **process);
 void	clean_redirects(t_redirect *redirect);

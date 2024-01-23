@@ -6,42 +6,37 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 17:35:39 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:24:45 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_redirect *prepare_and_create_redirect(t_token **token)
+/* 
+* joined serve para juntar varias strings caso estejam "grudadas" 
+* ex: echo test > "double"'single'noquote deve juntar as tres palavras
+* e criar um output doublesinglenoquote  
+*/
+t_redirect	*prepare_and_create_redirect(t_token **token)
 {
-	/* Modifiquei aqui para juntar varias strings caso estejam "grudadas" -> ex: echo test > "double"'single'noquote deve juntar as tres palavras e criar um output doublesinglenoquote  */
-	char *joined = NULL;
-	char 		*tmp;
-	t_type		type;
+	char	*joined;
+	char	*tmp;
+	t_type	type;
 
+	joined = NULL;
 	type = (*token)->type;
 	(*token) = (*token)->next;
 	if ((*token)->type == SPC)
 		(*token) = (*token)->next;
 	while ((*token) && (*token)->str)
 	{
-		tmp = safe_strjoin(joined, (*token)->str); //Adicionei para arrumar o leak do process.txt
+		tmp = safe_strjoin(joined, (*token)->str);
 		if (joined)
 			free(joined);
 		joined = tmp;
 		(*token) = (*token)->next;
 	}
 	return (create_redirect(joined, type));
-}
-
-t_process	*create_default_process()
-{
-	t_process	*process;
-
-	process = (t_process *)safe_calloc(1, sizeof(t_process));
-	process->infile = STDIN_FILENO;
-	process->outfile = STDOUT_FILENO;
-	return (process);
 }
 
 /*
@@ -71,72 +66,32 @@ ao verificarmos if (process->next) não passar, ao invés de passar com sujeira
 t_process	*create_process(t_token *token, int num_token_str)
 {
 	int			i;
-	char 		*tmp; //Adicionei para arrumar os leaks dos process.txt e process2.txt
 	t_process	*process;
-	// t_redirect	*redirect;
-	// t_type		type;
 
 	i = 0;
-	// type = -1;
-	// process = (t_process *)safe_calloc(1, sizeof(t_process));
-	// process->infile = STDIN_FILENO;
-	// process->outfile = STDOUT_FILENO;
-	process = create_default_process();
-	if (num_token_str > 0)
-		process->cmd = (char **)safe_calloc((num_token_str + 1),
-				sizeof(char *));
+	process = create_default_process(num_token_str);
 	while (token)
 	{
-		if (token->str) //type STR, DOUB ou SING
-		{
-			tmp = safe_strjoin(process->cmd[i], token->str); //Adicionei para arrumar o leak do process2.txt
-			if (process->cmd[i])
-				free(process->cmd[i]);
-			process->cmd[i] = tmp;
-			token = token->next;
-		}
-		else if (token->type == SPC) //se encontro um espaço
-		{
-			token = token->next; //vou para o próximo token
-			if (num_token_str > 0) //eu só posso checar abaixo se eu tenho token str.
-			{
-				if (process->cmd[i]) //e se já tenho algo escrito no comando vou para o próximo comando, assim se a linha começa com um espaço ou tem um espaço depois do pipe eu salto esse espaço mas não mudo de comando
-					i++;
-			}
-		}
+		if (token->str)
+			add_word_to_command(&process, &token, i);
+		else if (token->type == SPC)
+			i = go_to_next_token(&token, process, num_token_str, i);
 		else if (token->type == PIPE)
 			break ;
-		else //aqui crio a lista de redireções
-		{
-			/* Modifiquei aqui para juntar varias strings caso estejam "grudadas" -> ex: echo test > "double"'single'noquote deve juntar as tres palavras e criar um output doublesinglenoquote  */
-			// char *joined = NULL;
-			// type = token->type;
-			// token = token->next;
-			// if (token->type == SPC)
-			// 	token = token->next;
-			// while (token && token->str)
-			// {
-			// 	tmp = safe_strjoin(joined, token->str); //Adicionei para arrumar o leak do process.txt
-			// 	if (joined)
-			// 		free(joined);
-			// 	joined = tmp;
-			// 	token = token->next;
-			// }
-			// redirect = create_redirect(joined, type);
-			// add_redirect(&(process->redirect), create_redirect(joined, type));
-			add_redirect(&(process->redirect), prepare_and_create_redirect(&token));
-		}
+		else
+			add_redirect(&(process->redirect),
+				prepare_and_create_redirect(&token));
 	}
 	return (process);
 }
 
-
-
-//TODO: criar uma lista de redireções ao criar o processo
+//Cria-se uma lista de redireções ao criar o processo
 //Depois de criar os processos e antes da execução:
-//procurar na lista de ao criar a lista de redireção por heredoc e se tiver executo
-//executar um heredoc quer dizer entrar no bookle de readline
-//depois, na execucao, para cada processo vou executar uma funcao redir(comando)
+//procurar na lista de redireção por 
+//heredoc e se tiver executo. Executar um heredoc quer dizer
+// entrar no bookle de readline
+//depois, na execucao, para cada processo vou executar 
+//uma funcao redir(comando)
 /*redir(comando) 
 {
 	while(first_redirec) para cada redireção do comando ...
