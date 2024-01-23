@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 20:45:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:03:31 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,57 @@ void	add_redirect(t_redirect **first, t_redirect *new)
 			temp = temp->next;
 		temp->next = new;
 	}
+}
+
+static t_process	*get_last_process(t_process *first)
+{
+	while (first != NULL && first->next != NULL)
+		first = first->next;
+	return (first);
+}
+
+static void	add_process(t_process **first, t_process *new)
+{
+	t_process	*last;
+
+	if (!new)
+		return ;
+	if (*first == NULL)
+		*first = new;
+	else
+	{
+		last = get_last_process(*first);
+		new->prev = last;
+		last->next = new;
+		last = NULL;
+	}
+}
+
+/*
+* Returns the numbers of tokens that have something in str 
+* (DOUBLE, SINGLE QUOTE and STR tokens) and before a PIPE
+* in the case that has one
+*/
+int	look_for_commands(t_token **head)
+{
+	int		num_tok_str;
+
+	num_tok_str = 0;
+	while (*head)
+	{
+		if ((*head)->str)
+			num_tok_str++;
+		else if ((*head)->type == PIPE)
+		{
+			*head = (*head)->next;
+			break ;
+		}
+		else if ((*head)->type != SPC)
+		{
+			while (*head && !(*head)->str)
+				*head = (*head)->next;
+		}
+		*head = (*head)->next;
+	}
+	return (num_tok_str);
 }

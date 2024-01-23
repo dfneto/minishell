@@ -6,35 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 17:00:27 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:03:47 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_process	*get_last_process(t_process *first)
-{
-	while (first != NULL && first->next != NULL)
-		first = first->next;
-	return (first);
-}
-
-static void	add_process(t_process **first, t_process *new)
-{
-	t_process	*last;
-
-	if (!new)
-		return ;
-	if (*first == NULL)
-		*first = new;
-	else
-	{
-		last = get_last_process(*first);
-		new->prev = last;
-		last->next = new;
-		last = NULL;
-	}
-}
 
 /*
 * Aqui estamos criando o comando do processo (comando e argumentos)
@@ -120,34 +96,7 @@ t_process	*create_process(t_token *token, int num_token_str)
 	return (process);
 }
 
-/*
-* Returns the numbers of tokens that have something in str 
-* (DOUBLE, SINGLE QUOTE and STR tokens) and before a PIPE
-* in the case that has one
-*/
-int	look_for_commands(t_token **head)
-{
-	int		num_tok_str;
 
-	num_tok_str = 0;
-	while (*head)
-	{
-		if ((*head)->str)
-			num_tok_str++;
-		else if ((*head)->type == PIPE)
-		{
-			*head = (*head)->next;
-			break ;
-		}
-		else if ((*head)->type != SPC)
-		{
-			while (*head && !(*head)->str)
-				*head = (*head)->next;
-		}
-		*head = (*head)->next;
-	}
-	return (num_tok_str);
-}
 
 //TODO: criar uma lista de redireções ao criar o processo
 //Depois de criar os processos e antes da execução:

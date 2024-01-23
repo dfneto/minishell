@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 19:31:39 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:03:35 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,9 @@ void set_parent_signals(void);
 
 // Process utils
 // t_process   *create_process(char *input, int in, int out);
+int	look_for_commands(t_token **head);
+static void	add_process(t_process **first, t_process *new);
+static t_process	*get_last_process(t_process *first);
 t_process				*clean_process(t_process **process);
 void	clean_redirects(t_redirect *redirect);
 void					init_signals(void);
