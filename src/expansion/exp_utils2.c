@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 20:57:23 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:47:48 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,54 +18,83 @@ void	add_token_after(t_token **token, t_token *new_token)
 	(*token) = new_token;
 }
 
-t_token	*with_space(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
+void	add_token_space(t_token **token, t_token *next_tok_after_expand)
+{
+	t_token *new_token = create_token(NULL, 0, 0, SPC);
+	new_token->next = next_tok_after_expand;
+	add_token_after(token, new_token);
+}
+
+/*
+* When you have your expanded_str for something that starts with space, 
+* like "    ls   -l  ", you transform the current token in a token space, than
+* create a token str (ls), than a token space and finish with a token str (-l)
+*/
+t_token	*starts_with_space(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
 {
 	size_t		i;
 	int			start;
-	int			first_token_alterated;
 
-	i = 0;
-	first_token_alterated = 0;
+	i = 1; //TROCAR POR ZERO!?
 	start = 0;
 	token->type = SPC; //alter o tipo do token para espaco
 	token->str = NULL;
-	while (i < ft_strlen(expanded_str))
+	while (expanded_str[i] && i < ft_strlen(expanded_str))
 	{
 		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
-		{
-			if (expanded_str[i + 1] != ' ')
-			{
-				// t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
-				// new_token->next = next_tok_after_expand;
-				// add_token_after(&token, new_token);
-				if (first_token_alterated == 0) //para quando a palavra expandida começa com espaço)
-				{
-					// printf("1\n");
-					
-					first_token_alterated = 1;
-				}
-				else //crio token <spc>
-				{
-					// printf("2\n");
-					t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
-					new_token->next = next_tok_after_expand;
-					add_token_after(&token, new_token);
-				}
-			}
 			i++;
+		if (start > 0 && expanded_str[i + 1] != '\0')
+			add_token_space(&token, next_tok_after_expand);
+		start = i;
+		while (expanded_str[i] && (expanded_str[i] != ' ' || expanded_str[i + 1] == '\0')) //avanca os char
+			i++;
+		t_token *new_token = create_token(expanded_str, start, i - 1, STRING);//crio o token com char
+		new_token->next = next_tok_after_expand;
+		add_token_after(&token, new_token);
+	}
+	return (token);
+}
+
+		/*
+		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char	
+		{                                                                
+			if (expanded_str[i + 1] == ' ') //para quando a palavra expandida começa SEM espaço
+			{
+				// printf("3\n");
+				token->str = safe_substr(expanded_str, start, i - start + 1);  // e altero o primeiro token str
+				first_token_alterated = 1;
+			}
+		}
+		*/
+/*
+* 
+* 
+*/
+t_token	*no_starts_with_space(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
+{
+	size_t		i;
+	int			start;
+
+	i = 0;
+	start = 0;
+	while (expanded_str[i] && i < ft_strlen(expanded_str))
+	{
+		while (expanded_str[i] && (expanded_str[i] != ' ' || expanded_str[i + 1] == '\0')) //avanca os char
+			i++;
+		if (start == 0)
+			token->str = safe_substr(expanded_str, start, i - start); //altero a str do primeiro token
+		else
+		{
+			t_token *new_token = create_token(expanded_str, start, i - 1, STRING);//crio o token com char
+			new_token->next = next_tok_after_expand;
+			add_token_after(&token, new_token);
 		}
 		start = i;
-		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char
-		{                                                                
-			if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0') && first_token_alterated == 1) // e cria um token str 
-			{ 
-				// printf("4\n");
-				t_token *new_token = create_token(expanded_str, start, i, STRING);
-				new_token->next = next_tok_after_expand;
-				add_token_after(&token, new_token);
-			}
+		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
 			i++;
-		}
+		if (start > 0)
+			add_token_space(&token, next_tok_after_expand);
+		
 	}
 	return (token);
 }
@@ -84,54 +113,34 @@ t_token	*with_space(char *expanded_str, t_token *next_tok_after_expand, t_token 
 */
 t_token	*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
 {
+	int first_token_alterated = 0;
 	size_t		i;
 	int			start;
-	int			first_token_alterated;
 
 	i = 0;
-	first_token_alterated = 0;
 	start = 0;
-	//TODO: ISSO DEVE SUBSTITUR TODO O WHILE ABAIXO
 	if (expanded_str[i] && expanded_str[i] == ' ')
-		return (with_space(expanded_str, next_tok_after_expand, token));
-	// else if (expanded_str[i] && expanded_str[i] != ' ')
-	// 	no_space()
-
+		return (starts_with_space(expanded_str, next_tok_after_expand, token));
+	// else //if (expanded_str[i] && expanded_str[i] != ' ')
+	// 	return (no_starts_with_space(expanded_str, next_tok_after_expand, token));
+	//TODO: ISSO DEVE SUBSTITUR TODO O WHILE ABAIXO
+	
 	while (i < ft_strlen(expanded_str))
 	{
 		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
-		{
-			if (expanded_str[i + 1] != ' ')
-			{
-				if (first_token_alterated == 0) //para quando a palavra expandida começa com espaço)
-				{
-					// printf("1\n");
-					token->type = SPC; //alter o tipo do token para espaco
-					token->str = NULL;
-					first_token_alterated = 1;
-				}
-				else //crio token <spc>
-				{
-					// printf("2\n");
-					t_token *new_token = create_token(expanded_str, start, i - 1, SPC);
-					new_token->next = next_tok_after_expand;
-					add_token_after(&token, new_token);
-				}
-			}
 			i++;
-		}
+		if (expanded_str[i - 1] == ' ' && expanded_str[i] != ' ')
+			add_token_space(&token, next_tok_after_expand);
 		start = i;
 		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char
 		{                                                                
 			if (expanded_str[i + 1] == ' ' && first_token_alterated == 0) //para quando a palavra expandida começa SEM espaço
 			{
-				// printf("3\n");
 				token->str = safe_substr(expanded_str, start, i - start + 1);  // e altero o primeiro token str
 				first_token_alterated = 1;
 			}
 			else if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0') && first_token_alterated == 1) // e cria um token str 
 			{ 
-				// printf("4\n");
 				t_token *new_token = create_token(expanded_str, start, i, STRING);
 				new_token->next = next_tok_after_expand;
 				add_token_after(&token, new_token);

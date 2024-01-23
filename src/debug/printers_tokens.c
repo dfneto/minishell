@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printers.c                                         :+:      :+:    :+:   */
+/*   printers_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/19 18:27:41 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:19:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	print_list_token(t_token *token)
 
 void	print_token(t_token *token)
 {
-	if (token->str)
+	if (!token)
+		printf("Token nulo\n");
+	else if (token->str)
 		printf("Token type: %s -> str: <%s>\n",
 			get_type(token->type), token->str);
 	else
