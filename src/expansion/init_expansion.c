@@ -18,7 +18,7 @@ int ft_isspace(char ch) {
 		ch == '\v' || ch == '\f');
 }
 
-char *lukita_get_expansion(char *str, int *i, t_env env, int last_exit)
+char *lukita_get_expansion(char *str, int *i, t_env env)
 {
 	int j;
 	char *tmp;
@@ -33,7 +33,7 @@ char *lukita_get_expansion(char *str, int *i, t_env env, int last_exit)
 	if (str[j] == '?')
 	{
 		(*i) += 2;
-		return (ft_itoa(last_exit));
+		return (ft_itoa(env.last_exit));
 	}
 	if (!ft_isalpha(str[j]) && str[j] != '_')
 	{
@@ -49,7 +49,7 @@ char *lukita_get_expansion(char *str, int *i, t_env env, int last_exit)
 	return (ret);
 }
 
-char	*lukita_str_expand(char *str, t_env env, int last_exit)
+char	*lukita_str_expand(char *str, t_env env)
 {
 	char *expanded_str;
 	char *tmp;
@@ -73,7 +73,7 @@ char	*lukita_str_expand(char *str, t_env env, int last_exit)
 		if (str[i] && str[i] == '$')
 		{
 			tmp = expanded_str;
-			expanded_str = ft_strjoin(tmp, lukita_get_expansion(str + i + 1, &i, env, last_exit));
+			expanded_str = ft_strjoin(tmp, lukita_get_expansion(str + i + 1, &i, env));
 			if (tmp)
 				free(tmp);
 		}
@@ -159,10 +159,10 @@ int lukita_str_has_space(char *str)
 }
 
 
-t_token	*lukita_expand(t_token *token, t_env env, int last_exit)
+t_token	*lukita_expand(t_token *token, t_env env)
 {
 //	printf("%s\n", token->str);
-	token->str = lukita_str_expand(token->str, env, last_exit);
+	token->str = lukita_str_expand(token->str, env);
 	if (token->str && !token->str[0])
 	{
 		if (!token->next)
@@ -193,128 +193,6 @@ t_token	*lukita_expand(t_token *token, t_env env, int last_exit)
 	return (token);
 }
 
-char *lukita_get_expansion(char *str, int *i, t_env env, int last_exit)
-{
-	int j;
-	char *tmp;
-	char *ret;
-
-	j = 0;
-	if (!str[j])
-	{
-		(*i)++;
-		return ("$");
-	}
-	if (str[j] == '?')
-	{
-		(*i) += 2;
-		return (ft_itoa(last_exit));
-	}
-	if (!ft_isalpha(str[j]) && str[j] != '_')
-	{
-		(*i)++;
-		return ("$");
-	}
-	while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
-		j++;
-	tmp = ft_substr(str, 0, j);
-	ret = ft_getenv(tmp, env);
-	free(tmp);
-	(*i) += j + 1;
-	return (ret);
-}
-
-char	*lukita_str_expand(char *str, t_env env, int last_exit)
-{
-	char *expanded_str;
-	char *tmp;
-	int	i;
-	int start;
-
-	i = 0;
-	expanded_str = NULL;
-	while (str[i])
-	{
-		start = i;
-		while (str[i] && str[i] != '$')
-			i++;
-		if (i != start)
-		{
-			tmp = expanded_str;
-			expanded_str = ft_strjoin(tmp, ft_substr(str, start, i - start));
-			if (tmp)
-				free(tmp);
-		}
-		if (str[i] && str[i] == '$')
-		{
-			tmp = expanded_str;
-			expanded_str = ft_strjoin(tmp, lukita_get_expansion(str + i + 1, &i, env, last_exit));
-			if (tmp)
-				free(tmp);
-		}
-	}
-	free(str);
-	return (expanded_str);
-}
-
-t_token *lukita_split_token(t_token *token)
-{
-	t_token *tmp;
-	t_token *last;
-	char *tk;
-
-	tk = ft_strtok(token->str, " \t\n\r\v\f");
-	last = token;
-	tk = ft_strtok(NULL, " \t\n\r\v\f");
-	while (tk)
-	{
-		tmp = ft_calloc(1, sizeof(t_token));
-		tmp->type = SPC;
-		last->next = tmp;
-		last = last->next;
-		tmp = ft_calloc(1, sizeof(t_token));
-		tmp->type = STRING;
-		tmp->str = ft_strdup(tk);
-		last->next = tmp;
-		last = last->next;
-		tk = ft_strtok(NULL, " \t\n\r\v\f");
-	}
-	
-		
-
-	return (token);
-}
-
-int ft_isspace(char ch) {
-    return (ch == ' ' || ch == '\t' || 
-		ch == '\n' || ch == '\r' || 
-		ch == '\v' || ch == '\f');
-}
-
-
-int lukita_str_has_space(char *str)
-{
-	while (*str)
-	{
-		if (ft_isspace(*str))
-			return (1);
-		str++;
-	}
-	return (0);
-}
-
-
-t_token	*lukita_expand(t_token *token, t_env env, int last_exit)
-{
-//	printf("%s\n", token->str);
-	token->str = lukita_str_expand(token->str, env, last_exit);
-//	printf("%s\n", token->str);
-	if (token->type == DOUBLE_QUOTE)
-		return (token);
-	else if (lukita_str_has_space(token->str))
-		return (lukita_split_token(token));
-	return (token);
-}
 
 /*
  * Returns: the token expanded and in case that the expansion
@@ -402,7 +280,7 @@ int	expansion(t_token *first_token, t_env env)
 						first_token->str = ft_strdup("");
 					}
 					else
-						first_token = lukita_expand(first_token, env, last_exit);
+						first_token = lukita_expand(first_token, env);
 				}
 		if (first_token)
 			first_token = first_token->next;
