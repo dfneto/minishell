@@ -40,6 +40,7 @@ static int	no_overwrite(t_node *tmp, char *value)
 		free(tmp->value);
 	tmp->value = safe_strjoin(current_env, value);
 	free(current_env);
+	free(value);
 	return (0);
 }
 
