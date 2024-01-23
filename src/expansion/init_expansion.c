@@ -270,7 +270,6 @@ int	expansion(t_token *first_token, t_env env)
 {
 	while (first_token)
 	{
-		//print_token(first_token);
 		if ((first_token->type == DOUBLE_QUOTE || first_token->type == STRING) &&
 				strchr(first_token->str, '$'))
 				{
