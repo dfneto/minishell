@@ -73,6 +73,7 @@ char	*get_path(char **cmd, t_env env)
 			return (return_path(abs_path, paths));
 		path = ft_strtok(NULL, ":");
 	}
+	free(paths);
 	free(abs_path);
 	return (NULL);
 }

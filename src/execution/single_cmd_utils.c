@@ -54,11 +54,10 @@ static void	child_execution(char *path, char **argv, t_env env)
 	exit(EXIT_SUCCESS);
 }
 
-static int	parent_execution(char *path)
+static int	parent_execution(void)
 {
 	int	child_exit;
 
-	free(path);
 	wait(&child_exit);
 	if (WIFEXITED(child_exit))
 		return (WEXITSTATUS(child_exit));
@@ -75,6 +74,6 @@ int	do_single_fork(char *path, char **cmd, t_env env)
 	if (fork_id == CHILD)
 		child_execution(path, cmd, env);
 	else
-		return (parent_execution(path));
+		return (parent_execution());
 	return (EXIT_SUCCESS);
 }
