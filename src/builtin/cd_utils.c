@@ -63,7 +63,11 @@ int	ft_chdir(char *str, t_env *env)
 
 	oldpwd = getcwd(NULL, PATH_MAX);
 	if (chdir(str))
+	{
+		if (oldpwd)
+			free(oldpwd);
 		return (ft_perror(str, "cd: ", 1));
+	}
 	else
 	{
 		path = getcwd(NULL, PATH_MAX);
@@ -73,6 +77,8 @@ int	ft_chdir(char *str, t_env *env)
 			yes_pwd(env, path);
 		else
 			no_pwd(env, oldpwd);
+		if (oldpwd)
+			free(oldpwd);
 	}
 	return (0);
 }
