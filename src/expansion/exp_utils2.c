@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 15:47:48 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:56:57 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ t_token	*no_starts_with_space(char *expanded_str, t_token *next_tok_after_expand
 */
 t_token	*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token)
 {
-	int first_token_alterated = 0;
 	size_t		i;
 	int			start;
 
 	i = 0;
 	start = 0;
+	// printf("expanded_str: <%s>\n", expanded_str);
 	if (expanded_str[i] && expanded_str[i] == ' ')
 		return (starts_with_space(expanded_str, next_tok_after_expand, token));
 	// else //if (expanded_str[i] && expanded_str[i] != ' ')
@@ -127,19 +127,11 @@ t_token	*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expa
 	
 	while (i < ft_strlen(expanded_str))
 	{
-		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
-			i++;
-		if (expanded_str[i - 1] == ' ' && expanded_str[i] != ' ')
-			add_token_space(&token, next_tok_after_expand);
-		start = i;
 		while (expanded_str[i] && expanded_str[i] != ' ') // avança os char
 		{                                                                
-			if (expanded_str[i + 1] == ' ' && first_token_alterated == 0) //para quando a palavra expandida começa SEM espaço
-			{
+			if (expanded_str[i + 1] == ' ' && start == 0) //para quando a palavra expandida começa SEM espaço
 				token->str = safe_substr(expanded_str, start, i - start + 1);  // e altero o primeiro token str
-				first_token_alterated = 1;
-			}
-			else if ((expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0') && first_token_alterated == 1) // e cria um token str 
+			else if (expanded_str[i + 1] == ' ' || expanded_str[i + 1] == '\0') // e cria um token str 
 			{ 
 				t_token *new_token = create_token(expanded_str, start, i, STRING);
 				new_token->next = next_tok_after_expand;
@@ -147,6 +139,11 @@ t_token	*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expa
 			}
 			i++;
 		}
+		while (expanded_str[i] && expanded_str[i] == ' ') // avança os espaços
+			i++;
+		if (expanded_str[i - 1] == ' ' && expanded_str[i] != ' ')
+			add_token_space(&token, next_tok_after_expand);
+		start = i;
 	}
 	return (token);
 }
