@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:30:52 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/23 17:03:31 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:18:03 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ void	add_redirect(t_redirect **first, t_redirect *new)
 	}
 }
 
-static t_process	*get_last_process(t_process *first)
+t_process	*get_last_process(t_process *first)
 {
 	while (first != NULL && first->next != NULL)
 		first = first->next;
 	return (first);
 }
 
-static void	add_process(t_process **first, t_process *new)
+void	add_process(t_process **first, t_process *new)
 {
 	t_process	*last;
 
