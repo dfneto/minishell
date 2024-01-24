@@ -133,7 +133,7 @@ typedef struct s_builtin
 }						t_builtin;
 
 int						check_open_quotes(char *input);
-int						clean_input(char **input);
+char					*clean_input(char *input);
 int						is_exit(char *input);
 int						expansion(t_token *first_token, 
 							t_env env);
@@ -295,8 +295,6 @@ t_process	*get_last_process(t_process *first);
 t_process				*clean_process(t_process **process);
 void	clean_redirects(t_redirect *redirect);
 void					init_signals(void);
-void					init_minishell(t_env *envp);
-
 int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);

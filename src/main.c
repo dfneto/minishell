@@ -17,23 +17,88 @@
 
 int g_signal = 0;
 
+static void	main_loop(t_env *env, t_builtin functions[]);
+static void init_minishell(t_env *env, t_builtin functions[], char **envp);
+
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	env;
+	t_env		env;
+	t_builtin	functions[BUILTINS_NUM];
 
-	// control + /
-	// struct sigaction	sq;
-	// sq.sa_handler = &handle_sigquit;
-	// sq.sa_flags = SA_RESTART;
-	// sigaction(SIGQUIT, &sq, NULL);
 	(void)argc;
 	(void)argv;
-	ignore_sigquit_forever();
-	env.head = NULL;
-	env.tail = NULL;
-	if (create_env(&env, envp))
-		return (EXIT_FAILURE);
-	init_minishell(&env);
+	init_minishell(&env, functions, envp);
+	main_loop(&env, functions);
 	clean_env(&env);
 	return (0);
+}
+
+static void init_minishell(t_env *env, t_builtin functions[], char **envp)
+{
+	ignore_sigquit_forever();
+	init_builtins(functions);
+	env->head = NULL;
+	env->tail = NULL;
+	env->last_exit = 0;
+	if (create_env(env, envp))
+		exit(EXIT_FAILURE);
+}
+
+static char	*get_input(int last_exit)
+{
+	char	*input;
+	int		wr;
+
+	input = readline(PROMPT);
+	if (input == NULL)
+	{
+		if (isatty(STDIN_FILENO))
+			wr = write(2, "exit\n", 6);
+		(void)wr;
+		exit(last_exit);
+	}
+	else if (input && *input)
+	{
+		add_history(input);
+		if (check_open_quotes(input))
+		{
+			print_error("Brazilian Shell: parsing error - unmatched quotes\n");
+			input[0] = '\0';
+		}
+	}
+	return (input);
+}
+
+static void	main_loop(t_env *env, t_builtin functions[])
+{
+	char		*input;
+	t_token		*first_token;
+	t_process	*first_process;
+
+	first_token = NULL;
+	first_process = NULL;
+	input = NULL;
+	while (42)
+	{
+		set_main_signals();
+		input = get_input(env->last_exit);
+		set_parent_signals();
+		if (input[0] != '\0' && input[0] != '#')
+		{
+			first_token = lexical_analysis(input, env);
+			if (first_token)
+			{
+				first_process = process_creation(first_token, env);
+				if (first_process)
+						env->last_exit = execute_cmd(first_process, env, functions);
+			}
+			else
+				env->last_exit = 2;
+		}
+		first_token = clean_tokens(first_token);
+		first_process = clean_process(&first_process);
+		input = clean_input(input);
+	}
+	clear_history();
+	// return (0);
 }

@@ -30,10 +30,15 @@
  */
 t_token	*expand_according_to_type(t_token *token, t_env env)
 {
+	char *tmp;
+	
+	tmp = expand_double_quote_token(token, env);
 	if (token->type == DOUBLE_QUOTE)
-		return (expand_double_quote_token(token, env));
-	else
-		return (expand_token_int_n_tokens(token, env));
+	{
+		free(token->str);
+		token->str = tmp;
+	}
+			return (expand_token_int_n_tokens(token, env));
 }
 
 /* TO DO

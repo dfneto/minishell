@@ -40,11 +40,11 @@ int	is_quote_open(char *input, int *i, char c)
 	return (open);
 }
 
-int	clean_input(char **input)
+char	*clean_input(char *input)
 {
-	free(*input);
-	*input = NULL;
-	return (1);
+	if (input)
+		free(input);
+	return (NULL);
 }
 
 /*

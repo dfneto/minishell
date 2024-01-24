@@ -51,3 +51,10 @@ void	print_token(t_token *token)
 	else
 		printf("Token type: %s\n", get_type(token->type));
 }
+
+void	print_token_info(t_token *tok)
+{
+	if (tok)
+		printf("my mem: %p\ntype>%d - str: %s\nnext: %p\n\n", tok, tok->type,
+			tok->str, tok->next);
+}
