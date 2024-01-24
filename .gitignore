@@ -13,3 +13,4 @@ open_fd.sh
 *.log
 readline
 gitstatus.sh
+get_pid.sh

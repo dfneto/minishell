@@ -110,10 +110,8 @@ t_token	*create_tok_per_word_in(char *expanded_str,
 		t_token *next_tok_after_expand, t_token *token)
 {
 	size_t	i;
-	int		start;
 
 	i = 0;
-	start = 0;
 	if (expanded_str[i] && expanded_str[i] == ' ')
 		return (starts_with_space(expanded_str, next_tok_after_expand, token));
 	else
