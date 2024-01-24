@@ -100,5 +100,4 @@ static void	main_loop(t_env *env, t_builtin functions[])
 		input = clean_input(input);
 	}
 	clear_history();
-	// return (0);
 }
