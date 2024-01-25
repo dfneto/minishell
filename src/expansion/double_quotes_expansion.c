@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 20:46:47 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:01:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_text_post_extension(t_token *token, char *exp, int i)
 	post_expansion = NULL;
 	post_expansion = safe_substr(token->str, i, ft_strlen(token->str) - i);
 	return (safe_strjoin(exp, post_expansion));
-}
+	}
 
 /*
 * Get the word expanded
@@ -68,22 +68,39 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 	int		i;
 	int		dol_pos;
 	char	*exp;
+	char	*tmp;
+	char *t2;
 
 	i = 0;
 	dol_pos = 0;
 	exp = NULL;
 	while (tok->str[i] && dol_pos >= 0)
 	{
-		exp = safe_strjoin(exp, g_pre_dol(tok->str, i));
+		tmp = g_pre_dol(tok->str, i);
+		exp = safe_strjoin(exp, tmp);
+		tmp = ft_free(tmp);
 		dol_pos = get_dolar_position(tok->str, i);
 		if (dol_pos >= 0 && tok->str[dol_pos + 1])
 		{
 			i = dol_pos + 1;
-			exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env));
+			// exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env));
+			tmp = exp;
+			t2 = g_w_expd(tok, &i, dol_pos, env);
+			exp = safe_strjoin(tmp, t2);
+			free(tmp);
+			free(t2);
 		}
 	}
 	if (tok->str[i] && tok->str[i] != '$')
+	{
+		// char *tmp3;
+		// tmp3 = get_text_post_extension(tok, exp, i);
+		// free(exp);
+		// exp = tmp3;
 		exp = get_text_post_extension(tok, exp, i);
+		// free(exp);
+		// exp = tmp;
+	}
 	tok->str = exp;
 	return (tok);
 }
