@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 17:26:01 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:46:36 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 char	*get_text_post_extension(t_token *token, char *exp, int i)
 {
 	char	*post_expansion;
+	char	*tmp;
 
 	post_expansion = NULL;
-	post_expansion = safe_substr(token->str, i, ft_strlen(token->str) - i);
-	return (safe_strjoin(exp, post_expansion));
+	tmp = NULL;
+	tmp = safe_substr(token->str, i, ft_strlen(token->str) - i);
+	post_expansion = safe_strjoin(exp, tmp);
+	ft_free(tmp);
+	return (post_expansion);
 	}
 
 /*
@@ -101,7 +105,9 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 		// tmp3 = get_text_post_extension(tok, exp, i);
 		// free(exp);
 		// exp = tmp3;
+		tmp = exp;
 		exp = get_text_post_extension(tok, exp, i);
+		tmp = ft_free(tmp);
 		// free(exp);
 		// exp = tmp;
 	}
