@@ -81,7 +81,7 @@ static void	main_loop(t_env *env, t_builtin functions[])
 	while (42)
 	{
 		first_token = clean_tokens(first_token);
-		first_process = clean_process(&first_process);
+		first_process = clean_process(first_process);
 		input = clean_input(input);
 		set_main_signals();
 		input = get_input(env->last_exit);

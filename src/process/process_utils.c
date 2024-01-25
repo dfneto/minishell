@@ -15,29 +15,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-t_process	*clean_process(t_process **process)
+t_process	*clean_process(t_process *process)
 {
 	int			i;
 	t_process	*tmp;
 
-	while (*process)
+	while (process)
 	{
-		tmp = (*process)->next;
+		tmp = process->next;
 		i = -1;
-		if ((*process)->cmd)
+		if (process->cmd)
 		{
-			while ((*process)->cmd[++i])
-				free((*process)->cmd[i]);
-			free((*process)->cmd);
+			while (process->cmd[++i])
+				free(process->cmd[i]);
+			free(process->cmd);
 		}
-		if ((*process)->infile != STDIN_FILENO)
-			close((*process)->infile);
-		if ((*process)->outfile != STDOUT_FILENO)
-			close((*process)->outfile);
-		if ((*process)->redirect)
-			clean_redirects((*process)->redirect);
-		free(*process);
-		*process = tmp;
+		if (process->infile != STDIN_FILENO)
+			close(process->infile);
+		if (process->outfile != STDOUT_FILENO)
+			close(process->outfile);
+		if (process->redirect)
+			clean_redirects(process->redirect);
+		free(process);
+		process = tmp;
 	}
 	return (NULL);
 }

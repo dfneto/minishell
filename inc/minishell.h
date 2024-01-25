@@ -42,8 +42,7 @@
 # define L_MAX "9223372036854775807"
 # define L_MIN "9223372036854775808"
 
-extern int g_signal;
-
+extern int	g_signal;
 
 // typedef enum char //usar isso ou os defines?
 // {
@@ -135,7 +134,7 @@ typedef struct s_builtin
 int						check_open_quotes(char *input);
 char					*clean_input(char *input);
 int						is_exit(char *input);
-int						expansion(t_token *first_token, 
+int						expansion(t_token *first_token,
 							t_env env);
 int						is_alpha_or_slash(char c);
 int						has_word_expansible(char *str);
@@ -158,9 +157,10 @@ char					*get_token_without_dolar(t_token *token);
 char					*g_pre_dol(char *str, int start);
 char					*deals_with_the_first_word(char *token_str, int i,
 							int start, char *pre_dolar);
-char				    *expand_dollar_question(char *str, t_env env);		
+char					*expand_dollar_question(char *str, t_env env);
 t_token					*set_token_str(t_token *token, char *value);
-t_token					*create_tok_per_word_in(char *expanded_str, t_token *next_tok_after_expand, t_token *token);
+t_token					*create_tok_per_word_in(char *expanded_str,
+							t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);
 t_token					*create_token_split(char *str, t_token *next_token);
 t_token					*expand_token_int_n_tokens(t_token *token, t_env env);
@@ -173,7 +173,8 @@ t_token					*get_last_token(t_token *first);
 t_token					*create_tokens(char *input);
 t_token					*create_token(char *input, int beginning, int end,
 							int type);
-t_token					*expand_tokens_created(t_token *token, int num, t_env env);
+t_token					*expand_tokens_created(t_token *token,
+							int num, t_env env);
 t_token					*create_space_token(char *input, int *i);
 t_token					*create_pipe_token(char *input, int *i);
 t_token					*create_quote_token(char *input, int *i, int type,
@@ -195,11 +196,11 @@ t_redirect				*create_redirect(char *name, t_type type);
 /* EXECUTION */
 // Execute CMD
 int						execute_cmd(t_process *process, t_env *envp,
-							 t_builtin funcitons[]);
+							t_builtin funcitons[]);
 
 // Single cmd
 int						execute_single_cmd(t_process *process, t_env *env,
-							 t_builtin functions[]);
+							t_builtin functions[]);
 
 // Single cmd utils
 int						do_single_fork(char *path, char **cmd, t_env env);
@@ -210,10 +211,11 @@ void					reset_redirects(t_process *process, int *og_stdin,
 
 // Mult cmds
 int						execute_multi_cmd(t_process *process, t_env *env,
-							 t_builtin functions[]);
+							t_builtin functions[]);
 
 // Mult cmds utils
-int						main_execution(t_process *process, t_env *env, t_builtin functions[]);
+int						main_execution(t_process *process, t_env *env,
+							t_builtin functions[]);
 int						count_processes(t_process *process);
 
 // Execute Utils
@@ -252,13 +254,14 @@ void					*safe_calloc(size_t count, size_t size);
 char					**safe_split(char const *s, char c);
 char					*safe_strjoin(char const *s1, char const *s2);
 char					*safe_strtrim(char const *s1, char const *set);
-char					*safe_substr(char const *s, unsigned int start, size_t len);
+char					*safe_substr(char const *s, unsigned int start,
+							size_t len);
 
 /* BUILTINS */
 // Init builtins
 void					init_builtins(t_builtin array[]);
 int						is_builtins(char **argv, t_builtin functions[]);
-int						execute_builtins(char **argv, t_env *env, 
+int						execute_builtins(char **argv, t_env *env,
 							t_builtin functions[]);
 
 // Built-in functions
@@ -277,28 +280,30 @@ int						print_ordered(t_env env);
 int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
-void	ignore_sigquit_forever(void);
-void	set_main_signals(void);
-void set_child_signals(void);
-void set_parent_signals(void);
+void					ignore_sigquit_forever(void);
+void					set_main_signals(void);
+void					set_child_signals(void);
+void					set_parent_signals(void);
 
 // VVVVVVVVVVVVV Nao organizado VVVVVVV
 
 // Process utils
 // t_process   *create_process(char *input, int in, int out);
-int	look_for_commands(t_token **head);
-void	add_process(t_process **first, t_process *new);
-t_process	*create_default_process(int num_token_str);
-void	add_word_to_command(t_process **process, t_token **token, int i);
-int	go_to_next_token(t_token **token, t_process *process, int num_token_str, int i);
-t_process	*get_last_process(t_process *first);
-t_process				*clean_process(t_process **process);
-void	clean_redirects(t_redirect *redirect);
+int						look_for_commands(t_token **head);
+void					add_process(t_process **first, t_process *new);
+t_process				*create_default_process(int num_token_str);
+void					add_word_to_command(t_process **process,
+							t_token **token, int i);
+int						go_to_next_token(t_token **token,
+							t_process *process, int num_token_str, int i);
+t_process				*get_last_process(t_process *first);
+t_process				*clean_process(t_process *process);
+void					clean_redirects(t_redirect *redirect);
 void					init_signals(void);
 int						validate_tokens(t_token *token);
 
 int						set_redirects(t_process *process);
 
-t_token	*clean_tokens(t_token *first);
+t_token					*clean_tokens(t_token *first);
 
 #endif
