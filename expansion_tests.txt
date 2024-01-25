@@ -16,6 +16,25 @@ echo $USER/
 echo "$1 $USER" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
 echo "123$0 $USER waka" 
 echo "123$0$USER waka"
+
+-------------
+Testes de leaks 0
+make && leaks --atExit -- ./minishell
+echo "$USER"
+echo "$USER$USER"
+echo "$USER $USER"
+echo 1232"$USER$USER"
+echo 1232"$USER$USER"12321
+
+echo $USER
+echo $USER$USER
+
+echo 123$USER
+echo 123$USER$USER
+
+export A='foo   ' B='bar   ' C='baz   '
+echo $A$B$C
+echo 42343$A$B$C
 -------------
 PASSING:
 echo "$USER $USER" - ok

@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 17:46:36 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:44:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 char	*get_text_post_extension(t_token *token, char *exp, int i)
 {
 	char	*post_expansion;
-	char	*tmp;
+	char	*tmp1;
+	char	*tmp2;
 
 	post_expansion = NULL;
-	tmp = NULL;
-	tmp = safe_substr(token->str, i, ft_strlen(token->str) - i);
-	post_expansion = safe_strjoin(exp, tmp);
-	ft_free(tmp);
+	tmp2 = NULL;
+	tmp1 = exp;
+	tmp2 = safe_substr(token->str, i, ft_strlen(token->str) - i);
+	post_expansion = safe_strjoin(exp, tmp2);
+	ft_free(tmp1);
+	ft_free(tmp2);
 	return (post_expansion);
-	}
+}
 
 /*
 * Get the word expanded
@@ -53,6 +56,50 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 	return (word_expanded);
 }
 
+char	*join_with_word_expanded(t_token *token, int *i, char *exp, t_env env)
+{
+	int		dol_pos;
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = NULL;
+	tmp2 = NULL;
+	dol_pos = get_dolar_position(token->str, *i);
+	*i = dol_pos + 1;
+	tmp = exp;
+	tmp2 = g_w_expd(token, i, dol_pos, env);
+	exp = safe_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	return (exp);
+}
+
+char	*expand_token_with_pre_dolar(t_token *tok, int *i, t_env env)
+{
+	int		dol_pos;
+	char	*exp;
+	char	*tmp;
+	char	*tmp2;
+
+	dol_pos = 0;
+	exp = NULL;
+	tmp = NULL;
+	tmp2 = NULL;
+	while (tok->str[*i] && dol_pos >= 0)
+	{
+		tmp = g_pre_dol(tok->str, *i);
+		if (exp)
+			tmp2 = exp;
+		exp = safe_strjoin(tmp2, tmp);
+		tmp = ft_free(tmp);
+		tmp2 = ft_free(tmp2);
+		dol_pos = get_dolar_position(tok->str, *i);
+		if (dol_pos >= 0 && tok->str[dol_pos + 1])
+			exp = join_with_word_expanded(tok, i, exp, env);
+	}
+	return (exp);
+}
+
 /*
 * cases: "$USER"
 * 			"123$USER" - with pre dolar
@@ -74,43 +121,13 @@ Another example: "|$USER|"
 t_token	*expand_double_quote_token(t_token *tok, t_env env)
 {
 	int		i;
-	int		dol_pos;
 	char	*exp;
-	char	*tmp;
-	char *t2;
 
 	i = 0;
-	dol_pos = 0;
 	exp = NULL;
-	while (tok->str[i] && dol_pos >= 0)
-	{
-		tmp = g_pre_dol(tok->str, i);
-		exp = safe_strjoin(exp, tmp);
-		tmp = ft_free(tmp);
-		dol_pos = get_dolar_position(tok->str, i);
-		if (dol_pos >= 0 && tok->str[dol_pos + 1])
-		{
-			i = dol_pos + 1;
-			// exp = safe_strjoin(exp, g_w_expd(tok, &i, dol_pos, env));
-			tmp = exp;
-			t2 = g_w_expd(tok, &i, dol_pos, env);
-			exp = safe_strjoin(tmp, t2);
-			free(tmp);
-			free(t2);
-		}
-	}
+	exp = expand_token_with_pre_dolar(tok, &i, env);
 	if (tok->str[i] && tok->str[i] != '$')
-	{
-		// char *tmp3;
-		// tmp3 = get_text_post_extension(tok, exp, i);
-		// free(exp);
-		// exp = tmp3;
-		tmp = exp;
 		exp = get_text_post_extension(tok, exp, i);
-		tmp = ft_free(tmp);
-		// free(exp);
-		// exp = tmp;
-	}
 	tok->str = ft_free(tok->str);
 	tok->str = exp;
 	return (tok);
