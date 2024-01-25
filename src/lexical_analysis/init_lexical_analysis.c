@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 12:10:58 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:47:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,6 @@ t_token	*lexical_analysis(char *input, t_env *env)
 		env->last_exit = 128 + g_signal;
 		g_signal = 0;
 	}
-	expansion(first_token, *env); //AQUI
+	expansion(first_token, *env);
 	return (first_token);
 }
