@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 12:35:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:49:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_token	*expand_according_to_type(t_token *token, t_env env)
 {
 	if (token->type == DOUBLE_QUOTE)
 		return (expand_double_quote_token(token, env));
-	return (expand_token_int_n_tokens(token, env));
+	return (expand_string_token(token, env));
 }
 
 /* TO DO

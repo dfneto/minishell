@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:46:45 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 18:24:45 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:11:29 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ t_process	*process_creation(t_token *first_token, t_env *env)
 	if (execute_heredoc(head))
 	{
 		env->last_exit = 130;
-		return (clean_process(&head));
+		return (clean_process(head));
 	}
 	set_redirects(head);
 	return (head);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_allocation.c                                  :+:      :+:    :+:   */
+/*   safe_allocation2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:36:14 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 16:44:59 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:19:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ char	*safe_substr(char const *s, unsigned int start, size_t len)
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
+}
+
+void	*ft_free(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	return (NULL);
 }

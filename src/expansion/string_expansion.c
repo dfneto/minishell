@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 18:33:56 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:08:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,20 @@ t_token	*expand_tokens(t_token *token, t_env env)
 	if (token->str[0] == '$')
 	{
 		split = safe_split(token->str, '$');
+		token->str = ft_free(token->str);
 		token->str = split[0];
 		toks_dol_created = create_tok_for_each_dollar(split, token,
 				next_tok_after_expand, 1);
+		ft_free(split);
 		return (expand_tokens_created(token, toks_dol_created, env));
 	}
-	else
+	else //procurar por leaks
 	{
 		split = safe_split(remove_pre_dolar_text(token->str), '$');
 		token->str = g_pre_dol(token->str, 0);
 		toks_dol_created = create_tok_for_each_dollar(split, token,
 				next_tok_after_expand, 0);
+		// ft_free(split);
 		return (expand_tokens_created(token->next, toks_dol_created - 1, env));
 	}
 }
@@ -142,14 +145,18 @@ t_token	*expand_tokens(t_token *token, t_env env)
 *	$a$a Z -> tokens: ls, -la, ls -la, Z
 *	$a Z -> tokens: ls, -la, Z
 */
-t_token	*expand_token_int_n_tokens(t_token *token, t_env env)
+t_token	*expand_string_token(t_token *token, t_env env)
 {
 	t_token	*last_token_expanded;
+	char	*tmp;
 
 	last_token_expanded = NULL;
+	tmp = NULL;
 	if (ft_strcmp(token->str, "$?") == 0)
 	{
-		token->str = expand_dollar_question(token->str, env);
+		tmp = expand_dollar_question(token->str, env);
+		token->str = ft_free(token->str);
+		token->str = tmp;
 		return (token);
 	}
 	else

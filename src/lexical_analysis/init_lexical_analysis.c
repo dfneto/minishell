@@ -6,37 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:34:20 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 11:07:45 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:10:58 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
- * Ideally the lexical analysis does more stuffs than
- * allocate tokens, but in this shell
- * it just produces a list of tokens.
- * Here it also remove the quotes
- */
-t_token	*lexical_analysis(char *input, t_env *env)
-{
-	t_token	*return_token;
-
-	return_token = create_tokens(input);
-	if (validate_tokens(return_token))
-	{
-		env->last_exit = 2;
-		clean_tokens(return_token);
-		return (NULL);
-	}
-	if (g_signal != 0)
-	{
-		env->last_exit = 128 + g_signal;
-		g_signal = 0;
-	}
-	expansion(return_token, *env);
-	return (return_token);
-}
 
 /*
  * Create a token of type DOUBLE_QUOTE or SINGLE_QUOTE
@@ -84,7 +58,7 @@ void	create_redirec_tok_add_back(t_token **root, char *input, int *i)
  * where each token pointes to the next
  * There are 9 types of token (see enum token_type).
  */
-t_token	*create_tokens(char *input)
+t_token	*create_all_tokens(char *input)
 {
 	int		i;
 	t_token	*first_token;
@@ -102,5 +76,31 @@ t_token	*create_tokens(char *input)
 		else
 			add_token(&first_token, create_string_token(input, &i));
 	}
+	return (first_token);
+}
+
+/*
+ * Ideally the lexical analysis does more stuffs than
+ * allocate tokens, but in this shell
+ * it just produces a list of tokens.
+ * Here it also remove the quotes
+ */
+t_token	*lexical_analysis(char *input, t_env *env)
+{
+	t_token	*first_token;
+
+	first_token = create_all_tokens(input);
+	if (validate_tokens(first_token))
+	{
+		env->last_exit = 2;
+		clean_tokens(first_token);
+		return (NULL);
+	}
+	if (g_signal != 0)
+	{
+		env->last_exit = 128 + g_signal;
+		g_signal = 0;
+	}
+	expansion(first_token, *env); //AQUI
 	return (first_token);
 }

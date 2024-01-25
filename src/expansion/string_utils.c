@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:00:06 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 19:50:30 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:55:14 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 	t_token	*next_tok_after_expand;
 
 	next_tok_after_expand = token->next;
+	expanded_str = NULL;
 	if (!exist_in_env(token->str, env))
 	{
-		token->str = NULL;
+		token->str = ft_free(token->str);
 		token->type = SPC;
 		return (token);
 	}
@@ -46,8 +47,8 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 		expanded_str = safe_strdup("");
 	else
 		expanded_str = safe_strdup(ft_getenv(token->str, env));
-	token->str = NULL;
-	if (has_space(expanded_str))
+	token->str = ft_free(token->str);
+	if (has_space(expanded_str)) //procurar leaks
 		return (create_tok_per_word_in(expanded_str, next_tok_after_expand,
 				token));
 	else

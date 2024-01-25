@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:53:01 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 16:11:30 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:46:31 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,15 @@ t_token	*create_tok_per_word_in(char *expanded_str,
 		t_token *next_tok_after_expand, t_token *token)
 {
 	size_t	i;
+	t_token	*token_expanded;
 
 	i = 0;
+	token_expanded = NULL;
 	if (expanded_str[i] && expanded_str[i] == ' ')
-		return (starts_with_space(expanded_str, next_tok_after_expand, token));
+		token_expanded = starts_with_space(expanded_str, next_tok_after_expand, token);
 	else
-		return (no_starts_with_space(expanded_str, next_tok_after_expand,
-				token));
+		token_expanded = no_starts_with_space(expanded_str, next_tok_after_expand,
+				token);
+	expanded_str = ft_free(expanded_str);
+	return (token_expanded);
 }
