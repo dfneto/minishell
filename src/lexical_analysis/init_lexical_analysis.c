@@ -25,6 +25,7 @@ t_token	*lexical_analysis(char *input, t_env *env)
 	return_token = create_tokens(input);
 	if (validate_tokens(return_token))
 	{
+		env->last_exit = 2;
 		clean_tokens(return_token);
 		return (NULL);
 	}
