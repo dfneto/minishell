@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 17:01:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:26:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 		t_env env)
 {
 	char	*word_to_expand;
+	char	*word_expanded;
 
 	word_to_expand = NULL;
+	word_expanded = NULL;
 	if (token->str[*i] == '?')
 	{
 		(*i)++;
@@ -42,7 +44,9 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 			- dolar_position - 1);
 	if (word_to_expand == NULL)
 		return (safe_strdup(""));
-	return (safe_strdup(ft_getenv(word_to_expand, env)));
+	word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
+	ft_free(word_to_expand);
+	return (word_expanded);
 }
 
 /*
@@ -60,7 +64,7 @@ Another example: "|$USER|"
 	- pos_last_word_expanded: |
 * If dolar_position < 0 so it isn't expansible. It is necessary
 * because we are going to check and expand every word inside
-* the quotes. So waka won't be expanded and so for waka 
+* the quotes. So waka won't be expanded and so for waka
 * in "123$USER $USER waka" the dolar position is -1.
 */
 t_token	*expand_double_quote_token(t_token *tok, t_env env)
@@ -101,6 +105,7 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 		// free(exp);
 		// exp = tmp;
 	}
+	tok->str = ft_free(tok->str);
 	tok->str = exp;
 	return (tok);
 }
