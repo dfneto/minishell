@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/25 11:49:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:08:37 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,5 +306,5 @@ int						validate_tokens(t_token *token);
 int						set_redirects(t_process *process);
 
 t_token					*clean_tokens(t_token *first);
-
+char	*remove_pre_dolar_text(char *str);
 #endif

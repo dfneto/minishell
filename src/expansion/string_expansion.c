@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 12:08:32 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:18:42 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@
  * começamos j=1 porque o j=0 ja foi criado
  * return: the amount of token dollars created
  */
-int	create_tok_for_each_dollar(char **split, t_token *token,
-		t_token *next_tok_after_expand, int a)
+int	create_tok_for_each_dollar(char **split, t_token *token, int a)
 {
 	int		i;
 	t_token	*new_token;
@@ -40,7 +39,7 @@ int	create_tok_for_each_dollar(char **split, t_token *token,
 	new_token = NULL;
 	while (split[i])
 	{
-		new_token = create_token_split(split[i], next_tok_after_expand);
+		new_token = create_token_split(split[i], token->next);
 		add_token_after(&token, new_token);
 		i++;
 	}
@@ -48,16 +47,41 @@ int	create_tok_for_each_dollar(char **split, t_token *token,
 }
 
 /*
- * Remove an certain amount of chars (size_to_remove)
- * from a string str starting from start char and
- * return: the new string
- */
-char	*remove_pre_dolar_text(char *str)
+* Expand strings that starts with spaces, ex: 123$USER
+*/
+t_token	*expand_string_space(t_token *token, t_env env)
 {
-	int	start;
+	int		toks_dol_created;
+	char	*tmp;
+	char	**split;
 
-	start = get_dolar_position(str, 0);
-	return (safe_substr(str, start, ft_strlen(str) - start));
+	split = NULL;
+	tmp = NULL;
+	toks_dol_created = 0;
+	tmp = remove_pre_dolar_text(token->str);
+	split = safe_split(tmp, '$');
+	tmp = ft_free(tmp);
+	tmp = g_pre_dol(token->str, 0);
+	ft_free(token->str);
+	token->str = tmp;
+	toks_dol_created = create_tok_for_each_dollar(split, token, 0);
+	ft_free(split);
+	return (expand_tokens_created(token->next, toks_dol_created - 1, env));
+}
+
+t_token	*expand_string_no_space(t_token *token, t_env env)
+{
+	int		toks_dol_created;
+	char	**split;
+
+	split = NULL;
+	toks_dol_created = 0;
+	split = safe_split(token->str, '$');
+	token->str = ft_free(token->str);
+	token->str = split[0];
+	toks_dol_created = create_tok_for_each_dollar(split, token, 1);
+	ft_free(split);
+	return (expand_tokens_created(token, toks_dol_created, env));
 }
 
 /*
@@ -68,7 +92,7 @@ char	*remove_pre_dolar_text(char *str)
  * after the split and expansion will
  * return: the last token created after the expansion
  * ex: export a="ls -la"
- * $a Z-> will return the token->str=-la
+ * $a Z-> will return the token SPC
  * (the token before is the 'ls') and
  * token->next = token Z
  * test cases:
@@ -77,7 +101,7 @@ char	*remove_pre_dolar_text(char *str)
  * a $a$a$a a
  * Case 2: with text before
  * In the case that you have a token of the form hola$a$b$c
- * it will split in hola$a, $b, $c, expand eacch of them and
+ * it will split in hola$a, $b, $c, expand each of them and
  * after the split and expansion will
  * return: the last token created after the expansion
  * ex: export a="ls -la"
@@ -93,32 +117,9 @@ char	*remove_pre_dolar_text(char *str)
  */
 t_token	*expand_tokens(t_token *token, t_env env)
 {
-	int		toks_dol_created;
-	char	**split;
-	t_token	*next_tok_after_expand;
-
-	split = NULL;
-	next_tok_after_expand = token->next;
-	toks_dol_created = 0;
 	if (token->str[0] == '$')
-	{
-		split = safe_split(token->str, '$');
-		token->str = ft_free(token->str);
-		token->str = split[0];
-		toks_dol_created = create_tok_for_each_dollar(split, token,
-				next_tok_after_expand, 1);
-		ft_free(split);
-		return (expand_tokens_created(token, toks_dol_created, env));
-	}
-	else //procurar por leaks
-	{
-		split = safe_split(remove_pre_dolar_text(token->str), '$');
-		token->str = g_pre_dol(token->str, 0);
-		toks_dol_created = create_tok_for_each_dollar(split, token,
-				next_tok_after_expand, 0);
-		// ft_free(split);
-		return (expand_tokens_created(token->next, toks_dol_created - 1, env));
-	}
+		return (expand_string_no_space(token, env));
+	return (expand_string_space(token, env));
 }
 
 /*

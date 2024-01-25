@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:00:06 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 11:55:14 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:19:30 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 	else
 		expanded_str = safe_strdup(ft_getenv(token->str, env));
 	token->str = ft_free(token->str);
-	if (has_space(expanded_str)) //procurar leaks
+	if (has_space(expanded_str))
 		return (create_tok_per_word_in(expanded_str, next_tok_after_expand,
 				token));
 	else
@@ -75,4 +75,17 @@ t_token	*expand_tokens_created(t_token *token, int num, t_env env)
 		i++;
 	}
 	return (token);
+}
+
+/*
+ * Remove an certain amount of chars (size_to_remove)
+ * from a string str starting from start char and
+ * return: the new string
+ */
+char	*remove_pre_dolar_text(char *str)
+{
+	int	start;
+
+	start = get_dolar_position(str, 0);
+	return (safe_substr(str, start, ft_strlen(str) - start));
 }
