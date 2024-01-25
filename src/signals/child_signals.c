@@ -16,25 +16,18 @@
 #include <signal.h>
 #include <stdio.h>
 
-void	main_control_c(int signum)
+void	heredoc_ctrl_c(int signum)
 {
+	(void)signum;
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_signal = signum;
-}
-
-void	ignore_sigquit_forever(void)
-{
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		exit(EXIT_FAILURE);
+	kill(0, SIGINT);
 }
 
-/* Handle signals in main loop */
-void	set_main_signals(void)
+void	set_heredoc_signals(void)
 {
-	if (signal(SIGINT, &main_control_c) == SIG_ERR)
+	if (signal(SIGINT, &heredoc_ctrl_c) == SIG_ERR)
 		exit(EXIT_FAILURE);
 }
 
@@ -43,11 +36,5 @@ void	set_child_signals(void)
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR
 		|| signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-		exit(EXIT_FAILURE);
-}
-
-void	set_parent_signals(void)
-{
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		exit(EXIT_FAILURE);
 }

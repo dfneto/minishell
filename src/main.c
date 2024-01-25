@@ -35,7 +35,8 @@ int	main(int argc, char **argv, char **envp)
 
 static void	init_minishell(t_env *env, t_builtin functions[], char **envp)
 {
-	ignore_sigquit_forever();
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		exit(EXIT_FAILURE);
 	init_builtins(functions);
 	env->head = NULL;
 	env->tail = NULL;

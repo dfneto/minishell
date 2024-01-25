@@ -281,7 +281,7 @@ int						print_ordered(t_env env);
 int						ft_chdir(char *str, t_env *env);
 
 /* SIGNALS */
-void					ignore_sigquit_forever(void);
+void					set_heredoc_signals(void);
 void					set_main_signals(void);
 void					set_child_signals(void);
 void					set_parent_signals(void);
@@ -306,5 +306,6 @@ int						validate_tokens(t_token *token);
 int						set_redirects(t_process *process);
 
 t_token					*clean_tokens(t_token *first);
-char	*remove_pre_dolar_text(char *str);
+char					*remove_pre_dolar_text(char *str);
+
 #endif

@@ -28,7 +28,7 @@ static void	do_child_heredoc(int pipefd[2], char *name)
 {
 	char	*input;
 
-	set_child_signals();
+	set_heredoc_signals();
 	close(pipefd[0]);
 	input = readline(":->");
 	if (input)
