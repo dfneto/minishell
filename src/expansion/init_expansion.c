@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 11:49:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:49:53 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int	check_and_expand(t_token *token, t_env env)
 	else if (token->str[0] == '$' && token->next
 		&& (token->next->type == DOUBLE_QUOTE
 			|| token->next->type == SINGLE_QUOTE))
+	{
+		token->str = ft_free(token->str);
 		token->str = safe_strdup("");
+	}
 	return (1);
 }
 
