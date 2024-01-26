@@ -88,17 +88,19 @@ static int	is_num(char *str)
 int	ft_exit(char **argv, t_env *env)
 {
 	argv++;
-	if (argv[0] == NULL || (!strcmp(argv[0], "--") && !argv[1]))
-		exit(env->last_exit);
+	if (*argv && !ft_strcmp(*argv, "--"))
+		argv++;
+	if (argv[0] == NULL)
+		exit((print_error("exit\n"), env->last_exit));
 	if (argv[1] == NULL && is_num(argv[0]))
-		exit(ft_atoi(argv[0]));
+		exit((print_error("exit\n"), ft_atoi(argv[0])));
 	else if (!is_num(argv[0]))
 	{
-		print_error("Brazilian Shell: exit: ");
+		print_error("exit\nBrazilian Shell: exit: ");
 		print_error(argv[0]);
 		print_error(": numeric argument required\n");
 		exit(255);
 	}
-	print_error("Brazilian Shell: exit: too many arguments\n");
-	return (1);
+	print_error("exit\nBrazilian Shell: exit: too many arguments\n");
+	return (EXIT_FAILURE);
 }
