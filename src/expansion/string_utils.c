@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:00:06 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/26 17:25:13 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:53:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ char	*expand_dollar_question(char *str, t_env env)
 	return (safe_strdup(get_exit_status(env.last_exit)));
 }
 
+char	*get_expanded_str(t_token *token, t_env env)
+{
+	if (token->str == NULL)
+		return (safe_strdup(""));
+	else
+		return (safe_strdup(ft_getenv(token->str, env)));
+}
+
 /*
  * Receive a token starting by $. Ex: $a
  * Return: the last part of the token expanded or the token in the
@@ -34,14 +42,12 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 {
 	char	*expanded_str;
 	t_token	*next_tok_after_expand;
-	
+
 	expanded_str = NULL;
 	next_tok_after_expand = token->next;
-	if (token->str == NULL)
-		expanded_str = safe_strdup("");
-	else
-		expanded_str = safe_strdup(ft_getenv(token->str, env));
-	if (!exist_in_env(token->str, env) || !expanded_str || ft_strcmp(expanded_str, "") == 0)
+	expanded_str = get_expanded_str(token, env);
+	if (!exist_in_env(token->str, env) || !expanded_str
+		|| ft_strcmp(expanded_str, "") == 0)
 	{
 		token->str = ft_free(token->str);
 		token->type = SPC;
