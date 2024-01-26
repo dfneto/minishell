@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:00:06 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/26 17:20:21 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:22:52 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,21 @@ char	*expand_dollar_question(char *str, t_env env)
 t_token	*expand_token_dolar(t_token *token, t_env env)
 {
 	char	*expanded_str;
-	char 	*env_returned;
 	t_token	*next_tok_after_expand;
 	
 	expanded_str = NULL;
 	next_tok_after_expand = token->next;
-	env_returned = NULL;
-	if (token->str == NULL)
-		env_returned = safe_strdup("");
-	else
-		env_returned = safe_strdup(ft_getenv(token->str, env)); //pq env_returned nao eh nulo quando o ft_getenv retorna nulo?
-	if (!exist_in_env(token->str, env) || !env_returned || ft_strcmp(env_returned, "") == 0)
-	{
-		token->str = ft_free(token->str);
-		token->type = SPC;
-		free(env_returned);
-		return (token);
-	}
-	free(env_returned);
-	expanded_str = env_returned;
 	if (token->str == NULL)
 		expanded_str = safe_strdup("");
 	else
-		expanded_str = safe_strdup(ft_getenv(token->str, env));
+		expanded_str = safe_strdup(ft_getenv(token->str, env)); //pq env_returned nao eh nulo quando o ft_getenv retorna nulo?
+	if (!exist_in_env(token->str, env) || !expanded_str || ft_strcmp(expanded_str, "") == 0)
+	{
+		token->str = ft_free(token->str);
+		token->type = SPC;
+		free(expanded_str);
+		return (token);
+	}
 	token->str = ft_free(token->str);
 	if (has_space(expanded_str))
 		return (create_tok_per_word_in(expanded_str, next_tok_after_expand,
