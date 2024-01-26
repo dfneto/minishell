@@ -48,14 +48,12 @@ static void	init_minishell(t_env *env, t_builtin functions[], char **envp)
 static char	*get_input(int last_exit)
 {
 	char	*input;
-	int		wr;
 
 	input = readline(PROMPT);
 	if (input == NULL)
 	{
 		if (isatty(STDIN_FILENO))
-			wr = write(2, "exit\n", 6);
-		(void)wr;
+			print_error("exit\n");
 		exit(last_exit);
 	}
 	else if (input && *input)
