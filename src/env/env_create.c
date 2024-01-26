@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   env_create.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:17:20 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 16:11:10 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	set_default_envs(t_env *env, char *shlvl)
 		ret = ft_setenv(env, "SHLVL", "0", 1);
 	else if (ft_atoi(shlvl) >= 1000)
 	{
-		print_error("Brazilian Shell: warning: shell level (");
+		print_error("br.sh: warning: shell level (");
 		shlvl = safe_itoa(ft_atoi(shlvl) + 1);
 		print_error(shlvl);
 		print_error(") too high, resetting to 1\n");

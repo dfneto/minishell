@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_perror.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 11:31:31 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/08/14 11:31:33 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 Receber esse int por variavel? */
 int	ft_perror(char *msg, char *func_name, int exit_status)
 {
-	print_error("Brazilian Shell: ");
+	print_error("br.sh: ");
 	if (func_name)
 		print_error(func_name);
 	perror(msg);

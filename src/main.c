@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:15:09 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/25 10:38:12 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:46 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*get_input(int last_exit)
 		add_history(input);
 		if (check_open_quotes(input))
 		{
-			print_error("Brazilian Shell: parsing error - unmatched quotes\n");
+			print_error("br.sh: parsing error - unmatched quotes\n");
 			input[0] = '\0';
 		}
 	}

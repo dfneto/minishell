@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:19:37 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/22 18:10:00 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	print_validate_error(t_type error_type)
 {
-	print_error("Brazilian Shell: syntax error near unexpected token `");
+	print_error("br.sh: syntax error near unexpected token `");
 	if (error_type == PIPE)
 		print_error("|");
 	else if (error_type == OUTPUT_REDIRECTION)

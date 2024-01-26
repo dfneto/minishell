@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:24:07 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:25:38 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_export(char **argv, t_env *env)
 		if (!is_valid_env(*argv, env))
 		{
 			ret = 1;
-			print_error("Brazilian Shell: export: `");
+			print_error("br.sh: export: `");
 			print_error(cpy);
 			print_error("\': not a valid identifier\n");
 		}

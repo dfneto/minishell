@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:28:19 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/14 12:29:26 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ int	ft_exit(char **argv, t_env *env)
 		exit((print_error("exit\n"), ft_atoi(argv[0])));
 	else if (!is_num(argv[0]))
 	{
-		print_error("exit\nBrazilian Shell: exit: ");
+		print_error("exit\nbr.sh: exit: ");
 		print_error(argv[0]);
 		print_error(": numeric argument required\n");
 		exit(255);
 	}
-	print_error("exit\nBrazilian Shell: exit: too many arguments\n");
+	print_error("exit\nbr.sh: exit: too many arguments\n");
 	return (EXIT_FAILURE);
 }

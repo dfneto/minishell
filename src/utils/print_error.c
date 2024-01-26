@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:06:00 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/11/15 11:06:49 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	print_error(char *str)
 
 int	print_cmd_not_found(char *cmd)
 {
-	print_error("Brazilian Shell: ");
+	print_error("br.sh: ");
 	print_error(cmd);
 	print_error(": command not found\n");
 	return (127);

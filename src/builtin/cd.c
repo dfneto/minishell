@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 16:27:51 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/10/02 16:28:06 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:08:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	go_home(t_env *env)
 		return (ft_chdir(ft_getenv("HOME", *env), env));
 	else
 	{
-		print_error("Brazilian Shell: cd: HOME not set\n");
+		print_error("br.sh: cd: HOME not set\n");
 		return (1);
 	}
 }
@@ -35,7 +35,7 @@ static int	go_oldpwd(t_env *env)
 		result = ft_chdir(ft_getenv("OLDPWD", *env), env);
 	else
 	{
-		print_error("Brazilian Shell: cd: OLDPWD not set\n");
+		print_error("br.sh: cd: OLDPWD not set\n");
 		return (1);
 	}
 	if (!result)
