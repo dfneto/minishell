@@ -21,7 +21,7 @@ LIBFT = libft/libft.a
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Ilibft -Iinc -I$(READLINE_INCLUDE_DIR)
+CFLAGS = -Wall -Wextra -Werror -g  -Ilibft -Iinc -I$(READLINE_INCLUDE_DIR) #-fsanitize=address
 LDFLAGS = -L$(READLINE_LIB_DIR) -Llibft -lreadline -lhistory -lft -lncurses
 
 # Find all source files in the src directory and its subdirectories
@@ -44,7 +44,7 @@ $(TARGET): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Rule for generating object files and creating directories
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MINI_H) $(READLINE_LIB) $(LIBFT) | $(OBJ_DIRS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile $(MINI_H) $(READLINE_LIB) $(LIBFT) | $(OBJ_DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Rule for creating the obj directory
