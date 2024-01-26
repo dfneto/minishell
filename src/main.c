@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:15:09 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/26 18:08:46 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:43:19 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,5 @@ static void	main_loop(t_env *env, t_builtin functions[])
 		if (first_process)
 			env->last_exit = execute_cmd(first_process, env, functions);
 	}
-	clear_history();
+	rl_clear_history();
 }
