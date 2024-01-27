@@ -29,7 +29,7 @@ int	execute_single_cmd(t_process *process, t_env *env,
 	if (process->outfile == -1 || process->infile == -1)
 		return (1);
 	if (!process->cmd)
-		return (env->last_exit);
+		return (0);
 	set_single_redirects(process, &og_stdin, &og_stdout);
 	env->last_exit = execute_builtins(process->cmd, env, functions);
 	if (env->last_exit == -1)

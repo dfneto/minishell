@@ -58,8 +58,6 @@ static void	child_execution(t_process *process, t_env *env,
 		if (process->prev)
 			close_pipes(process->prev->fd);
 	}
-	if (process->errfile != STDERR_FILENO)
-		dup2(process->errfile, STDERR_FILENO);
 	close_pipes(process->fd);
 	env->last_exit = execute_builtins(process->cmd, env,
 			functions);
