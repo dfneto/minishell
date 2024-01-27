@@ -31,7 +31,12 @@ int	execute_cmd(t_process *process, t_env *env,
 		t_builtin functions[])
 {
 	if (!process->next)
-		return (execute_single_cmd(process, env, functions));
+		env->last_exit = execute_single_cmd(process, env, functions);
 	else
-		return (execute_multi_cmd(process, env, functions));
+		env->last_exit = execute_multi_cmd(process, env, functions);
+	if (env->last_exit == 131)
+		printf("Quit (core dumped)");
+	if (env->last_exit == 130 || env->last_exit == 131)
+		printf("\n");
+	return(env->last_exit);
 }

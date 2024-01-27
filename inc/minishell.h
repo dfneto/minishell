@@ -108,6 +108,7 @@ typedef struct s_process
 	int					infile;
 	int					outfile;
 	int					heredoc;
+	int					errfile;
 	struct s_redirect	*redirect;
 }						t_process;
 

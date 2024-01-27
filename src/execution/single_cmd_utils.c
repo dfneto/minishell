@@ -19,7 +19,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void	set_single_redirects(t_process *process, int *og_stdin, int *og_stdout)
+void	set_single_redirects(t_process *process, int *og_stdin, int *og_stdout, int *og_stderr)
 {
 	if (process->outfile != STDOUT_FILENO)
 	{
@@ -31,9 +31,14 @@ void	set_single_redirects(t_process *process, int *og_stdin, int *og_stdout)
 		*og_stdin = dup(STDIN_FILENO);
 		dup2(process->infile, STDIN_FILENO);
 	}
+	if (process->errfile != STDERR_FILENO)
+	{
+		*og_stderr = dup(STDERR_FILENO);
+		dup2(process->errfile, STDERR_FILENO);
+	}
 }
 
-void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout)
+void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout, int *og_stderr)
 {
 	if (process->outfile != STDOUT_FILENO)
 	{
@@ -44,6 +49,11 @@ void	reset_redirects(t_process *process, int *og_stdin, int *og_stdout)
 	{
 		dup2(*og_stdin, STDIN_FILENO);
 		close(*og_stdin);
+	}
+	if (process->errfile != STDERR_FILENO)
+	{
+		dup2(*og_stderr, STDERR_FILENO);
+		close(*og_stderr);
 	}
 }
 

@@ -26,7 +26,7 @@ static int	start_processes(t_process *process, t_env *env,
 	{
 		if (pipe(process->fd) == -1)
 			exit(EXIT_FAILURE);
-		if (process->outfile == -1 || process->infile == -1)
+		if (process->outfile == -1 || process->infile == -1 || process->errfile == -1) // stderr
 			env->last_exit = 1;
 		else
 			if (main_execution(process, env, functions))

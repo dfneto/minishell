@@ -1,4 +1,4 @@
-prefix=/Users/lsulzbac/cursus/minishell/readline/library
+prefix=/home/lucas/Documents/42cursus/minishell/readline/library
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
