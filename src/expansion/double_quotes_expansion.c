@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 19:44:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:39:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,13 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 	if (tok->str[i] && tok->str[i] != '$')
 		exp = get_text_post_extension(tok, exp, i);
 	tok->str = ft_free(tok->str);
-	tok->str = exp;
+	if (tok->type == STRING && !ft_strcmp(exp, ""))
+		tok->type = SPC;
+	else
+		tok->str = exp;
+	// if (tok->type == STRING && ft_strchr(tok->str, ' '))
+	// 	//token->string = '-n -n'
+	// 	//separa em novos token
+	//todo espaco dentro de string tenho que transformar em espaço
 	return (tok);
 }
