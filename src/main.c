@@ -40,6 +40,8 @@ static void	init_minishell(t_env *env, t_builtin functions[], char **envp)
 	init_builtins(functions);
 	env->head = NULL;
 	env->tail = NULL;
+	env->oldpwd = NULL;
+	env->pwd = NULL;
 	env->last_exit = 0;
 	if (create_env(env, envp))
 		exit(EXIT_FAILURE);

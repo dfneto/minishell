@@ -50,8 +50,8 @@ static int	set_default_envs(t_env *env, char *shlvl)
 {
 	int	ret;
 
-	/* if (ft_setenv(env, "OLDPWD", NULL, 1))
-		return (1); */
+	if (ft_setenv(env, "OLDPWD", NULL, 1))
+		return (1);
 	if (exists_in_env("PWD", *env) && ft_getenv("PWD", *env))
 		env->pwd = safe_strdup(ft_getenv("PWD", *env));
 	if (exists_in_env("OLDPWD", *env) && ft_getenv("OLDPWD", *env))
@@ -74,7 +74,6 @@ static int	set_default_envs(t_env *env, char *shlvl)
 	return (ret);
 }
 
-/* REFACTOR AND REMOVE T_ENV ??? */
 int	create_env(t_env *env, char **envp)
 {
 	int		i;

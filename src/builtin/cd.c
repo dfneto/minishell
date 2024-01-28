@@ -45,12 +45,6 @@ static int	go_oldpwd(t_env *env)
 	return (result);
 }
 
-/*
-COLOCAR GETCWD AQUI... EM ALGUM LUGAR
- REFACTOR TUDO
- VERIFICAR TROCA DE ENV -> PWD & OLDPWD
- */
-
 int	ft_cd(char **argv, t_env *env)
 {
 	int	result;
