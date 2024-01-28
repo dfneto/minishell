@@ -1,7 +1,7 @@
 # Makefile
 
 # Set the name of your executable
-TARGET = minishell
+NAME = minishell
 
 # Set the source directory
 SRC_DIR = src
@@ -34,13 +34,13 @@ OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 OBJ_DIRS := $(sort $(dir $(OBJ_FILES)))
 
 # Default rule
-all: $(TARGET)
+all: $(NAME)
 
-run_me: $(TARGET)
-	./$(TARGET)
+run_me: $(NAME)
+	./$(NAME)
 
-# Rule for the target executable
-$(TARGET): $(OBJ_FILES)
+# Rule for the NAME executable
+$(NAME): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Rule for generating object files and creating directories
@@ -66,7 +66,7 @@ clean:
 	make clean -C libft
 
 fclean: clean clean_readline
-	rm -rf $(TARGET)
+	rm -rf $(NAME)
 	make fclean -C libft
 
 clean_readline:
@@ -74,5 +74,5 @@ clean_readline:
 
 re: fclean all
 
-# Phony targets to avoid conflicts with file names
+# Phony NAMEs to avoid conflicts with file names
 .PHONY: all clean fclean clean_readline run_me re
