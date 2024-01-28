@@ -42,12 +42,13 @@ static void	set_env_variables(t_env *env, char *path)
 		env->oldpwd = ft_strdup(env->pwd);
 	}
 	if (exists_in_env("PWD", *env))
-		ft_setenv(env, "PWD", path, 1);
+		ft_setenv(env, "PWD", safe_strdup(path), 1);
 	else
 	{
 		ft_free(env->pwd);
 		env->pwd = safe_strdup(path);
 	}
+	free(path);
 }
 
 int	ft_chdir(char *str, t_env *env)

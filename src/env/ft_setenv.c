@@ -22,13 +22,19 @@ static void	update_pwd_oldpwd(t_env *env, char *name, char *value)
 	{
 		if (env->pwd)
 			free(env->pwd);
-		env->pwd = ft_strdup(value);
+		if (value)
+			env->pwd = ft_strdup(value);
+		else
+			env->pwd = NULL;
 	}
 	if (!ft_strcmp(name, "OLDPWD"))
 	{
 		if (env->oldpwd)
 			free(env->oldpwd);
-		env->oldpwd = ft_strdup(value);
+		if (value)
+			env->oldpwd = ft_strdup(value);
+		else
+			env->oldpwd = NULL;
 	}
 }
 
