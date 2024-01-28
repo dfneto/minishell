@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/26 17:49:53 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:45:27 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
  */
 t_token	*expand_according_to_type(t_token *token, t_env env)
 {
+	// return expand_double_quote_token(token, env);
 	if (token->type == DOUBLE_QUOTE)
 		return (expand_double_quote_token(token, env));
 	return (expand_string_token(token, env));
@@ -68,6 +69,7 @@ char	*get_exit_status(int last_exit)
 int	check_and_expand(t_token *token, t_env env)
 {
 	if (has_word_expansible(token->str))
+	// if (ft_strchr(token->str, '$'))
 		token = expand_according_to_type(token, env);
 	else if (token->str[0] == '$' && token->next
 		&& (token->next->type == DOUBLE_QUOTE

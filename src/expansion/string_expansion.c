@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 13:18:42 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:49:18 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
  * começamos j=1 porque o j=0 ja foi criado
  * return: the amount of token dollars created
  */
-int	create_tok_for_each_dollar(char **split, t_token *token, int a)
+int	create_tok_for_each_dollar(char **split, t_token *token, int n)
 {
 	int		i;
 	t_token	*new_token;
 
-	i = a;
+	i = n;
 	new_token = NULL;
 	while (split[i])
 	{
@@ -43,13 +43,13 @@ int	create_tok_for_each_dollar(char **split, t_token *token, int a)
 		add_token_after(&token, new_token);
 		i++;
 	}
-	return (i + (1 - a));
+	return (i + (1 - n));
 }
 
 /*
-* Expand strings that starts with spaces, ex: 123$USER
+* Expand strings with text before $, ex: 123$USER
 */
-t_token	*expand_string_space(t_token *token, t_env env)
+t_token	*expand_string_pre_dolar(t_token *token, t_env env)
 {
 	int		toks_dol_created;
 	char	*tmp;
@@ -69,7 +69,10 @@ t_token	*expand_string_space(t_token *token, t_env env)
 	return (expand_tokens_created(token->next, toks_dol_created - 1, env));
 }
 
-t_token	*expand_string_no_space(t_token *token, t_env env)
+/*
+* Expand strings that starts with $ and has no text before $, ex: $USER
+*/
+t_token	*expand_string_no_text(t_token *token, t_env env)
 {
 	int		toks_dol_created;
 	char	**split;
@@ -118,8 +121,8 @@ t_token	*expand_string_no_space(t_token *token, t_env env)
 t_token	*expand_tokens(t_token *token, t_env env)
 {
 	if (token->str[0] == '$')
-		return (expand_string_no_space(token, env));
-	return (expand_string_space(token, env));
+		return (expand_string_no_text(token, env));
+	return (expand_string_pre_dolar(token, env));
 }
 
 /*
