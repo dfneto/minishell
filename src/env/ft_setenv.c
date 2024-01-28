@@ -16,20 +16,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int	overwrite_and_value(t_node *tmp, char *value)
+static void	update_pwd_oldpwd(t_env *env, char *name, char *value)
+{
+	if (!ft_strcmp(name, "PWD"))
+	{
+		if (env->pwd)
+			free(env->pwd);
+		if (value)
+			env->pwd = ft_strdup(value);
+		else
+			env->pwd = NULL;
+	}
+	if (!ft_strcmp(name, "OLDPWD"))
+	{
+		if (env->oldpwd)
+			free(env->oldpwd);
+		if (value)
+			env->oldpwd = ft_strdup(value);
+		else
+			env->oldpwd = NULL;
+	}
+}
+
+static int	overwrite_and_value(t_node *tmp, char *value, t_env *env)
 {
 	free(tmp->value);
 	tmp->value = value;
+	update_pwd_oldpwd(env, tmp->name, value);
 	return (0);
 }
 
-static int	overwrite_and_novalue(t_node *tmp, char *value)
+static int	overwrite_and_novalue(t_node *tmp, char *value, t_env *env)
 {
 	tmp->value = value;
+	update_pwd_oldpwd(env, tmp->name, value);
 	return (0);
 }
 
-static int	no_overwrite(t_node *tmp, char *value)
+static int	no_overwrite(t_node *tmp, char *value, t_env *env)
 {
 	char	*current_env;
 
@@ -39,6 +63,7 @@ static int	no_overwrite(t_node *tmp, char *value)
 	if (tmp->value)
 		free(tmp->value);
 	tmp->value = safe_strjoin(current_env, value);
+	update_pwd_oldpwd(env, tmp->name, tmp->value);
 	free(current_env);
 	free(value);
 	return (0);
@@ -54,11 +79,11 @@ int	ft_setenv(t_env *env, char *name, char *value, int overwrite)
 		if (!ft_strcmp(tmp->name, name))
 		{
 			if (overwrite && tmp->value)
-				return (overwrite_and_value(tmp, value));
+				return (overwrite_and_value(tmp, value, env));
 			else if (overwrite)
-				return (overwrite_and_novalue(tmp, value));
+				return (overwrite_and_novalue(tmp, value, env));
 			else
-				return (no_overwrite(tmp, value));
+				return (no_overwrite(tmp, value, env));
 		}
 		tmp = tmp->next;
 	}

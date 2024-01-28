@@ -123,12 +123,14 @@ typedef struct s_env
 	t_node				*head;
 	t_node				*tail;
 	int					last_exit;
+	char				*pwd;
+	char				*oldpwd;
 }						t_env;
 
 typedef struct s_builtin
 {
 	char				*name;
-	int					(*function)(char **, t_env *);
+	int					(*function)(char **, t_env *, int multi);
 }						t_builtin;
 
 int						check_open_quotes(char *input);
@@ -230,7 +232,7 @@ int						add_node_to_env(t_env *env, t_node *node);
 void					clean_env(t_env *env);
 
 // Env Utils Functions
-int						exist_in_env(char *name, t_env env);
+int						exists_in_env(char *name, t_env env);
 int						ft_setenv(t_env *env, char *name, char *value, int ow);
 int						ft_unsetenv(t_env *env, char *name);
 char					*ft_getenv(char *name, t_env env);
@@ -263,16 +265,16 @@ char					*safe_substr(char const *s, unsigned int start,
 void					init_builtins(t_builtin array[]);
 int						is_builtins(char **argv, t_builtin functions[]);
 int						execute_builtins(char **argv, t_env *env,
-							t_builtin functions[]);
+							t_builtin functions[], int multi);
 
 // Built-in functions
-int						ft_echo(char **argv, t_env *env);
-int						ft_pwd(char **argv, t_env *env);
-int						ft_exit(char **argv, t_env *env);
-int						ft_env(char **argv, t_env *env);
-int						ft_cd(char **argv, t_env *env);
-int						ft_export(char **argv, t_env *env);
-int						ft_unset(char **argv, t_env *env);
+int						ft_echo(char **argv, t_env *env, int multi);
+int						ft_pwd(char **argv, t_env *env, int multi);
+int						ft_exit(char **argv, t_env *env, int multi);
+int						ft_env(char **argv, t_env *env, int multi);
+int						ft_cd(char **argv, t_env *env, int multi);
+int						ft_export(char **argv, t_env *env, int multi);
+int						ft_unset(char **argv, t_env *env, int multi);
 
 // ft_export utils
 int						print_ordered(t_env env);

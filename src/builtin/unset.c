@@ -16,12 +16,23 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_unset(char **argv, t_env *env)
+int	ft_unset(char **argv, t_env *env, int multi)
 {
+	(void)multi;
 	argv++;
 	while (*argv)
 	{
 		ft_unsetenv(env, *argv);
+		if (!ft_strcmp(*argv, "PWD"))
+		{
+			free(env->pwd);
+			env->pwd = NULL;
+		}
+		if (!ft_strcmp(*argv, "OLDPWD"))
+		{
+			free(env->oldpwd);
+			env->oldpwd = NULL;
+		}
 		argv++;
 	}
 	return (0);

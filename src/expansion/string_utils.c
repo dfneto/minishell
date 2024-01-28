@@ -46,7 +46,7 @@ t_token	*expand_token_dolar(t_token *token, t_env env)
 	expanded_str = NULL;
 	next_tok_after_expand = token->next;
 	expanded_str = get_expanded_str(token, env);
-	if (!exist_in_env(token->str, env) || !expanded_str
+	if (!exists_in_env(token->str, env) || !expanded_str
 		|| ft_strcmp(expanded_str, "") == 0)
 	{
 		token->str = ft_free(token->str);

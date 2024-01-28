@@ -31,12 +31,13 @@ static int	is_n_flag(char const *str)
 	return (1);
 }
 
-int	ft_echo(char **argv, t_env *env)
+int	ft_echo(char **argv, t_env *env, int multi)
 {
 	int	i;
 	int	new_line;
 
 	(void)(env);
+	(void)multi;
 	i = 0;
 	new_line = 1;
 	while (is_n_flag(argv[++i]))

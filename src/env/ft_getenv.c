@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	exist_in_env(char *name, t_env env)
+int	exists_in_env(char *name, t_env env)
 {
 	while (env.head)
 	{

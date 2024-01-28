@@ -53,11 +53,12 @@ static int	is_valid_env(char *str, t_env *env)
 /*
 
  */
-int	ft_export(char **argv, t_env *env)
+int	ft_export(char **argv, t_env *env, int multi)
 {
 	int		ret;
 	char	*cpy;
 
+	(void)multi;
 	ret = 0;
 	argv++;
 	if (*argv == NULL)

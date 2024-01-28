@@ -60,7 +60,7 @@ static void	child_execution(t_process *process, t_env *env,
 	}
 	close_pipes(process->fd);
 	env->last_exit = execute_builtins(process->cmd, env,
-			functions);
+			functions, 1);
 	if (env->last_exit == -1)
 	{
 		execve(get_path(process->cmd, *env), process->cmd,
