@@ -72,6 +72,19 @@ int	ft_export(char **argv, t_env *env)
 			print_error(cpy);
 			print_error("\': not a valid identifier\n");
 		}
+		if (!ret && (!ft_strcmp(cpy, "PWD") || !ft_strcmp(cpy, "OLDPWD")))
+		{
+			if (!ft_strcmp(cpy, "PWD"))
+			{
+				ft_free(env->pwd);
+				env->pwd = safe_strdup(cpy);
+			}
+			else
+			{
+				ft_free(env->oldpwd);
+				env->oldpwd = safe_strdup(cpy);
+			}
+		}
 		free(cpy);
 		argv++;
 	}

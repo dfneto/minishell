@@ -18,7 +18,7 @@
 
 static int	go_home(t_env *env)
 {
-	if (exist_in_env("HOME", *env) && ft_getenv("HOME", *env))
+	if (exists_in_env("HOME", *env) && ft_getenv("HOME", *env))
 		return (ft_chdir(ft_getenv("HOME", *env), env));
 	else
 	{
@@ -31,15 +31,17 @@ static int	go_oldpwd(t_env *env)
 {
 	int	result;
 
-	if (exist_in_env("OLDPWD", *env))
+	if (exists_in_env("OLDPWD", *env) && ft_getenv("OLDPWD", *env))
 		result = ft_chdir(ft_getenv("OLDPWD", *env), env);
+	else if (env->oldpwd)
+		result = ft_chdir(env->oldpwd, env);
 	else
 	{
 		print_error("br.sh: cd: OLDPWD not set\n");
 		return (1);
 	}
 	if (!result)
-		printf("%s\n", ft_getenv("PWD", *env));
+		printf("%s\n", env->pwd);
 	return (result);
 }
 
