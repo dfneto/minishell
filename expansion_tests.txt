@@ -1,3 +1,7 @@
+Fazer:
+$USER$/
+"$USER$/"
+
 FAILING:
 Com $?:
     echo 123$?
@@ -11,7 +15,6 @@ echo "$1 $USER" (identificado o erro: quando a primeira palavra não é expansí
 echo "123$0 $USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
 echo "123$0$USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
 
-echo $USER$/
 
 
 
@@ -29,6 +32,14 @@ echo $USER$USER
 
 echo 123$USER
 echo 123$USER$USER
+
+$?
+$USER.
+$USER.$USER
+
+123$USER.
+123$USER.$USER
+
 
 export A='foo   ' B='bar   ' C='baz   '
 echo $A$B$C
