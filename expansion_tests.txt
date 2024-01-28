@@ -1,17 +1,19 @@
 FAILING:
-echo 123$?
-echo $A$?
-echo $?123
-echo $?badasb
-echo $USER$?abc
+Com $?:
+    echo 123$?
+    echo $A$?
+    echo $?123
+    echo $?badasb
+    echo $USER$?abc
 
-echo $b/
-echo $USER!
-echo $USER/
 
 echo "$1 $USER" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
 echo "123$0 $USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
 echo "123$0$USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
+
+echo $USER$/
+
+
 
 -------------
 Testes de leaks 0
@@ -33,6 +35,17 @@ echo $A$B$C
 echo 42343$A$B$C
 -------------
 PASSING:
+$USER. - ok
+$USER.$USER - ok
+
+123$USER. - ok
+123$USER.$USER - ok
+
+echo $b/
+echo $USER!
+echo $USER/
+
+
 echo "$USER $USER" - ok
 echo "123$? $USER" - OK
 echo "123$0 $USER" - ok (o bash tem um comportamento específico)

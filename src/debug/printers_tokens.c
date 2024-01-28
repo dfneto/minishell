@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:29:30 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/23 11:19:20 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:15:26 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_type(int type)
 	else if (type == PIPE)
 		return ("|");
 	else
-		return ("nothing to be printed");
+		return ("string or quotes");
 }
 
 void	print_list_token(t_token *token)
