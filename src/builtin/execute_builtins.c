@@ -41,7 +41,7 @@ int	is_builtins(char **argv, t_builtin functions[])
 }
 
 int	execute_builtins(char **argv, t_env *env,
-		t_builtin functions[])
+		t_builtin functions[], int multi)
 {
 	int	i;
 
@@ -49,7 +49,7 @@ int	execute_builtins(char **argv, t_env *env,
 	while (i < BUILTINS_NUM)
 	{
 		if (!ft_strcmp(functions[i].name, argv[0]))
-			return (functions[i].function(argv, env));
+			return (functions[i].function(argv, env, multi));
 		i++;
 	}
 	return (-1);

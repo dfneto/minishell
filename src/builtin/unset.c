@@ -16,8 +16,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_unset(char **argv, t_env *env)
+int	ft_unset(char **argv, t_env *env, int multi)
 {
+	(void)multi;
 	argv++;
 	while (*argv)
 	{

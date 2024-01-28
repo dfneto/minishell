@@ -16,11 +16,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	ft_env(char **argv, t_env *env)
+int	ft_env(char **argv, t_env *env, int multi)
 {
 	t_node	*tmp;
 
 	(void)argv;
+	(void)multi;
 	tmp = env->head;
 	while (tmp)
 	{

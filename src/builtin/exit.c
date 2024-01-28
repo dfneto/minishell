@@ -85,22 +85,24 @@ static int	is_num(char *str)
 	return (1);
 }
 
-int	ft_exit(char **argv, t_env *env)
+int	ft_exit(char **argv, t_env *env, int multi)
 {
 	argv++;
+	if (!multi)
+		print_error("exit\n");
 	if (*argv && !ft_strcmp(*argv, "--"))
 		argv++;
 	if (argv[0] == NULL)
-		exit((print_error("exit\n"), env->last_exit));
+		exit(env->last_exit);
 	if (argv[1] == NULL && is_num(argv[0]))
-		exit((print_error("exit\n"), ft_atoi(argv[0])));
+		exit(ft_atoi(argv[0]));
 	else if (!is_num(argv[0]))
 	{
-		print_error("exit\nbr.sh: exit: ");
+		print_error("br.sh: exit: ");
 		print_error(argv[0]);
 		print_error(": numeric argument required\n");
 		exit(255);
 	}
-	print_error("exit\nbr.sh: exit: too many arguments\n");
+	print_error("br.sh: exit: too many arguments\n");
 	return (EXIT_FAILURE);
 }

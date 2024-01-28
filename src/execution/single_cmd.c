@@ -31,7 +31,7 @@ int	execute_single_cmd(t_process *process, t_env *env,
 	if (!process->cmd)
 		return (env->last_exit);
 	set_single_redirects(process, &og_stdin, &og_stdout);
-	env->last_exit = execute_builtins(process->cmd, env, functions);
+	env->last_exit = execute_builtins(process->cmd, env, functions, 0);
 	if (env->last_exit == -1)
 	{
 		path = get_path(process->cmd, *env);

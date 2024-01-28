@@ -45,10 +45,11 @@ static int	go_oldpwd(t_env *env)
 	return (result);
 }
 
-int	ft_cd(char **argv, t_env *env)
+int	ft_cd(char **argv, t_env *env, int multi)
 {
 	int	result;
 
+	(void)multi;
 	if (argv[1])
 	{
 		if (!ft_strcmp(argv[1], "-"))
