@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 21:43:01 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:57:12 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ to understand:
 	e para fazer isso tenho que antes limpar o ponteiro
 	tok->str
 */
-t_token	*expand_double_quote_token(t_token *tok, t_env env)
+t_token	*expand_token(t_token *tok, t_env env)
 {
 	int		i;
 	char	*exp;

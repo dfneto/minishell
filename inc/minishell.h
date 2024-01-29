@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/29 21:17:44 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:04:18 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ int						expansion(t_token *first_token,
 int						is_alpha_or_slash(char c);
 int						has_word_expansible(char *str);
 int						get_dolar_position(char *str, int i);
-int						has_space(char *str);
 int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);
 char					*get_text_post_extension(t_token *token, char *exp, int i);
@@ -156,28 +155,17 @@ void					*ft_free(void *ptr);
 void					remove_spaces(char **str);
 t_token					*remove_spaces_in(t_token **token);
 int						execute_heredoc(t_process *first_process);
-void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);
 char					*g_pre_dol(char *str, int start);
-char					*deals_with_the_first_word(char *token_str, int i,
-							int start, char *pre_dolar);
-char					*expand_dollar_question(char *str, t_env env);
-t_token					*set_token_str(t_token *token, char *value);
-t_token					*create_tok_per_word_in(char *expanded_str,
-							t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);
-t_token					*expand_string_token(t_token *token, t_env env);
-t_token					*expand_double_quote_token(t_token *token, t_env env);
+t_token					*expand_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input, t_env *env);
 t_token					*create_token(char *input, int start, int end,
 							int type);
-t_token					*expand_token_dolar(t_token *token, t_env env);
 t_token					*get_last_token(t_token *first);
 t_token					*create_all_tokens(char *input);
 t_token					*create_token(char *input, int beginning, int end,
 							int type);
-t_token					*expand_tokens_created(t_token *token,
-							int num, t_env env);
 t_token					*create_space_token(char *input, int *i);
 t_token					*create_pipe_token(char *input, int *i);
 t_token					*create_quote_token(char *input, int *i, int type,
@@ -308,6 +296,5 @@ int						validate_tokens(t_token *token);
 int						set_redirects(t_process *process);
 
 t_token					*clean_tokens(t_token *first);
-char					*remove_pre_dolar_text(char *str);
 
 #endif

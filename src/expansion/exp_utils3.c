@@ -6,25 +6,12 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 12:44:43 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 20:46:10 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:04:34 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	has_space(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == ' ')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 int	is_alpha_or_slash(char c)
 {

@@ -6,12 +6,21 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 21:12:33 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:55:42 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
+
+/* TO DO
+Função só funciona com o caso $? sozinho
+Refazer junto com a is_dolarquestion_mark
+-->> proteger malloc (ft_itoa)
+ */
+char	*get_exit_status(int last_exit)
+{
+	return (safe_itoa(last_exit));
+}
 
 int	create_add_token_space(t_token **head, int i)
 {

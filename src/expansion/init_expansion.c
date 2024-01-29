@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:29:55 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 18:09:25 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:57:24 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,12 @@
  * ls, -l, -a, -F, respectively, and return the next token, in this
  * case null. But, if: $a waka, the token to be returned is <spc>
  */
-t_token	*expand_according_to_type(t_token *token, t_env env)
-{
-	return expand_double_quote_token(token, env);
-	// if (token->type == DOUBLE_QUOTE)
-	// 	return (expand_double_quote_token(token, env));
-	// return (expand_string_token(token, env));
-}
-
-/* TO DO
-Função só funciona com o caso $? sozinho
-Refazer junto com a is_dolarquestion_mark
--->> proteger malloc (ft_itoa)
- */
-char	*get_exit_status(int last_exit)
-{
-	return (safe_itoa(last_exit));
-}
-
-// int	is_quotes(char *str)
+// t_token	*expand_according_to_type(t_token *token, t_env env)
 // {
-// 	printf("verificnado o token %s\n", str);
-// 	int	dolar_position;
-
-// 	dolar_position = get_dolar_position(str, 0);
-// 	if (dolar_position == -1)
-// 		return (0);
-// 	if (str[dolar_position + 1] == 34 || str[dolar_position + 1] == 39)
-// 		return (1);
-// 	return (0);
+// 	return expand_double_quote_token(token, env);
+// 	// if (token->type == DOUBLE_QUOTE)
+// 	// 	return (expand_double_quote_token(token, env));
+// 	// return (expand_string_token(token, env));
 // }
 
 /*
@@ -66,11 +43,10 @@ char	*get_exit_status(int last_exit)
  * TODO: idealmente nesses casos (198-200) seria remover o token $ ao
  * invés de apagá-lo e seria bom ter um ponteiro previous
  */
-int	check_and_expand(t_token *token, t_env env)
+void	check_and_expand(t_token *token, t_env env)
 {
 	if (ft_strchr(token->str, '$'))
-		token = expand_according_to_type(token, env);
-	return (1);
+		token = expand_token(token, env);
 }
 
 /*
