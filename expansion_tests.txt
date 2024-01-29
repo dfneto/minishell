@@ -1,14 +1,8 @@
 echo $"   t  hi   t    "
 echo $$"   t  hi   t    "
-
-$/,1@= etc; $USER; $a
-
-
-
-
 echo $USER$
-$USER$/
-"$USER$/"
+echo $USER$/
+echo "$USER$/"
 
 
 echo $USER$. -> davifern$.
