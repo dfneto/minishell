@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/28 21:39:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:39:25 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,24 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 		(*i)++;
 		return (get_exit_status(env.last_exit));
 	}
-	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
+	while (token->str[*i] && is_alnum_or_slash(token->str[*i])) //isso pega numero, como? como pega $/ e $1? testar a diferenca
+	// while (token->str[*i] && token->str[*i] != ' ' && token->str[*i] != '$')
 		(*i)++;
-	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
-			- dolar_position - 1);
+	word_to_expand = safe_substr(token->str, dolar_position, *i
+			- dolar_position);
 	if (word_to_expand == NULL)
 		return (safe_strdup(""));
-	word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
+	if (is_alpha_or_slash(word_to_expand[1])) //$USER
+	{     
+		word_to_expand = ft_free(word_to_expand);
+		word_to_expand = safe_substr(token->str, dolar_position + 1, *i
+			- dolar_position - 1); //USER
+		word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
+	}
+	else if (token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE)) //$"hola" -> removo o $ e imprimo hola
+		word_expanded = safe_strdup("");
+	else
+		word_expanded = safe_strdup(word_to_expand);
 	ft_free(word_to_expand);
 	return (word_expanded);
 }
@@ -94,7 +105,7 @@ char	*expand_token_with_pre_dolar(t_token *tok, int *i, t_env env)
 		tmp = ft_free(tmp);
 		tmp2 = ft_free(tmp2);
 		dol_pos = get_dolar_position(tok->str, *i);
-		if (dol_pos >= 0 && tok->str[dol_pos + 1])
+		if (dol_pos >= 0 && tok->str[dol_pos])
 			exp = join_with_word_expanded(tok, i, exp, env);
 	}
 	return (exp);
@@ -122,20 +133,86 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 {
 	int		i;
 	char	*exp;
+	t_token	*head;
 
 	i = 0;
 	exp = NULL;
 	exp = expand_token_with_pre_dolar(tok, &i, env);
 	if (tok->str[i] && tok->str[i] != '$')
+	{
+		// printf("AQUI\n");
 		exp = get_text_post_extension(tok, exp, i);
+		// printf("exp depois da expansao: %s\n", exp);
+	}
 	tok->str = ft_free(tok->str);
 	if (tok->type == STRING && !ft_strcmp(exp, ""))
+	{
+		// tok->str = ft_free(tok->str);
 		tok->type = SPC;
+	}
 	else
 		tok->str = exp;
-	// if (tok->type == STRING && ft_strchr(tok->str, ' '))
-	// 	//token->string = '-n -n'
-	// 	//separa em novos token
-	//todo espaco dentro de string tenho que transformar em espaço
+	
+	// printf("WAKA\n");
+	// exp = ft_free(exp);
+
+	// printf("PATATA\n");
+	
+
+	//FAZER ISSO SOMENTE PARA QUANDO O TOK EH STRING:
+	if (tok->type == STRING)
+	{
+		head = remove_spaces_in(&tok);
+		tok->str = ft_free(tok->str); //para fazer o abaixo tenho que limpar token->str
+		*tok = *head; //isso eh interessante! entender melhor
+		head = ft_free(head);
+	}
+
+
+	// printf("ponteiro exp: %p, valor: %s\n", exp, exp);
+	// printf("ponteiro tok: %p, valor: %s\n", tok, exp);
+	// printf("ponteiro tok->str: %p, valor: %s\n", tok->str, exp);
+	// 	str = ft_free(str);
+	// 	tok->str = ft_free(tok->str);
+	// 	*tok = *head;
+
+	// {
+	// 	int	j = 0;
+	// 	i = 0;
+	// 	char *str = safe_strdup(tok->str);
+	// 	t_token *next = tok->next;
+	// 	t_token *head = NULL;
+	// 	t_token *tmp = NULL;
+		
+	// 	int max = (int) ft_strlen(str);
+
+	// 	while (i < max)
+	// 	{
+	// 		while(tok->str[i] && tok->str[i] != ' ')
+	// 			i++;
+	// 		if (i > j)
+	// 		{
+	// 			tmp = NULL;
+	// 			tmp = create_token(tok->str, j, i - 1, STRING);
+	// 			add_token(&head, tmp);
+	// 			j = i;
+	// 		}
+	// 		while (tok->str[i] && tok->str[i] == ' ')
+	// 			i++;
+	// 		if (i > j)
+	// 		{
+	// 			tmp = NULL;
+	// 			tmp = create_token(tok->str, 0, 0, SPC);
+	// 			add_token(&head, tmp);
+	// 			j = i;
+	// 		}
+	// 		if (tok->str[i] == '\0')
+	// 			tmp->next = next;
+	// 	}
+	// 	str = ft_free(str);
+	// 	tok->str = ft_free(tok->str);
+	// 	*tok = *head;
+	// 	head = ft_free(head);
+	// }
 	return (tok);
 }

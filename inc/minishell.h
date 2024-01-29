@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/26 19:21:18 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:39:57 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void					print_list_process(t_process *process);
 void					print_process(t_process *root);
 void					*ft_free(void *ptr);
 void					remove_spaces(char **str);
+t_token					*remove_spaces_in(t_token **token);
 int						execute_heredoc(t_process *first_process);
 void					add_token_after(t_token **token, t_token *new_token);
 char					*get_token_without_dolar(t_token *token);
