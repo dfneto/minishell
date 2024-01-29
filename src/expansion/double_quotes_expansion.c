@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 21:57:12 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:10:20 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 	if (token->str[*i] == '?')
 	{
 		(*i)++;
-		return (get_exit_status(env.last_exit));
+		return (safe_itoa(env.last_exit));
 	}
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;

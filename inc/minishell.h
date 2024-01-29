@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/29 22:04:18 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:11:00 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ t_token					*remove_spaces_in(t_token **token);
 int						execute_heredoc(t_process *first_process);
 char					*get_token_without_dolar(t_token *token);
 char					*g_pre_dol(char *str, int start);
-char					*get_exit_status(int last_exit);
 t_token					*expand_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input, t_env *env);
 t_token					*create_token(char *input, int start, int end,

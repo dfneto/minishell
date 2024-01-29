@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 12:44:43 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 22:04:34 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:12:29 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,4 @@ int	is_alnum_or_slash(char c)
 	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
-}
-
-t_token	*set_token_str(t_token *token, char *value)
-{
-	token->str = safe_strdup(value);
-	return (token);
 }

@@ -6,21 +6,11 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 21:55:42 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:10:42 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* TO DO
-Função só funciona com o caso $? sozinho
-Refazer junto com a is_dolarquestion_mark
--->> proteger malloc (ft_itoa)
- */
-char	*get_exit_status(int last_exit)
-{
-	return (safe_itoa(last_exit));
-}
 
 int	create_add_token_space(t_token **head, int i)
 {
@@ -85,60 +75,6 @@ char	*get_text_post_extension(t_token *token, char *exp, int i)
 	ft_free(tmp2);
 	return (post_expansion);
 }
-
-// t_token	*create_token_split(char *str, t_token *next_token)
-// {
-// 	t_token	*tok;
-
-// 	tok = (t_token *)safe_malloc(sizeof(t_token));
-// 	tok->str = str;
-// 	tok->type = STRING;
-// 	tok->next = next_token;
-// 	return (tok);
-// }
-
-/*
- * Check if the str (token->str) is expansible. So you can avoid
- * execute expansion methods in tokens that doesn't even has $
- * (for example: echo, hola etc)
- * and others tokens that doesn't start by an alphacharacter or slash
- * (for example: $1, $/, $' etc)
- */
-// int	is_expansible(char *str)
-// {
-// 	int	i;
-
-// 	i = get_dolar_position(str, 0);
-// 	if (i == -1)
-// 		return (0);
-// 	else if (is_alpha_or_slash(str[i + 1]) || str[i + 1] == '?')
-// 		return (1);
-// 	return (0);
-// }
-
-/* 
-* If it has at least one expansible word returns 1
-* Otherwise returns 0.
-* It is not implemented, but should deal with cases
-* where the first $word is not expansible, like echo "$1 $USER"
-*/
-// int	has_word_expansible(char *str)
-// {
-// 	return (is_expansible(str));
-// }
-
-/* TO DO
-A função funciona só nos casos que a str começa com $?
-echo $? funciona e retorn 0 (ou o exit value atual)
-echo abc$? nao funciona e retorna abc$?
-// TODO: ao inves de usar 0 e 1 usar dolar position
-*/
-// int	is_dollarquestion_mark(char *str)
-// {
-// 	if (str[0] == '$' && str[1] == '?')
-// 		return (1);
-// 	return (0);
-// }
 
 /*
  * returns: the text before the dolar sign.
