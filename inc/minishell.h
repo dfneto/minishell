@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/29 22:11:00 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:23:02 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ extern int	g_signal;
 // # define HERE_DOC_TYPE 7
 
 /*
-* obs: NL is not a token
-*/
+ * obs: NL is not a token
+ */
 typedef enum token_type
 {
 	DOUBLE_QUOTE = 0,
@@ -135,15 +135,12 @@ typedef struct s_builtin
 
 int						check_open_quotes(char *input);
 char					*clean_input(char *input);
-int						is_exit(char *input);
-int						expansion(t_token *first_token,
-							t_env env);
+int						expansion(t_token *first_token, t_env env);
 int						is_alpha_or_slash(char c);
-int						has_word_expansible(char *str);
 int						get_dolar_position(char *str, int i);
-int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);
-char					*get_text_post_extension(t_token *token, char *exp, int i);
+char					*get_text_post_extension(t_token *token, char *exp,
+							int i);
 void					add_token(t_token **first, t_token *new);
 void					add_redirect(t_redirect **first, t_redirect *new);
 void					print_token(t_token *token);
@@ -152,10 +149,8 @@ void					print_list_redirect(t_redirect *redirect);
 void					print_list_process(t_process *process);
 void					print_process(t_process *root);
 void					*ft_free(void *ptr);
-void					remove_spaces(char **str);
 t_token					*remove_spaces_in(t_token **token);
 int						execute_heredoc(t_process *first_process);
-char					*get_token_without_dolar(t_token *token);
 char					*g_pre_dol(char *str, int start);
 t_token					*expand_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input, t_env *env);
@@ -177,10 +172,10 @@ t_process				*create_process(t_token *token, int i);
 t_redirect				*create_redirect(char *name, t_type type);
 
 // VVVVVV LUKITAS VVVVV
-//Organizei as funções por "modulo", cada módulo corresponde ao nome do
-//folder. Dentro de cada "módulo" separei as funções por funcionalidades.
-//Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
-//Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula 
+// Organizei as funções por "modulo", cada módulo corresponde ao nome do
+// folder. Dentro de cada "módulo" separei as funções por funcionalidades.
+// Cada módulo começa com o nome todo em maiuscula e comentado como multilinha.
+// Cada funcionalidade tem o nome apenas com as primeiras letras em maiuscula
 // e comentado com
 
 /* EXECUTION */
@@ -284,16 +279,13 @@ void					add_process(t_process **first, t_process *new);
 t_process				*create_default_process(int num_token_str);
 void					add_word_to_command(t_process **process,
 							t_token **token, int i);
-int						go_to_next_token(t_token **token,
-							t_process *process, int num_token_str, int i);
+int						go_to_next_token(t_token **token, t_process *process,
+							int num_token_str, int i);
 t_process				*get_last_process(t_process *first);
 t_process				*clean_process(t_process *process);
 void					clean_redirects(t_redirect *redirect);
-void					init_signals(void);
 int						validate_tokens(t_token *token);
-
 int						set_redirects(t_process *process);
-
 t_token					*clean_tokens(t_token *first);
 
 #endif
