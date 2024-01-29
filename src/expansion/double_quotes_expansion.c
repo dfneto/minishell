@@ -6,14 +6,14 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/29 21:41:37 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:43:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-char	*alocate_word_expanded(t_token *token, int dolar_position, int i, t_env env)
+char	*alocate_word_expanded(t_token *token, int dolar_position, int i,
+		t_env env)
 {
 	char	*word_to_expand;
 	char	*word_expanded;
@@ -31,7 +31,8 @@ char	*alocate_word_expanded(t_token *token, int dolar_position, int i, t_env env
 				- dolar_position - 1);
 		word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
 	}
-	else if (token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE))
+	else if (token->next && (token->next->type == DOUBLE_QUOTE
+			|| token->next->type == SINGLE_QUOTE))
 		word_expanded = safe_strdup("");
 	else
 		word_expanded = safe_strdup(word_to_expand);
@@ -40,12 +41,11 @@ char	*alocate_word_expanded(t_token *token, int dolar_position, int i, t_env env
 }
 
 /*
-* Get the word expanded
-* Returns the word expanded
-*/
+ * Get the word expanded
+ * Returns the word expanded
+ */
 char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 		t_env env)
-// char	*get_word_expanded(t_token *token, int *i, t_env env)
 {
 	char	*word_to_expand;
 	char	*word_expanded;
@@ -60,23 +60,6 @@ char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;
 	return (alocate_word_expanded(token, dolar_position, *i, env));
-	// word_to_expand = safe_substr(token->str, dolar_position, *i
-	// 		- dolar_position);
-	// if (word_to_expand == NULL)
-	// 	return (safe_strdup(""));
-	// if (is_alpha_or_slash(word_to_expand[1]))
-	// {
-	// 	word_to_expand = ft_free(word_to_expand);
-	// 	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
-	// 			- dolar_position - 1);
-	// 	word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
-	// }
-	// else if (token->next && (token->next->type == DOUBLE_QUOTE || token->next->type == SINGLE_QUOTE))
-	// 	word_expanded = safe_strdup("");
-	// else
-	// 	word_expanded = safe_strdup(word_to_expand);
-	// ft_free(word_to_expand);
-	// return (word_expanded);
 }
 
 char	*join_with_word_expanded(t_token *token, int *i, char *exp, t_env env)
@@ -142,9 +125,9 @@ Another example: "|$USER|"
 * in "123$USER $USER waka" the dolar position is -1.
 * ----------
 to understand:
-	tok->str = ft_free(tok->str); 
+	tok->str = ft_free(tok->str);
 	*tok = *head; //isso eh interessante! entender melhor
-	e para fazer isso tenho que antes limpar o ponteiro 
+	e para fazer isso tenho que antes limpar o ponteiro
 	tok->str
 */
 t_token	*expand_double_quote_token(t_token *tok, t_env env)
