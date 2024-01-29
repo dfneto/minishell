@@ -6,11 +6,22 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:37 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/28 20:49:18 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:55:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_token	*create_token_split(char *str, t_token *next_token)
+{
+	t_token	*tok;
+
+	tok = (t_token *)safe_malloc(sizeof(t_token));
+	tok->str = str;
+	tok->type = STRING;
+	tok->next = next_token;
+	return (tok);
+}
 
 /*
  * A função create_tok_for_each_dollar é uma pequena aula de

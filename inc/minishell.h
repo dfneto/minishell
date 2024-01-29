@@ -6,7 +6,7 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:14:04 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/01/29 20:39:57 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:17:44 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int						get_dolar_position(char *str, int i);
 int						has_space(char *str);
 int						is_expansible(char *str);
 int						is_alnum_or_slash(char c);
-int						is_dollarquestion_mark(char *str);
+char					*get_text_post_extension(t_token *token, char *exp, int i);
 void					add_token(t_token **first, t_token *new);
 void					add_redirect(t_redirect **first, t_redirect *new);
 void					print_token(t_token *token);
@@ -166,7 +166,6 @@ t_token					*set_token_str(t_token *token, char *value);
 t_token					*create_tok_per_word_in(char *expanded_str,
 							t_token *next_tok_after_expand, t_token *token);
 char					*get_exit_status(int last_exit);
-t_token					*create_token_split(char *str, t_token *next_token);
 t_token					*expand_string_token(t_token *token, t_env env);
 t_token					*expand_double_quote_token(t_token *token, t_env env);
 t_token					*lexical_analysis(char *input, t_env *env);
