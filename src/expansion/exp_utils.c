@@ -6,23 +6,87 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:44:50 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/22 17:39:43 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:12:33 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-t_token	*create_token_split(char *str, t_token *next_token)
+int	create_add_token_space(t_token **head, int i)
 {
-	t_token	*tok;
+	t_token	*tmp;
 
-	tok = (t_token *)safe_malloc(sizeof(t_token));
-	tok->str = str;
-	tok->type = STRING;
-	tok->next = next_token;
-	return (tok);
+	tmp = NULL;
+	tmp = create_token(0, 0, 0, SPC);
+	add_token(head, tmp);
+	return (i);
 }
+
+int	create_add_token_string(t_token **head, char *str, int j, int i)
+{
+	t_token	*tmp;
+
+	tmp = NULL;
+	tmp = create_token(str, j, i - 1, STRING);
+	add_token(head, tmp);
+	return (i);
+}
+
+t_token	*remove_spaces_in(t_token **token)
+{
+	int		i;
+	int		j;
+	char	*str;
+	t_token	*head;
+
+	i = 0;
+	j = 0;
+	head = NULL;
+	str = safe_strdup((*token)->str);
+	while (i < (int) ft_strlen(str))
+	{
+		while (str[i] && str[i] != ' ')
+			i++;
+		if (i > j)
+			j = create_add_token_string(&head, str, j, i);
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (i > j)
+			j = create_add_token_space(&head, i);
+		if (str[i] == '\0')
+			get_last_token(head)->next = (*token)->next;
+	}
+	ft_free(str);
+	return (head);
+}
+
+char	*get_text_post_extension(t_token *token, char *exp, int i)
+{
+	char	*post_expansion;
+	char	*tmp1;
+	char	*tmp2;
+
+	post_expansion = NULL;
+	tmp2 = NULL;
+	tmp1 = exp;
+	tmp2 = safe_substr(token->str, i, ft_strlen(token->str) - i);
+	post_expansion = safe_strjoin(exp, tmp2);
+	ft_free(tmp1);
+	ft_free(tmp2);
+	return (post_expansion);
+}
+
+// t_token	*create_token_split(char *str, t_token *next_token)
+// {
+// 	t_token	*tok;
+
+// 	tok = (t_token *)safe_malloc(sizeof(t_token));
+// 	tok->str = str;
+// 	tok->type = STRING;
+// 	tok->next = next_token;
+// 	return (tok);
+// }
 
 /*
  * Check if the str (token->str) is expansible. So you can avoid
@@ -31,17 +95,17 @@ t_token	*create_token_split(char *str, t_token *next_token)
  * and others tokens that doesn't start by an alphacharacter or slash
  * (for example: $1, $/, $' etc)
  */
-int	is_expansible(char *str)
-{
-	int	i;
+// int	is_expansible(char *str)
+// {
+// 	int	i;
 
-	i = get_dolar_position(str, 0);
-	if (i == -1)
-		return (0);
-	else if (is_alpha_or_slash(str[i + 1]) || str[i + 1] == '?')
-		return (1);
-	return (0);
-}
+// 	i = get_dolar_position(str, 0);
+// 	if (i == -1)
+// 		return (0);
+// 	else if (is_alpha_or_slash(str[i + 1]) || str[i + 1] == '?')
+// 		return (1);
+// 	return (0);
+// }
 
 /* 
 * If it has at least one expansible word returns 1
@@ -49,10 +113,10 @@ int	is_expansible(char *str)
 * It is not implemented, but should deal with cases
 * where the first $word is not expansible, like echo "$1 $USER"
 */
-int	has_word_expansible(char *str)
-{
-	return (is_expansible(str));
-}
+// int	has_word_expansible(char *str)
+// {
+// 	return (is_expansible(str));
+// }
 
 /* TO DO
 A função funciona só nos casos que a str começa com $?
@@ -60,12 +124,12 @@ echo $? funciona e retorn 0 (ou o exit value atual)
 echo abc$? nao funciona e retorna abc$?
 // TODO: ao inves de usar 0 e 1 usar dolar position
 */
-int	is_dollarquestion_mark(char *str)
-{
-	if (str[0] == '$' && str[1] == '?')
-		return (1);
-	return (0);
-}
+// int	is_dollarquestion_mark(char *str)
+// {
+// 	if (str[0] == '$' && str[1] == '?')
+// 		return (1);
+// 	return (0);
+// }
 
 /*
  * returns: the text before the dolar sign.

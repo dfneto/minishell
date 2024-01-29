@@ -1,18 +1,12 @@
-FAILING:
-Com $?:
-    echo 123$?
-    echo $A$?
-    echo $?123
-    echo $?badasb
-    echo $USER$?abc
-
-
-echo "$1 $USER" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
-echo "123$0 $USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
-echo "123$0$USER waka" (identificado o erro: quando a primeira palavra não é expansível, ver check_and_expand(t_token *token, t_env env)/(has_word_expansible(token->str)))
-
+echo $"   t  hi   t    "
+echo $$"   t  hi   t    "
+echo $USER$
 echo $USER$/
+echo "$USER$/"
 
+
+echo $USER$. -> davifern$.
+echo $USER. -> davifern.
 
 
 -------------
@@ -30,11 +24,29 @@ echo $USER$USER
 echo 123$USER
 echo 123$USER$USER
 
+$?
+$USER.
+$USER.$USER
+
+123$USER.
+123$USER.$USER
+
+echo "$1 $USER" 
+echo "123$0 $USER waka" 
+echo "123$0$USER waka" 
+
 export A='foo   ' B='bar   ' C='baz   '
 echo $A$B$C
 echo 42343$A$B$C
 -------------
 PASSING:
+Com $?:
+echo 123$?
+echo $A$?
+echo $?123
+echo $?badasb
+echo $USER$?abc
+
 $USER. - ok
 $USER.$USER - ok
 

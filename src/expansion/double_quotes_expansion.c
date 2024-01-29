@@ -6,33 +6,45 @@
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:54:32 by davifern          #+#    #+#             */
-/*   Updated: 2024/01/25 19:44:24 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:43:01 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_text_post_extension(t_token *token, char *exp, int i)
+char	*alocate_word_expanded(t_token *token, int dolar_position, int i,
+		t_env env)
 {
-	char	*post_expansion;
-	char	*tmp1;
-	char	*tmp2;
+	char	*word_to_expand;
+	char	*word_expanded;
 
-	post_expansion = NULL;
-	tmp2 = NULL;
-	tmp1 = exp;
-	tmp2 = safe_substr(token->str, i, ft_strlen(token->str) - i);
-	post_expansion = safe_strjoin(exp, tmp2);
-	ft_free(tmp1);
-	ft_free(tmp2);
-	return (post_expansion);
+	word_to_expand = NULL;
+	word_expanded = NULL;
+	word_to_expand = safe_substr(token->str, dolar_position, i
+			- dolar_position);
+	if (word_to_expand == NULL)
+		return (safe_strdup(""));
+	if (is_alpha_or_slash(word_to_expand[1]))
+	{
+		word_to_expand = ft_free(word_to_expand);
+		word_to_expand = safe_substr(token->str, dolar_position + 1, i
+				- dolar_position - 1);
+		word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
+	}
+	else if (token->next && (token->next->type == DOUBLE_QUOTE
+			|| token->next->type == SINGLE_QUOTE))
+		word_expanded = safe_strdup("");
+	else
+		word_expanded = safe_strdup(word_to_expand);
+	ft_free(word_to_expand);
+	return (word_expanded);
 }
 
 /*
-* Get the word expanded
-* Returns the word expanded
-*/
-char	*g_w_expd(t_token *token, int *i, int dolar_position,
+ * Get the word expanded
+ * Returns the word expanded
+ */
+char	*get_word_expanded(t_token *token, int *i, int dolar_position,
 		t_env env)
 {
 	char	*word_to_expand;
@@ -47,13 +59,7 @@ char	*g_w_expd(t_token *token, int *i, int dolar_position,
 	}
 	while (token->str[*i] && is_alnum_or_slash(token->str[*i]))
 		(*i)++;
-	word_to_expand = safe_substr(token->str, dolar_position + 1, *i
-			- dolar_position - 1);
-	if (word_to_expand == NULL)
-		return (safe_strdup(""));
-	word_expanded = safe_strdup(ft_getenv(word_to_expand, env));
-	ft_free(word_to_expand);
-	return (word_expanded);
+	return (alocate_word_expanded(token, dolar_position, *i, env));
 }
 
 char	*join_with_word_expanded(t_token *token, int *i, char *exp, t_env env)
@@ -67,7 +73,7 @@ char	*join_with_word_expanded(t_token *token, int *i, char *exp, t_env env)
 	dol_pos = get_dolar_position(token->str, *i);
 	*i = dol_pos + 1;
 	tmp = exp;
-	tmp2 = g_w_expd(token, i, dol_pos, env);
+	tmp2 = get_word_expanded(token, i, dol_pos, env);
 	exp = safe_strjoin(tmp, tmp2);
 	free(tmp);
 	free(tmp2);
@@ -94,7 +100,7 @@ char	*expand_token_with_pre_dolar(t_token *tok, int *i, t_env env)
 		tmp = ft_free(tmp);
 		tmp2 = ft_free(tmp2);
 		dol_pos = get_dolar_position(tok->str, *i);
-		if (dol_pos >= 0 && tok->str[dol_pos + 1])
+		if (dol_pos >= 0 && tok->str[dol_pos])
 			exp = join_with_word_expanded(tok, i, exp, env);
 	}
 	return (exp);
@@ -117,11 +123,18 @@ Another example: "|$USER|"
 * because we are going to check and expand every word inside
 * the quotes. So waka won't be expanded and so for waka
 * in "123$USER $USER waka" the dolar position is -1.
+* ----------
+to understand:
+	tok->str = ft_free(tok->str);
+	*tok = *head; //isso eh interessante! entender melhor
+	e para fazer isso tenho que antes limpar o ponteiro
+	tok->str
 */
 t_token	*expand_double_quote_token(t_token *tok, t_env env)
 {
 	int		i;
 	char	*exp;
+	t_token	*head;
 
 	i = 0;
 	exp = NULL;
@@ -129,6 +142,19 @@ t_token	*expand_double_quote_token(t_token *tok, t_env env)
 	if (tok->str[i] && tok->str[i] != '$')
 		exp = get_text_post_extension(tok, exp, i);
 	tok->str = ft_free(tok->str);
-	tok->str = exp;
+	if (tok->type == STRING && !ft_strcmp(exp, ""))
+	{
+		ft_free(exp);
+		tok->type = SPC;
+	}
+	else
+		tok->str = exp;
+	if (tok->type == STRING)
+	{
+		head = remove_spaces_in(&tok);
+		tok->str = ft_free(tok->str);
+		*tok = *head;
+		head = ft_free(head);
+	}
 	return (tok);
 }
