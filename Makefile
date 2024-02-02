@@ -1,15 +1,9 @@
-# Makefile
-
-# Set the name of your executable
 NAME = minishell
 
-# Set the source directory
 SRC_DIR = src
 
-# Set the object directory
 OBJ_DIR = obj
 
-# Set the installation directory for readline
 READLINE_INSTALL_DIR = $(shell pwd)/readline/library
 READLINE_INCLUDE_DIR = $(READLINE_INSTALL_DIR)/include
 READLINE_LIB_DIR = $(READLINE_INSTALL_DIR)/lib
@@ -19,39 +13,77 @@ MINI_H = inc/minishell.h
 
 LIBFT = libft/libft.a
 
-# Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g  -Ilibft -Iinc -I$(READLINE_INCLUDE_DIR) #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -Ilibft -Iinc -I$(READLINE_INCLUDE_DIR)
 LDFLAGS = -L$(READLINE_LIB_DIR) -Llibft -lreadline -lhistory -lft -lncurses
 
-# Find all source files in the src directory and its subdirectories
-SRC_FILES := $(shell find $(SRC_DIR) -name '*.c')
+SRC_FILES = \
+    $(SRC_DIR)/builtin/cd.c \
+    $(SRC_DIR)/builtin/cd_utils.c \
+    $(SRC_DIR)/builtin/echo.c \
+    $(SRC_DIR)/builtin/env.c \
+    $(SRC_DIR)/builtin/execute_builtins.c \
+    $(SRC_DIR)/builtin/exit.c \
+    $(SRC_DIR)/builtin/export.c \
+    $(SRC_DIR)/builtin/export_utils.c \
+    $(SRC_DIR)/builtin/init_builtins.c \
+    $(SRC_DIR)/builtin/pwd.c \
+    $(SRC_DIR)/builtin/unset.c \
+    $(SRC_DIR)/debug/printers_processes.c \
+    $(SRC_DIR)/debug/printers_tokens.c \
+    $(SRC_DIR)/env/env_create.c \
+    $(SRC_DIR)/env/ft_getenv.c \
+    $(SRC_DIR)/env/ft_setenv.c \
+    $(SRC_DIR)/env/ft_unsetenv.c \
+    $(SRC_DIR)/env/get_env_array.c \
+    $(SRC_DIR)/env/node_utils.c \
+    $(SRC_DIR)/execution/execute_cmd.c \
+    $(SRC_DIR)/execution/execute_cmd_utils.c \
+    $(SRC_DIR)/execution/mult_cmd.c \
+    $(SRC_DIR)/execution/mult_cmd_utils.c \
+    $(SRC_DIR)/execution/single_cmd.c \
+    $(SRC_DIR)/execution/single_cmd_utils.c \
+    $(SRC_DIR)/expansion/exp_utils.c \
+    $(SRC_DIR)/expansion/exp_utils2.c \
+    $(SRC_DIR)/expansion/expansion.c \
+    $(SRC_DIR)/expansion/init_expansion.c \
+    $(SRC_DIR)/lexical_analysis/clean_tokens.c \
+    $(SRC_DIR)/lexical_analysis/create_tokens.c \
+    $(SRC_DIR)/lexical_analysis/init_lexical_analysis.c \
+    $(SRC_DIR)/lexical_analysis/lex_utils.c \
+    $(SRC_DIR)/lexical_analysis/process_quotes.c \
+    $(SRC_DIR)/lexical_analysis/validate_tokens.c \
+    $(SRC_DIR)/main.c \
+    $(SRC_DIR)/process/heredoc.c \
+    $(SRC_DIR)/process/init_process.c \
+    $(SRC_DIR)/process/process_creation_utills.c \
+    $(SRC_DIR)/process/process_utils.c \
+    $(SRC_DIR)/process/process_utils2.c \
+    $(SRC_DIR)/process/set_redirects.c \
+    $(SRC_DIR)/signals/child_signals.c \
+    $(SRC_DIR)/signals/main_signals.c \
+    $(SRC_DIR)/utils/ft_perror.c \
+    $(SRC_DIR)/utils/ft_strcmp.c \
+    $(SRC_DIR)/utils/ft_strtok.c \
+    $(SRC_DIR)/utils/print_error.c \
+    $(SRC_DIR)/utils/safe_allocation.c \
+    $(SRC_DIR)/utils/safe_allocation2.c
 
-# Generate object file names from source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
-# Extract directory structure from object file paths
 OBJ_DIRS := $(sort $(dir $(OBJ_FILES)))
 
-# Default rule
 all: $(NAME)
 
-run_me: $(NAME)
-	./$(NAME)
-
-# Rule for the NAME executable
 $(NAME): $(OBJ_FILES)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-# Rule for generating object files and creating directories
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile $(MINI_H) $(READLINE_LIB) $(LIBFT) | $(OBJ_DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule for creating the obj directory
 $(OBJ_DIRS):
 	mkdir -p $@
 
-# Rule for configuring, building, and installing readline
 $(READLINE_LIB):
 	@echo "Installing readline..."
 	@cd ./readline; ./configure --prefix=$(READLINE_INSTALL_DIR) > /dev/null 2>&1; make > /dev/null 2>&1; make install > /dev/null 2>&1
@@ -60,7 +92,6 @@ $(READLINE_LIB):
 $(LIBFT):
 	make -C libft
 
-# Clean rule
 clean:
 	rm -rf $(OBJ_DIR)
 	make clean -C libft
@@ -74,5 +105,4 @@ clean_readline:
 
 re: fclean all
 
-# Phony NAMEs to avoid conflicts with file names
-.PHONY: all clean fclean clean_readline run_me re
+.PHONY: all clean fclean clean_readline re
